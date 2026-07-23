@@ -29,7 +29,8 @@ DB_NAME = "footpryx.db"
 # 🔑 Google OAuth credentials
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "YOUR_GOOGLE_CLIENT_ID_HERE")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "YOUR_GOOGLE_CLIENT_SECRET_HERE")
-GOOGLE_REDIRECT_URI = "http://127.0.0.1:8000/api/auth/google/callback"
+# 🟢 Render ची लाईव्ह Callback URL
+GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "https://footpryx-backend.onrender.com/api/auth/google/callback")
 
 # 🤖 Gemini AI Config
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -148,7 +149,7 @@ async def google_callback(code: str):
         access_token = token_json.get("access_token")
 
         if not access_token:
-            return RedirectResponse("http://localhost:3000/auth/login?error=auth_failed")
+            return RedirectResponse("https://footpryx.com/auth/login?error=auth_failed")
 
         user_res = await client.get(
             "https://www.googleapis.com/oauth2/v2/userinfo",
@@ -172,7 +173,8 @@ async def google_callback(code: str):
         finally:
             conn.close()
 
-        return RedirectResponse(f"http://localhost:3000/dashboard?email={email}&name={name}")
+        # 🟢 Live Domain Dashboard Redirect
+        return RedirectResponse(f"https://footpryx.com/dashboard?email={email}&name={name}")
 
 # 🤖 💡 ४. GEMINI AI CHAT ENDPOINT
 @app.post("/api/ai/chat")
