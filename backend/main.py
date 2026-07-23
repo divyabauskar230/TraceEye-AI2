@@ -81,6 +81,9 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
+class DeleteUserRequest(BaseModel):
+    email: str
+
 class GeminiChatRequest(BaseModel):
     prompt: str
 
@@ -122,7 +125,23 @@ async def login_user(user: LoginRequest):
     
     return {"message": "Initialize Access Successful!", "user": {"name": db_name, "email": db_email}}
 
-# 🌐 ३. GOOGLE OAUTH ROUTES
+# 🗑️ ३. युझर अकाऊंट पूर्णपणे डिलीट करणे (Hard Delete Endpoint)
+@app.delete("/api/auth/delete")
+async def delete_user(user: DeleteUserRequest):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM users WHERE email = ?", (user.email,))
+        conn.commit()
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="User email not found in database.")
+        return {"message": f"Account {user.email} deleted permanently from database node."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database Error: {str(e)}")
+    finally:
+        conn.close()
+
+# 🌐 ४. GOOGLE OAUTH ROUTES
 @app.get("/api/auth/google/login")
 def google_login():
     google_auth_url = (
@@ -176,7 +195,7 @@ async def google_callback(code: str):
         # 🟢 Live Domain Dashboard Redirect
         return RedirectResponse(f"https://footpryx.com/dashboard?email={email}&name={name}")
 
-# 🤖 💡 ४. GEMINI AI CHAT ENDPOINT
+# 🤖 💡 ५. GEMINI AI CHAT ENDPOINT
 @app.post("/api/ai/chat")
 async def gemini_chat(req: GeminiChatRequest):
     if not GEMINI_API_KEY:
@@ -199,7 +218,7 @@ async def gemini_chat(req: GeminiChatRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Gemini API Error: {str(e)}")
 
-# 🌐 ५. होम रूट
+# 🌐 ६. होम रूट
 @app.get("/")
 def read_root():
     return {"status": "Operational", "message": "Footpryx AI Backend Operational Node Online"}
@@ -224,7 +243,7 @@ async def execute_osint_scan(scan: ScanRequest):
 
     async with httpx.AsyncClient() as client:
         try:
-            # 📧 1. REAL EMAIL OSINT RECON (Gravatar, Debounce, HIBP Check)
+            # 📧 1. REAL EMAIL OSINT RECON
             if s_type == "email":
                 sources_count = "120"
                 found_list = []
@@ -259,7 +278,7 @@ async def execute_osint_scan(scan: ScanRequest):
                             "status": status_str
                         })
 
-                # C. Real Breach Check (HaveIBeenPwned Index Simulation Check)
+                # C. Real Breach Check
                 hibp_res = await client.get(f"https://haveibeenpwned.com/api/v3/breachedaccount/{email_clean}", timeout=3.0)
                 if hibp_res.status_code == 200:
                     breaches = hibp_res.json()
@@ -279,7 +298,7 @@ async def execute_osint_scan(scan: ScanRequest):
                     risk_level = "MED"
                 simulated_results = found_list
 
-            # 🌐 2. IP Address Real Lookup (Free & No API Key required)
+            # 🌐 2. IP Address Real Lookup
             elif s_type == "ip":
                 ip_res = await client.get(f"http://ip-api.com/json/{query}", timeout=5.0)
                 if ip_res.status_code == 200:
@@ -294,7 +313,7 @@ async def execute_osint_scan(scan: ScanRequest):
                             {"source": "Network Coordinates", "status": f"Lat: {ip_data.get('lat')}, Lon: {ip_data.get('lon')}"}
                         ]
             
-            # 🌐 3. Domain / URL Real Subdomain Lookup (CRT.sh Public API)
+            # 🌐 3. Domain / URL Real Subdomain Lookup
             elif s_type == "domain":
                 domain_res = await client.get(f"https://crt.sh/?q={query}&output=json", timeout=6.0)
                 if domain_res.status_code == 200 and domain_res.content:
@@ -311,7 +330,6 @@ async def execute_osint_scan(scan: ScanRequest):
         except Exception as api_err:
             print("External API Fetch Error (Fallback to simulation):", api_err)
 
-    # बॅकअप फॉलबॅक (इतर टाईप्ससाठी)
     if not simulated_results:
         if s_type == "phone":
             accounts_found = "3"
@@ -338,7 +356,6 @@ async def execute_osint_scan(scan: ScanRequest):
                 {"source": "Metadata Extraction Node", "status": "Standard Entity Resolution Done"}
             ]
 
-    # डेटाबेसमध्ये हिस्ट्री सेव्ह करणे
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     try:
