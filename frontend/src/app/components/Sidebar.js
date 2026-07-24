@@ -12,16 +12,17 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
       <div className="space-y-6">
         
         {/* Logo Section */}
-        <div className="p-6 border-b border-emerald-950/60 flex flex-col gap-0.5">
-          <div className="flex items-center gap-2">
-            <span className="text-white font-extrabold text-sm tracking-wide uppercase">
-              TRACEEYE <span className="text-emerald-500">//</span> <span className="text-[#a3e635]">CORE</span>
-            </span>
-          </div>
-          <span className="text-[9px] text-emerald-800 font-medium uppercase tracking-wide">
-            CORE_LAYER:V4
-          </span>
-        </div>
+   <div className="p-6 border-b border-emerald-950/60 flex items-center gap-3">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-emerald-900/60 shadow-[0_0_15px_rgba(163,230,53,0.1)]" />
+  <div className="flex flex-col gap-0.5">
+    <span className="text-white font-extrabold text-sm tracking-wide uppercase">
+      FOOTPRYX
+    </span>
+    <span className="text-[9px] text-emerald-800 font-medium uppercase tracking-wide">
+      CYBER INTELLIGENCE
+    </span>
+  </div>
+</div>
 
         {/* Workspace Node Label */}
         <div className="px-6 text-[9px] font-bold text-emerald-900 uppercase tracking-wider">

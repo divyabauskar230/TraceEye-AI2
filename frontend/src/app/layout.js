@@ -7,8 +7,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "TraceEye // Core Recon Operations Console",
-  description: "Advanced tactical OSINT and signals intelligence reconnaissance array matrix.",
+  title: "Footpryx // Cyber & OSINT Intelligence Platform",
+  description: "Advanced open-source intelligence and digital footprint reconnaissance platform.",
 };
 
 export default function RootLayout({ children }) {

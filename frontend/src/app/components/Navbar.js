@@ -16,17 +16,15 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
           
           {/* Logo Group */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-lg bg-emerald-950/30 border border-emerald-900/60 flex items-center justify-center text-[#a3e635] shadow-[0_0_15px_rgba(163,230,53,0.1)]">
-              <Shield size={18} />
-            </div>
-            <div>
-              <h1 className="text-sm font-black text-white tracking-widest uppercase">
-                TraceEye // <span className="text-[#a3e635]">Core</span>
-              </h1>
-              <p className="text-[9px] text-emerald-700 tracking-widest uppercase font-bold">OSINT_RECON_ARRAY</p>
-            </div>
-          </Link>
+       <Link href="/" className="flex items-center gap-3 group">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-10 h-10 rounded-lg object-cover border border-emerald-900/60 shadow-[0_0_15px_rgba(163,230,53,0.1)]" />
+  <div>
+    <h1 className="text-sm font-black text-white tracking-widest uppercase">
+      Footpryx // <span className="text-[#a3e635]">OSINT</span>
+    </h1>
+    <p className="text-[9px] text-emerald-700 tracking-widest uppercase font-bold">CYBER INTELLIGENCE</p>
+  </div>
+</Link>
 
           {/* Desktop Links */}
           <nav className="hidden md:flex items-center gap-8">

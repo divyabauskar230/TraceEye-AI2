@@ -75,14 +75,15 @@ export default function Dashboard() {
       {/* 💾 LEFT SIDEBAR */}
       <aside className="w-64 border-r border-emerald-950/60 bg-black flex flex-col justify-between flex-shrink-0 h-full">
         <div className="space-y-6">
-          <div className="p-6 border-b border-emerald-950/60 flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <span className="text-white font-black text-xs tracking-widest uppercase">
-                TRACEEYE // <span className="text-[#a3e635]">CORE</span>
-              </span>
-            </div>
-            <span className="text-[8px] text-emerald-700 tracking-wider font-mono">OSINT_RECON_ARRAY</span>
-          </div>
+          <div className="p-6 border-b border-emerald-950/60 flex items-center gap-3">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded object-cover border border-emerald-900" />
+  <div className="flex flex-col gap-0.5">
+    <span className="text-white font-black text-xs tracking-widest uppercase">
+      FOOTPRYX
+    </span>
+    <span className="text-[8px] text-emerald-700 tracking-wider font-mono">OSINT_RECON_ARRAY</span>
+  </div>
+</div>
 
           <nav className="px-4 space-y-3">
             <button 

@@ -59,13 +59,13 @@ export default function Dashboard() {
       {/* 💾 LEFT SIDEBAR PANEL */}
       <aside className="w-64 bg-[#0a0d1a] border-r border-slate-900 p-5 flex flex-col justify-between hidden md:flex shrink-0">
         <div>
-          <div className="flex items-center gap-3 mb-8 p-1">
-            <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white">👻</div>
-            <div>
-              <h1 className="text-sm font-bold tracking-wide text-white">espectrosint</h1>
-              <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">INTELLIGENCE OSINT</p>
-            </div>
-          </div>
+         <div className="flex items-center gap-3 mb-8 p-1">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-slate-800" />
+  <div>
+    <h1 className="text-sm font-bold tracking-wide text-white">Footpryx</h1>
+    <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">OSINT PLATFORM</p>
+  </div>
+</div>
 
           <p className="text-[10px] font-bold text-slate-600 tracking-wider uppercase mb-3 px-2">WORKSPACE</p>
 

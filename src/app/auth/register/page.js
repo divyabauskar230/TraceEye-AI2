@@ -6,6 +6,7 @@ import Link from "next/link";
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState(""); // 📱 मोबाईल नंबरसाठी नवीन स्टेट
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -19,14 +20,14 @@ export default function Register() {
       const response = await fetch("https://footpryx-backend.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, phone, password }), // 📱 API मध्ये phone सुद्धा पाठवला आहे
       });
 
       if (response.ok) {
         // Registration यशस्वी झाल्यावर युझरचा डेटा localStorage मध्ये सेव्ह करा
         localStorage.setItem(
           "footpryx_user",
-          JSON.stringify({ name, email })
+          JSON.stringify({ name, email, phone })
         );
         setMessage("Account created successfully! Redirecting...");
         setTimeout(() => { window.location.href = "/"; }, 1200);
@@ -92,6 +93,19 @@ export default function Register() {
               />
             </div>
 
+            {/* 📱 Mobile Number Field Added Here */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 mb-2 ml-1">Mobile Number</label>
+              <input
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+91 9876543210"
+                className="w-full px-4 py-3 bg-[#111625] border border-slate-900 rounded-xl text-xs text-white placeholder-slate-700 focus:outline-none focus:border-slate-800 focus:bg-[#131a2e] transition-all"
+              />
+            </div>
+
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-2 ml-1">Password</label>
               <input
@@ -114,7 +128,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#a3e635] hover:bg-[#bef264] text-black font-bold py-3 px-4 rounded-xl text-xs transition-all active:scale-[0.99] shadow-lg shadow-lime-500/5"
+                className="w-full bg-[#a3e635] hover:bg-[#bef264] text-black font-bold py-3 px-4 rounded-xl text-xs transition-all active:scale-[0.99] shadow-lg shadow-lime-500/5 cursor-pointer"
               >
                 {loading ? "Creating Account..." : "Create Account"}
               </button>
@@ -131,7 +145,7 @@ export default function Register() {
           <button 
             type="button"
             onClick={handleGoogleRegister}
-            className="w-full bg-transparent border border-slate-850 hover:bg-slate-900/50 text-white py-2.5 px-4 rounded-xl flex items-center justify-between transition-all text-xs shadow-sm hover:border-slate-800 group"
+            className="w-full bg-transparent border border-slate-850 hover:bg-slate-900/50 text-white py-2.5 px-4 rounded-xl flex items-center justify-between transition-all text-xs shadow-sm hover:border-slate-800 group cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-full bg-lime-500/10 text-lime-400 flex items-center justify-center text-[10px] font-bold border border-lime-500/20">

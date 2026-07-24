@@ -70,11 +70,11 @@ export default function Login() {
           
           {/* Logo Assembly */}
           <div className="flex flex-col items-center mb-6 text-center">
-            <div className="flex items-center gap-2.5 text-white mb-2">
-              <span className="text-2xl">👻</span>
-              <h2 className="text-xl font-bold tracking-tight">espectrosint</h2>
-            </div>
-            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">OSINT Intelligence Platform</p>
+            <div className="flex items-center gap-3 mb-2">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-lg object-cover border border-slate-800" />
+  <h2 className="text-xl font-bold tracking-tight text-white">Footpryx</h2>
+</div>
+<p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Cyber & OSINT Intelligence</p>
           </div>
 
           <div className="text-center mb-8">
