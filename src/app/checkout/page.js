@@ -32,7 +32,7 @@ function CheckoutContent() {
     }
   }, []);
 
-  // 💰 Plan Prices in INR and BRL (Updated with Footpryx branding)
+  // 💰 Plan Prices in INR and BRL
   const plansData = {
     starter: {
       name: "Starter Footpryx",
@@ -77,6 +77,12 @@ function CheckoutContent() {
       {/* 🖤 LEFT SIDE: SUMMARY & CURRENCY TOGGLE */}
       <div className="w-full md:w-1/2 bg-[#030508] p-8 md:p-16 border-r border-slate-900 flex flex-col justify-between min-h-[50vh] md:min-h-screen">
         <div>
+          {/* 🟢 OFFICIAL LOGO ADDED HERE */}
+          <Link href="/" className="flex items-center gap-3 mb-8 group">
+            <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-emerald-500/30" />
+            <span className="text-white font-bold text-base tracking-tight uppercase">footpryx</span>
+          </Link>
+
           <Link href="/pricing" className="inline-flex items-center gap-2 text-slate-400 hover:text-white text-xs mb-10 transition">
             <ArrowLeft size={16} /> Back to plans
           </Link>

@@ -243,14 +243,14 @@ export default function Home() {
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0d1a] border-r border-slate-900/80 p-5 flex flex-col justify-between transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative shrink-0`}>
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white">👻</div>
-              <div>
-                {/* 🟢 BRAND NAME UPDATE */}
-                <h1 className="text-sm font-bold tracking-wide text-white">footpryx</h1>
-                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
-              </div>
-            </div>
+        <div className="flex items-center gap-3">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-xl object-cover border border-slate-800" />
+  <div>
+    {/* 🟢 BRAND NAME UPDATE */}
+    <h1 className="text-sm font-bold tracking-wide text-white">footpryx</h1>
+    <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
+  </div>
+</div>
             <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-slate-400 hover:text-white p-1">
               <X size={18} />
             </button>

@@ -63,13 +63,12 @@ export default function InvestigationsPage() {
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
             <div className="flex items-center gap-3">
-              {/* 👻 ओरिजिनल Ghost Icon */}
-              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-base">👻</div>
-              <div>
-                <h1 className="text-sm font-bold tracking-wide text-white uppercase">footpryx</h1>
-                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
-              </div>
-            </div>
+  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-xl object-cover border border-slate-800" />
+  <div>
+    <h1 className="text-sm font-bold tracking-wide text-white uppercase">footpryx</h1>
+    <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
+  </div>
+</div>
             <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-slate-400 hover:text-white p-1">
               <X size={18} />
             </button>

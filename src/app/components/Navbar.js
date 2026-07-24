@@ -12,24 +12,22 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
         {/* १. ब्रँड लोगो + नेम (footpryx with Eye Icon) */}
-        <Link href="/" className="flex items-center space-x-3 group">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center transition-all duration-300 group-hover:border-emerald-500/80 group-hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-            <Eye className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
-          </div>
-          <div className="flex flex-col">
-            <div className="flex items-center space-x-1.5">
-              <span className="text-white font-bold text-base tracking-tight group-hover:text-emerald-400 transition-colors uppercase">
-                footpryx
-              </span>
-              <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-semibold px-1.5 py-0.5 rounded border border-emerald-500/20">
-                AI
-              </span>
-            </div>
-            <span className="text-[10px] text-gray-400 font-mono tracking-wider uppercase">
-              Footprint Intelligence Engine
-            </span>
-          </div>
-        </Link>
+   <Link href="/" className="flex items-center space-x-3 group">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-emerald-500/30 group-hover:border-emerald-500/80 transition-all" />
+  <div className="flex flex-col">
+    <div className="flex items-center space-x-1.5">
+      <span className="text-white font-bold text-base tracking-tight group-hover:text-emerald-400 transition-colors uppercase">
+        footpryx
+      </span>
+      <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-semibold px-1.5 py-0.5 rounded border border-emerald-500/20">
+        AI
+      </span>
+    </div>
+    <span className="text-[10px] text-gray-400 font-mono tracking-wider uppercase">
+      Footprint Intelligence Engine
+    </span>
+  </div>
+</Link>
 
         {/* २. नेव्हिगेशन लिंक्स */}
         <nav className="hidden md:flex items-center space-x-1 bg-gray-900/60 p-1.5 rounded-full border border-gray-800/80">

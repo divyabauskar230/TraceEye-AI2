@@ -112,22 +112,21 @@ export default function PricingPage() {
       <header className="w-full border-b border-slate-900/80 bg-[#030508]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-[#a3e635] font-extrabold text-sm">
-            👻
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <h1 className="text-sm font-bold tracking-wider text-white uppercase">footpryx</h1>
-              <span className="bg-emerald-500/10 border border-emerald-500/30 text-[#a3e635] text-[9px] font-mono px-1 py-0.2 rounded font-bold">
-                AI
-              </span>
-            </div>
-            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">
-              FOOTPRINT INTELLIGENCE
-            </p>
-          </div>
-        </Link>
+       {/* Brand Logo */}
+<Link href="/" className="flex items-center gap-3">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-emerald-500/30" />
+  <div>
+    <div className="flex items-center gap-1.5">
+      <h1 className="text-sm font-bold tracking-wider text-white uppercase">footpryx</h1>
+      <span className="bg-emerald-500/10 border border-emerald-500/30 text-[#a3e635] text-[9px] font-mono px-1 py-0.2 rounded font-bold">
+        AI
+      </span>
+    </div>
+    <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">
+      FOOTPRINT INTELLIGENCE
+    </p>
+  </div>
+</Link>
 
         {/* Center Nav Pills */}
         <div className="bg-[#0b0f19] border border-slate-800/80 p-1 rounded-xl hidden sm:flex items-center gap-1">

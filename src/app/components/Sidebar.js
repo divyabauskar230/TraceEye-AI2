@@ -13,18 +13,18 @@ export default function Sidebar() {
     <aside className="w-64 border-r border-emerald-950/60 bg-black flex flex-col justify-between flex-shrink-0 h-full font-sans antialiased text-emerald-500">
       <div className="space-y-6">
         
-        {/* Logo Section */}
-        <div className="p-6 border-b border-emerald-950/60 flex flex-col gap-0.5">
-          <div className="flex items-center gap-2">
-            <Eye className="w-5 h-5 text-[#a3e635]" />
-            <span className="text-white font-extrabold text-sm tracking-wide uppercase">
-              FOOTPRYX <span className="text-emerald-500">//</span> <span className="text-[#a3e635]">CORE</span>
-            </span>
-          </div>
-          <span className="text-[9px] text-emerald-800 font-medium uppercase tracking-wide">
-            FOOTPRINT_ENGINE:V4
-          </span>
-        </div>
+   {/* Logo Section */}
+<div className="p-6 border-b border-emerald-950/60 flex flex-col gap-1">
+  <div className="flex items-center gap-2.5">
+    <img src="/logo.png" alt="Footpryx Logo" className="w-7 h-7 rounded-lg object-cover border border-emerald-800/60" />
+    <span className="text-white font-extrabold text-sm tracking-wide uppercase">
+      FOOTPRYX <span className="text-emerald-500">//</span> <span className="text-[#a3e635]">CORE</span>
+    </span>
+  </div>
+  <span className="text-[9px] text-emerald-800 font-medium uppercase tracking-wide">
+    FOOTPRINT_ENGINE:V4
+  </span>
+</div>
 
         {/* Workspace Node Label */}
         <div className="px-6 text-[9px] font-bold text-emerald-900 uppercase tracking-wider">

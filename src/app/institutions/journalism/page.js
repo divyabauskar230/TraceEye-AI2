@@ -8,12 +8,10 @@ export default function JournalismPage() {
       
       {/* 🌐 NAVBAR */}
       <header className="px-6 py-6 max-w-7xl mx-auto flex items-center justify-between border-b border-gray-900/80">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-lime-500 rounded-lg flex items-center justify-center font-bold text-black text-lg">
-            👻
-          </div>
-          <span className="text-xl font-extrabold tracking-wider text-white">footpryx</span>
-        </Link>
+       <Link href="/" className="flex items-center gap-3">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-lg object-cover border border-gray-800" />
+  <span className="text-xl font-extrabold tracking-wider text-white">footpryx</span>
+</Link>
         
         <Link href="/" className="text-xs text-gray-400 hover:text-white transition">
           ← Back to site
