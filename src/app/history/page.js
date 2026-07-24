@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, History, Settings, Layers, Mail, Phone, Globe, User, FileText, Lock, ArrowLeft, Trash2, LogOut, Zap, Menu, X, Server, Landmark, Bitcoin, Link2 } from "lucide-react";
+import { Search, History, Settings, Layers, Mail, Phone, Globe, User, FileText, Lock, ArrowLeft, Trash2, LogOut, Zap, Menu, X, Server, Landmark, Bitcoin, Link2, Eye } from "lucide-react";
 
 export default function HistoryPage() {
   const [user, setUser] = useState(null);
@@ -12,7 +12,7 @@ export default function HistoryPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedUser = localStorage.getItem("traceeye_user");
+      const savedUser = localStorage.getItem("footpryx_user");
       if (!savedUser) {
         // 🔒 जर युजर लॉगिन नसेल तर थेट साइन-अप/लॉगिन पेजवर पाठवा
         window.location.href = "/auth/register";
@@ -25,7 +25,7 @@ export default function HistoryPage() {
       }
 
       // 📥 localStorage मधून सेव्ह झालेले सर्च लॉग्ज आणा
-      const savedLogs = localStorage.getItem("traceeye_history");
+      const savedLogs = localStorage.getItem("footpryx_history");
       if (savedLogs) {
         try {
           setScanHistory(JSON.parse(savedLogs));
@@ -37,14 +37,14 @@ export default function HistoryPage() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("traceeye_user");
+    localStorage.removeItem("footpryx_user");
     setUser(null);
     window.location.href = "/auth/login";
   };
 
   const handleDeleteAccount = () => {
     if (confirm("Are you sure you want to delete your account?")) {
-      localStorage.removeItem("traceeye_user");
+      localStorage.removeItem("footpryx_user");
       setUser(null);
       window.location.href = "/auth/register";
     }
@@ -52,7 +52,7 @@ export default function HistoryPage() {
 
   // 🧹 Clear History
   const handleClearHistory = () => {
-    localStorage.removeItem("traceeye_history");
+    localStorage.removeItem("footpryx_history");
     setScanHistory([]);
   };
 
@@ -84,10 +84,12 @@ export default function HistoryPage() {
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white">👻</div>
+              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-[#a3e635]">
+                <Eye size={18} />
+              </div>
               <div>
-                <h1 className="text-sm font-bold tracking-wide text-white">espectrosint</h1>
-                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">INTELLIGENCE OSINT</p>
+                <h1 className="text-sm font-bold tracking-wide text-white uppercase">footpryx</h1>
+                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
               </div>
             </div>
             <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-slate-400 hover:text-white p-1">
@@ -203,7 +205,7 @@ export default function HistoryPage() {
                     <th className="py-3.5 px-6">Query / Target</th>
                     <th className="py-3.5 px-6">Results</th>
                     <th className="py-3.5 px-6">Credits</th>
-                    <th className="py-3.5 px-6 text-right">When</th>
+                    <th className="py-3.5 px-6 text-right whitespace-nowrap">When</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-900/60 text-slate-300 font-mono">
@@ -217,7 +219,7 @@ export default function HistoryPage() {
                       <td className="py-4 px-6 text-white font-semibold truncate max-w-xs">{item.query}</td>
                       <td className="py-4 px-6 text-[#a3e635] font-bold">{item.found || "0"}</td>
                       <td className="py-4 px-6 text-slate-400">1</td>
-                      <td className="py-4 px-6 text-right text-slate-500 text-[11px]">{item.time || "Just now"}</td>
+                      <td className="py-4 px-6 text-right text-slate-500 text-[11px] whitespace-nowrap">{item.time || "Just now"}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
-  Search, History, Settings, Layers, Shield, Zap, Lock, LogOut, Trash2, Menu, X, ArrowLeft, CheckCircle2 
+  Search, History, Settings, Layers, Shield, Zap, Lock, LogOut, Trash2, Menu, X, ArrowLeft, CheckCircle2, Eye 
 } from "lucide-react";
 
 export default function SettingsPage() {
@@ -20,7 +20,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedUser = localStorage.getItem("traceeye_user");
+      const savedUser = localStorage.getItem("footpryx_user");
       if (!savedUser) {
         // 🔒 जर युजर लॉगिन नसेल तर थेट साइन-अप/लॉगिन पेजवर पाठवा
         window.location.href = "/auth/register";
@@ -35,21 +35,21 @@ export default function SettingsPage() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("traceeye_user");
+    localStorage.removeItem("footpryx_user");
     setUser(null);
     window.location.href = "/auth/login";
   };
 
   const handleDeleteAccount = () => {
     if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
-      localStorage.removeItem("traceeye_user");
+      localStorage.removeItem("footpryx_user");
       setUser(null);
       window.location.href = "/auth/register";
     }
   };
 
   const handleCopyRef = () => {
-    navigator.clipboard.writeText("https://espectrosint.com/?ref=HLZJYVKB");
+    navigator.clipboard.writeText("https://footpryx.com/?ref=HLZJYVKB");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -84,10 +84,12 @@ export default function SettingsPage() {
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white">👻</div>
+              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-[#a3e635]">
+                <Eye size={18} />
+              </div>
               <div>
-                <h1 className="text-sm font-bold tracking-wide text-white">espectrosint</h1>
-                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">INTELLIGENCE OSINT</p>
+                <h1 className="text-sm font-bold tracking-wide text-white uppercase">footpryx</h1>
+                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
               </div>
             </div>
             <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-slate-400 hover:text-white p-1">
@@ -221,7 +223,7 @@ export default function SettingsPage() {
               <p className="text-slate-400 text-[11px] mt-0.5">Give 30 credits, get 30 credits. When a friend signs up using your link, you both get bonus credits.</p>
             </div>
             <div className="flex gap-2">
-              <input type="text" readOnly value="https://espectrosint.com/?ref=HLZJYVKB" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-300 font-mono text-[11px]" />
+              <input type="text" readOnly value="https://footpryx.com/?ref=HLZJYVKB" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-300 font-mono text-[11px]" />
               <button onClick={handleCopyRef} className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2.5 rounded-xl transition shrink-0 flex items-center gap-1.5">
                 {copied ? <CheckCircle2 size={14} className="text-[#a3e635]" /> : null} {copied ? "Copied" : "Copy"}
               </button>

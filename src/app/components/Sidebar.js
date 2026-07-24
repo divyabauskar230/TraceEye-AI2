@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
-  Search, Shield, Cpu, History, Settings, LogOut, Layers, Target, Network, CreditCard
+  Search, Shield, Cpu, History, Settings, LogOut, Layers, Target, Network, CreditCard, Eye
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -16,12 +16,13 @@ export default function Sidebar() {
         {/* Logo Section */}
         <div className="p-6 border-b border-emerald-950/60 flex flex-col gap-0.5">
           <div className="flex items-center gap-2">
+            <Eye className="w-5 h-5 text-[#a3e635]" />
             <span className="text-white font-extrabold text-sm tracking-wide uppercase">
-              TRACEEYE <span className="text-emerald-500">//</span> <span className="text-[#a3e635]">CORE</span>
+              FOOTPRYX <span className="text-emerald-500">//</span> <span className="text-[#a3e635]">CORE</span>
             </span>
           </div>
           <span className="text-[9px] text-emerald-800 font-medium uppercase tracking-wide">
-            CORE_LAYER:V4
+            FOOTPRINT_ENGINE:V4
           </span>
         </div>
 

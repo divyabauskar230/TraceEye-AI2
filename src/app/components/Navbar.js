@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Eye } from 'lucide-react'; // 👻 Lucide-React चा Eye आयकॉन इंपोर्ट केला आहे
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -10,22 +11,22 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full bg-[#030712]/90 backdrop-blur-md border-b border-gray-800/60 px-6 py-3.5 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
-        {/* १. ब्रँड लोगो + नेम */}
+        {/* १. ब्रँड लोगो + नेम (footpryx with Eye Icon) */}
         <Link href="/" className="flex items-center space-x-3 group">
           <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center transition-all duration-300 group-hover:border-emerald-500/80 group-hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-            <span className="text-emerald-400 font-extrabold text-lg tracking-wider">T</span>
+            <Eye className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center space-x-1.5">
-              <span className="text-white font-bold text-base tracking-tight group-hover:text-emerald-400 transition-colors">
-                TRACEEYE
+              <span className="text-white font-bold text-base tracking-tight group-hover:text-emerald-400 transition-colors uppercase">
+                footpryx
               </span>
               <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-semibold px-1.5 py-0.5 rounded border border-emerald-500/20">
                 AI
               </span>
             </div>
             <span className="text-[10px] text-gray-400 font-mono tracking-wider uppercase">
-              Threat Intelligence Engine
+              Footprint Intelligence Engine
             </span>
           </div>
         </Link>

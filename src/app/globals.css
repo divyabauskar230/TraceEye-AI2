@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  --keyframes-marquee: marquee 20s linear infinite;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
 @layer base {
   :root {
     --background: #000000;
@@ -35,4 +48,10 @@
       radial-gradient(circle at 85% 85%, rgba(4, 120, 87, 0.02), transparent 40%);
     z-index: 0;
   }
+}
+
+/* Infinite Scrolling Marquee Utility */
+.animate-marquee {
+  display: flex;
+  animation: marquee 20s linear infinite;
 }

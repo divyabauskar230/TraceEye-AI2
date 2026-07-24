@@ -16,7 +16,7 @@ export default function InvestigationsPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedUser = localStorage.getItem("traceeye_user");
+      const savedUser = localStorage.getItem("footpryx_user");
       if (savedUser) {
         try {
           setUser(JSON.parse(savedUser));
@@ -28,14 +28,14 @@ export default function InvestigationsPage() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("traceeye_user");
+    localStorage.removeItem("footpryx_user");
     setUser(null);
     window.location.href = "/auth/login";
   };
 
   const handleDeleteAccount = () => {
     if (confirm("Are you sure you want to delete your account?")) {
-      localStorage.removeItem("traceeye_user");
+      localStorage.removeItem("footpryx_user");
       setUser(null);
       window.location.href = "/auth/register";
     }
@@ -44,10 +44,8 @@ export default function InvestigationsPage() {
   // 🚨 START INVESTIGATION CLICK HANDLER
   const handleStartInvestigationClick = () => {
     if (!user) {
-      // जर युजर लॉगिन नसेल तर Sign in / Register पेजवर पाठवा
       window.location.href = "/auth/login";
     } else {
-      // जर लॉगिन असेल पण फ्री प्लॅनवर असेल तर पॉपअप दाखवा
       setShowUpgradeModal(true);
     }
   };
@@ -65,10 +63,11 @@ export default function InvestigationsPage() {
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white">👻</div>
+              {/* 👻 ओरिजिनल Ghost Icon */}
+              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-base">👻</div>
               <div>
-                <h1 className="text-sm font-bold tracking-wide text-white">espectrosint</h1>
-                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">INTELLIGENCE OSINT</p>
+                <h1 className="text-sm font-bold tracking-wide text-white uppercase">footpryx</h1>
+                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
               </div>
             </div>
             <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-slate-400 hover:text-white p-1">
@@ -128,7 +127,8 @@ export default function InvestigationsPage() {
                   </div>
                   <div className="truncate text-left">
                     <p className="text-xs font-bold text-white truncate leading-tight">{user.name}</p>
-                    <p className="text-[10px] text-slate-400 truncate">Free Plan</p>
+                    {/* 🔧 सुधारणा: "Free Plan" ऐवजी आता थेट युझरचा ईमेल दिसेल */}
+                    <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
                   </div>
                 </div>
                 <span className="text-slate-400 text-xs">▲</span>
@@ -144,30 +144,30 @@ export default function InvestigationsPage() {
       </aside>
 
       {/* 💻 MAIN INVESTIGATIONS VIEWPORT */}
-      <main className="flex-1 flex flex-col px-4 md:px-10 py-8 overflow-y-auto min-h-screen">
+      <main className="flex-1 flex flex-col px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-h-screen">
         
-        {/* Top Header */}
-        <div className="flex items-center justify-between w-full pb-6 border-b border-slate-900">
+        {/* 🛠️ FIXED TOP HEADER */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full pb-6 border-b border-slate-900">
           <div className="flex items-center gap-3">
             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="md:hidden p-2.5 bg-[#0b0f19] border border-slate-800 rounded-xl text-slate-300">
               <Menu size={18} />
             </button>
             <div>
-              <h2 className="text-2xl font-extrabold text-white">Investigations</h2>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-white">Investigations</h2>
               <p className="text-xs text-slate-400 mt-0.5">Organize your searches into investigations</p>
             </div>
           </div>
 
           <button 
             onClick={handleStartInvestigationClick}
-            className="bg-[#a3e635] hover:bg-emerald-400 text-black font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wide transition-all shadow-[0_0_15px_rgba(163,230,53,0.2)] flex items-center gap-1.5 active:scale-95"
+            className="self-start sm:self-auto bg-[#a3e635] hover:bg-emerald-400 text-black font-extrabold px-4 sm:px-5 py-2.5 rounded-xl text-[10px] sm:text-xs uppercase tracking-wide transition-all shadow-[0_0_15px_rgba(163,230,53,0.2)] flex items-center gap-1.5 active:scale-95 shrink-0"
           >
             <Plus size={16} strokeWidth={3} /> Start investigation
           </button>
         </div>
 
         {/* Center Content UI */}
-        <div className="my-auto py-12 max-w-xl mx-auto text-center space-y-6">
+        <div className="my-auto py-8 md:py-12 max-w-xl mx-auto text-center space-y-6">
           <div className="w-12 h-12 rounded-2xl bg-emerald-950/40 border border-emerald-900/50 text-[#a3e635] flex items-center justify-center mx-auto shadow-inner">
             <Layers size={22} />
           </div>
@@ -178,7 +178,7 @@ export default function InvestigationsPage() {
           </div>
 
           {/* 3 Step Guide */}
-          <div className="space-y-4 text-left bg-[#0b0f19]/60 border border-slate-900/80 p-6 rounded-2xl text-xs text-slate-300 shadow-xl">
+          <div className="space-y-4 text-left bg-[#0b0f19]/60 border border-slate-900/80 p-5 sm:p-6 rounded-2xl text-xs text-slate-300 shadow-xl">
             <div className="flex items-start gap-3">
               <span className="w-5 h-5 rounded-full bg-emerald-950 text-[#a3e635] font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5 border border-emerald-800/40">1</span>
               <div>
@@ -211,7 +211,7 @@ export default function InvestigationsPage() {
         </div>
       </main>
 
-      {/* 🚨 UPGRADE MODAL POPUP (जब यूजर फ्री प्लान पर हो और Start Investigation दबाये) */}
+      {/* 🚨 UPGRADE MODAL POPUP */}
       {showUpgradeModal && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-fadeIn">
           <div className="bg-[#0b0f19] border border-slate-800 rounded-3xl p-6 md:p-8 max-w-md w-full space-y-6 shadow-2xl text-center relative">

@@ -7,7 +7,7 @@ import {
   Link2, Bitcoin, Server, Landmark, ArrowRight, Target, Network, Layers, ArrowUpRight, History, Settings, LogOut, Loader2, Menu, X, Zap, Trash2, AlertCircle
 } from "lucide-react";
 
-export default function Dashboard() {
+export default function Home() {
   const [activeTab, setActiveTab] = useState("email");
   const [inputValue, setInputValue] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("+91"); // 🟢 डीफॉल्ट इंडिया कोड
@@ -18,10 +18,10 @@ export default function Dashboard() {
   // 🚨 ERROR POPUP STATE
   const [errorMessage, setErrorMessage] = useState("");
 
-  // 📱 Mobile Sidebar Toggle
+  // 📱 Mobile Sidebar Toggle State
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // 👤 DYNAMIC USER & LIVE CREDITS STATE
+  // 👤 DYNAMIC USER STATE & LIVE CREDITS
   const [user, setUser] = useState(null);
   const [credits, setCredits] = useState(2);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -96,6 +96,15 @@ export default function Dashboard() {
     }
   };
 
+  // 🔐 SMART REDIRECT HANDLER
+  const handleProtectedNavigation = (targetPath) => {
+    if (!user) {
+      window.location.href = "/auth/register";
+    } else {
+      window.location.href = targetPath;
+    }
+  };
+
   const tabs = [
     { id: "email", label: "Email", icon: <Mail size={14} />, placeholder: "email@example.com" },
     { id: "phone", label: "Phone", icon: <Phone size={14} />, placeholder: "Area code + number — e.g., 91234-5678" },
@@ -125,7 +134,7 @@ export default function Dashboard() {
     } else if (activeTab === "phone") {
       const phoneRegex = /^[0-9]{7,15}$/;
       if (!phoneRegex.test(val)) {
-        return "Invalid format! Please enter valid phone number digits (e.g., 9876543210).";
+        return "Invalid format! Please enter a valid phone number digits (e.g., 9876543210).";
       }
     } else if (activeTab === "ip") {
       const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -143,16 +152,12 @@ export default function Dashboard() {
   const handleSearch = async (e) => {
     e.preventDefault();
     
+    // पूर्ण नंबर तयार करणे
     const finalQuery = activeTab === "phone" ? `${selectedCountryCode} ${inputValue.trim()}` : inputValue.trim();
 
     const error = validateInput();
     if (error) {
       setErrorMessage(error);
-      return;
-    }
-
-    if (credits <= 0) {
-      setErrorMessage("You have 0 credits remaining! Please upgrade your plan to continue searching.");
       return;
     }
 
@@ -188,10 +193,7 @@ export default function Dashboard() {
     } finally {
       setIsLoading(false);
 
-      const newCredits = Math.max(0, credits - 1);
-      setCredits(newCredits);
-      localStorage.setItem("footpryx_credits", newCredits.toString());
-
+      // 🔴 LIVE HISTORY SAVING LOGIC
       const newLog = {
         type: scanTypeLabel,
         query: finalQuery,
@@ -221,7 +223,7 @@ export default function Dashboard() {
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-xl font-extrabold text-white">Notice</h3>
+              <h3 className="text-xl font-extrabold text-white">Invalid Input Format</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
                 {errorMessage}
               </p>
@@ -231,19 +233,20 @@ export default function Dashboard() {
               onClick={() => setErrorMessage("")}
               className="w-full bg-[#a3e635] hover:bg-emerald-400 text-black font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(163,230,53,0.3)] active:scale-95"
             >
-              OK
+              Got it, let me fix
             </button>
           </div>
         </div>
       )}
 
-      {/* SIDEBAR */}
+      {/* 📂 RESPONSIVE SIDEBAR */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0d1a] border-r border-slate-900/80 p-5 flex flex-col justify-between transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative shrink-0`}>
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white">👻</div>
               <div>
+                {/* 🟢 BRAND NAME UPDATE */}
                 <h1 className="text-sm font-bold tracking-wide text-white">footpryx</h1>
                 <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
               </div>
@@ -256,13 +259,18 @@ export default function Dashboard() {
           <p className="text-[10px] font-bold text-slate-600 tracking-wider uppercase mb-3 px-2">WORKSPACE</p>
 
           <nav className="space-y-1">
-            <Link href="/dashboard" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold bg-[#141a2e] text-[#a3e635] border border-slate-800/80 shadow-sm">
+            <Link href="/" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold bg-[#141a2e] text-[#a3e635] border border-slate-800/80 shadow-sm">
               <Search size={16} /> Search
             </Link>
-            <Link href="/investigations" className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+
+            <button 
+              onClick={() => handleProtectedNavigation("/investigations")} 
+              className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all text-left"
+            >
               <span className="flex items-center gap-3"><Layers size={16} /> Investigations</span>
               <span className="bg-[#a3e635] text-black text-[8px] font-extrabold px-1.5 py-0.5 rounded">NEW</span>
-            </Link>
+            </button>
+
             <Link href="/history" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
               <History size={16} /> History
             </Link>
@@ -272,9 +280,8 @@ export default function Dashboard() {
           </nav>
         </div>
 
-        {/* 🟢 LIVE CREDITS & DYNAMIC USER PROFILE FOOTER */}
-        <div className="space-y-3 pt-4 border-t border-slate-900/80 font-medium relative">
-          
+        {/* 🟢 CREDITS & AUTH FOOTER */}
+        <div className="space-y-3 pt-4 border-t border-slate-900/80 font-medium">
           {user && (
             <div className="flex items-center justify-between bg-slate-900/40 px-3 py-2 rounded-xl border border-slate-800/60 text-xs">
               <span className="flex items-center gap-1.5 text-[#a3e635] font-bold">
@@ -298,13 +305,13 @@ export default function Dashboard() {
               )}
 
               <button onClick={() => setShowProfileMenu(!showProfileMenu)} className="w-full flex items-center justify-between bg-slate-900/80 hover:bg-slate-900 p-2.5 rounded-xl border border-slate-800 transition">
-                <div className="flex items-center gap-2.5 truncate max-w-[160px]">
-                  <div className="w-8 h-8 rounded-full bg-[#a3e635] text-black font-extrabold flex items-center justify-center text-xs flex-shrink-0 shadow-md">
+                <div className="flex items-center gap-2.5 truncate max-w-[150px]">
+                  <div className="w-8 h-8 rounded-full bg-[#a3e635] text-black font-extrabold flex items-center justify-center text-xs flex-shrink-0">
                     {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                   </div>
                   <div className="truncate text-left">
                     <p className="text-xs font-bold text-white truncate leading-tight">{user.name}</p>
-                    <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
+                    <p className="text-[10px] text-slate-500 truncate">{user.email}</p>
                   </div>
                 </div>
                 <span className="text-slate-400 text-xs">▲</span>
@@ -319,16 +326,24 @@ export default function Dashboard() {
         </div>
       </aside>
 
-      {/* MAIN VIEWPORT */}
+      {/* 💻 MAIN SEARCH VIEWPORT */}
       <main className="flex-1 flex flex-col justify-between px-4 md:px-12 py-6 overflow-y-auto min-h-screen">
         
-        {/* Top Header */}
+        {/* Top Header Bar */}
         <div className="flex items-center justify-between w-full max-w-4xl mx-auto pt-2">
-          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="md:hidden p-2.5 bg-[#0b0f19] border border-slate-800/80 rounded-xl text-slate-300 hover:text-white transition">
+          <button 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="md:hidden p-2.5 bg-[#0b0f19] border border-slate-800/80 rounded-xl text-slate-300 hover:text-white transition"
+          >
             <Menu size={18} />
           </button>
+          
           <div className="md:hidden"></div>
-          <button onClick={() => window.location.href = "/pricing"} className="bg-[#a3e635] hover:bg-emerald-400 text-black font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wide transition-all shadow-[0_0_15px_rgba(163,230,53,0.2)] flex items-center gap-1.5 ml-auto">
+
+          <button 
+            onClick={() => handleProtectedNavigation("/pricing")}
+            className="bg-[#a3e635] hover:bg-emerald-400 text-black font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wide transition-all shadow-[0_0_15px_rgba(163,230,53,0.2)] flex items-center gap-1.5 ml-auto"
+          >
             <Zap size={14} fill="black" /> Subscribe
           </button>
         </div>
@@ -338,6 +353,7 @@ export default function Dashboard() {
           
           <div className="text-center space-y-2">
             <div className="flex justify-center text-4xl mb-2">👻</div>
+            {/* 🟢 BRAND TITLE UPDATE */}
             <h2 className="text-3xl font-bold tracking-tight text-white">
               {user ? `Hello, ${user.name.split(" ")[0]}.` : "footpryx OSINT"}
             </h2>
@@ -365,8 +381,7 @@ export default function Dashboard() {
             <div className="relative flex items-center bg-[#0b0f19] border border-slate-900 rounded-2xl p-1 shadow-xl">
               <div className="pl-4 text-slate-500 flex items-center gap-2">
                 <Search size={16} />
-
-                {/* 🌍 फोन टॅब निवडल्यावर जगातील सर्व देशांचे कोड्स आणि झेंडे */}
+                
                 {activeTab === "phone" && (
                   <select
                     value={selectedCountryCode}
@@ -391,7 +406,11 @@ export default function Dashboard() {
                 className="w-full bg-transparent pl-3 pr-4 py-3.5 text-xs text-white placeholder-slate-600 focus:outline-none"
               />
 
-              <button type="submit" disabled={isLoading} className="bg-[#a3e635] text-black p-3.5 rounded-xl flex items-center justify-center hover:bg-emerald-400 transition disabled:opacity-50 flex-shrink-0">
+              <button 
+                type="submit" 
+                disabled={isLoading}
+                className="bg-[#a3e635] text-black p-3.5 rounded-xl flex items-center justify-center hover:bg-emerald-400 transition disabled:opacity-50 flex-shrink-0"
+              >
                 {isLoading ? <Loader2 size={16} className="animate-spin" /> : <ArrowRight size={16} />}
               </button>
             </div>
@@ -452,7 +471,11 @@ export default function Dashboard() {
                       <div className="w-7 h-7 rounded-full bg-[#a3e635]/10 border border-[#a3e635]/30 flex items-center justify-center text-[#a3e635] mb-1">
                         <Lock size={12} />
                       </div>
-                      <button onClick={() => window.location.href = "/pricing"} className="bg-[#a3e635] hover:bg-emerald-400 text-black px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all">
+                      
+                      <button 
+                        onClick={() => handleProtectedNavigation("/pricing")} 
+                        className="bg-[#a3e635] hover:bg-emerald-400 text-black px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all"
+                      >
                         Unlock
                       </button>
                     </div>
@@ -463,7 +486,7 @@ export default function Dashboard() {
               <div className="text-center pt-2">
                 <button
                   type="button"
-                  onClick={() => window.location.href = "/pricing"}
+                  onClick={() => handleProtectedNavigation("/pricing")}
                   className="bg-[#a3e635] hover:bg-emerald-400 text-black font-extrabold px-10 py-3.5 rounded-2xl text-xs uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(163,230,53,0.35)] active:scale-95"
                 >
                   Unlock results →

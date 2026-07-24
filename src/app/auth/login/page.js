@@ -15,7 +15,7 @@ export default function Login() {
     setMessage("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/login", {
+      const response = await fetch("https://footpryx-backend.onrender.com/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -25,7 +25,7 @@ export default function Login() {
         // लॉगिन यशस्वी झाल्यावर युझर डेटा localStorage मध्ये सेव्ह करणे
         const userName = email.split("@")[0];
         localStorage.setItem(
-          "traceeye_user",
+          "footpryx_user",
           JSON.stringify({ name: userName, email: email })
         );
         setMessage("Success! Redirecting...");
@@ -41,7 +41,7 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://127.0.0.1:8000/api/auth/google/login";
+    window.location.href = "https://footpryx-backend.onrender.com/api/auth/google/login";
   };
 
   return (
@@ -50,16 +50,16 @@ export default function Login() {
       {/* 🎯 Middle Centered Form Layout */}
       <div className="flex-grow flex items-center justify-center px-4 py-12">
         
-        {/* 🔒 Clean Premium Login Card (Centered) */}
+        {/* 🔒 Clean Premium Login Card */}
         <div className="w-full max-w-md bg-[#0b0e17]/80 border border-slate-900 rounded-[28px] p-8 md:p-10 shadow-2xl relative overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-slate-800 before:to-transparent">
           
           {/* Logo Assembly */}
           <div className="flex flex-col items-center mb-6 text-center">
             <div className="flex items-center gap-2.5 text-white mb-2">
               <span className="text-2xl">👻</span>
-              <h2 className="text-xl font-bold tracking-tight">espectrosint</h2>
+              <h2 className="text-xl font-bold tracking-tight">footpryx</h2>
             </div>
-            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">OSINT Intelligence Platform</p>
+            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">FOOTPRINT INTELLIGENCE PLATFORM</p>
           </div>
 
           <div className="text-center mb-8">
@@ -160,7 +160,7 @@ export default function Login() {
       {/* Footer */}
       <footer className="w-full text-center py-6 border-t border-slate-900/60 bg-[#030508]">
         <p className="text-[11px] text-slate-600 tracking-wide">
-          &copy; 2026 espectrosint. All rights reserved. • Blog • About • Privacy • Terms
+          &copy; 2026 footpryx.com. All rights reserved. • Blog • About • Privacy • Terms
         </p>
       </footer>
     </div>

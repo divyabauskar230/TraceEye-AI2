@@ -1,18 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
-  Check, ShieldCheck, Zap, Lock, ArrowRight, Star, ChevronDown, X, Info 
+  Check, ShieldCheck, Zap, Lock, ArrowRight, Star, ChevronDown, X, Info, User, LogOut 
 } from "lucide-react";
 
 export default function PricingPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("pricing");
   const [billingCycle, setBillingCycle] = useState("monthly"); // 'monthly' | 'annual'
   const [openFaq, setOpenFaq] = useState(null);
   const [selectedGuide, setSelectedGuide] = useState(null); // Modal State
+  const [user, setUser] = useState(null);
+
+  // 🔑 LocalStorage मधून Login User तपासणे
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedUser = localStorage.getItem("footpryx_user");
+      if (savedUser) {
+        try {
+          setUser(JSON.parse(savedUser));
+        } catch (e) {
+          console.error("Session parse error", e);
+        }
+      }
+    }
+  }, []);
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
+  };
+
+  // 🚀 Action Handler for Get Started Button
+  const handleGetStarted = (planName) => {
+    router.push(`/checkout?plan=${planName.toLowerCase()}`);
   };
 
   // 💡 GUIDE MODAL DATA
@@ -53,16 +76,16 @@ export default function PricingPage() {
       title: "Anti-Fraud Intelligence",
       description: "Automated risk-scoring matrix to detect synthetic identities, credential reuse patterns, and malicious actor networks."
     },
-    "TRACEEYE AI vs alternativas": {
+    "footpryx vs alternatives": {
       title: "Platform Comparison",
-      description: "TRACEEYE AI integrates real-time Gemini AI analysis, multi-vector searches, and instant PDF reporting at a fraction of enterprise OSINT software costs."
+      description: "footpryx integrates real-time AI analysis, multi-vector searches, and instant PDF reporting at a fraction of enterprise OSINT software costs."
     }
   };
 
   const faqs = [
     {
-      q: "Is TRACEEYE AI legal?",
-      a: "Yes, TRACEEYE AI strictly queries publicly available open sources, public records, and breach indexes within global data protection laws."
+      q: "Is footpryx legal?",
+      a: "Yes, footpryx strictly queries publicly available open sources, public records, and breach indexes within global data protection laws."
     },
     {
       q: "What happens to my data?",
@@ -85,31 +108,31 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-[#030508] text-white font-sans selection:bg-[#a3e635] selection:text-black flex flex-col justify-between relative">
       
-      {/* 🌐 1. TOP NAVBAR (TRACEEYE AI HEADER) */}
+      {/* 🌐 1. TOP NAVBAR */}
       <header className="w-full border-b border-slate-900/80 bg-[#030508]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         
         {/* Brand Logo */}
-        <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-[#a3e635] font-extrabold text-sm">
-            T
+            👻
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <h1 className="text-sm font-bold tracking-wider text-white">TRACEEYE</h1>
+              <h1 className="text-sm font-bold tracking-wider text-white uppercase">footpryx</h1>
               <span className="bg-emerald-500/10 border border-emerald-500/30 text-[#a3e635] text-[9px] font-mono px-1 py-0.2 rounded font-bold">
                 AI
               </span>
             </div>
             <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">
-              THREAT INTELLIGENCE ENGINE
+              FOOTPRINT INTELLIGENCE
             </p>
           </div>
-        </div>
+        </Link>
 
         {/* Center Nav Pills */}
         <div className="bg-[#0b0f19] border border-slate-800/80 p-1 rounded-xl hidden sm:flex items-center gap-1">
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => router.push('/')}
             className="px-4 py-1.5 text-xs font-semibold text-slate-400 hover:text-white rounded-lg transition"
           >
             Search
@@ -127,16 +150,26 @@ export default function PricingPage() {
           </button>
         </div>
 
-        {/* Right CTA Actions */}
+        {/* Right CTA Actions / Profile */}
         <div className="flex items-center gap-4">
+          {user ? (
+            <div className="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
+              <div className="w-6 h-6 rounded-full bg-[#a3e635] text-black font-extrabold flex items-center justify-center text-[10px]">
+                {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+              </div>
+              <span className="text-xs font-bold text-white hidden sm:inline">{user.name}</span>
+            </div>
+          ) : (
+            <button 
+              onClick={() => router.push('/auth/login')} 
+              className="text-xs font-semibold text-slate-300 hover:text-white transition"
+            >
+              Sign In
+            </button>
+          )}
+
           <button 
-            onClick={() => window.location.href = '/auth/login'} 
-            className="text-xs font-semibold text-slate-300 hover:text-white transition"
-          >
-            Sign In
-          </button>
-          <button 
-            onClick={() => window.location.href = '/'} 
+            onClick={() => router.push('/')} 
             className="bg-transparent border border-emerald-500/40 text-white hover:bg-emerald-500/10 px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition active:scale-95"
           >
             Launch Console <ArrowRight size={13} className="text-[#a3e635]" />
@@ -238,7 +271,7 @@ export default function PricingPage() {
             </div>
 
             <button 
-              onClick={() => window.location.href='/auth/register'}
+              onClick={() => handleGetStarted("starter")}
               className="w-full mt-8 bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-200 font-bold py-2.5 rounded-xl text-xs transition active:scale-[0.98]"
             >
               Get Started
@@ -290,7 +323,7 @@ export default function PricingPage() {
             </div>
 
             <button 
-              onClick={() => window.location.href='/auth/register'}
+              onClick={() => handleGetStarted("intermediate")}
               className="w-full mt-8 bg-[#a3e635] hover:bg-emerald-400 text-black font-extrabold py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-md active:scale-[0.98]"
             >
               Get Started
@@ -338,7 +371,7 @@ export default function PricingPage() {
             </div>
 
             <button 
-              onClick={() => window.location.href='/auth/register'}
+              onClick={() => handleGetStarted("advanced")}
               className="w-full mt-8 bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-200 font-bold py-2.5 rounded-xl text-xs transition active:scale-[0.98]"
             >
               Get Started
@@ -360,14 +393,14 @@ export default function PricingPage() {
           </span>
         </div>
 
-        {/* ⭐ 3. TESTIMONIALS SECTION */}
+        {/* ⭐ TESTIMONIALS SECTION */}
         <div className="max-w-5xl mx-auto mt-24 space-y-8">
           <div className="text-center space-y-1">
             <h2 className="text-xl md:text-2xl font-extrabold text-white">
               Trusted by people who really investigate
             </h2>
             <p className="text-xs text-slate-500">
-              Investigators, journalists and enthusiasts use TRACEEYE AI every day to find what matters.
+              Investigators, journalists and enthusiasts use footpryx every day to find what matters.
             </p>
           </div>
 
@@ -401,14 +434,13 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* 📊 4. EVERYTHING INCLUDED SECTION */}
+        {/* 📊 EVERYTHING INCLUDED SECTION */}
         <div className="max-w-5xl mx-auto mt-24 space-y-8">
           <div className="text-center space-y-1">
             <h2 className="text-xl md:text-2xl font-extrabold text-white">Everything included in every plan</h2>
             <p className="text-xs text-slate-500">Plans differ only in credits. AI dossiers per day and support — every capability below is in all three.</p>
           </div>
 
-          {/* Search Types Pill Bar */}
           <div className="flex items-center justify-center flex-wrap gap-2 py-3 px-4 bg-[#070a12] border border-slate-800/80 rounded-xl text-[10px] font-mono">
             <span className="text-[#a3e635] font-bold uppercase mr-2">SEARCH 11 TYPES:</span>
             {['Email', 'Phone', 'Username', 'Name', 'CPF', 'CNPJ', 'Domain', 'Link / URL', 'IP', 'Bitcoin', 'Password reverse'].map((item, idx) => (
@@ -443,7 +475,7 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* ❓ 5. FAQ ACCORDION SECTION */}
+        {/* ❓ FAQ ACCORDION SECTION */}
         <div className="max-w-3xl mx-auto mt-24 space-y-6">
           <h2 className="text-xl md:text-2xl font-extrabold text-center text-white">Frequently asked questions</h2>
           
@@ -468,7 +500,7 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* 💡 6. GUIDES FOOTER BOXES (CLICKABLE LINKS WITH POPUP MODAL) */}
+        {/* 💡 GUIDES FOOTER BOXES */}
         <div className="max-w-5xl mx-auto mt-24 space-y-4">
           <div className="text-center space-y-1">
             <h4 className="text-sm font-bold text-white">Before choosing a plan, learn what each search delivers</h4>
@@ -477,7 +509,6 @@ export default function PricingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
             
-            {/* Starter Plan Links */}
             <div className="border border-slate-800/80 bg-[#070a12] p-4 rounded-xl space-y-1.5">
               <h5 className="font-bold text-white mb-2">For the Starter plan</h5>
               {["Email Search", "Phone Search", "Username Search", "Breach Detection"].map((item) => (
@@ -491,7 +522,6 @@ export default function PricingPage() {
               ))}
             </div>
 
-            {/* Intermediate Plan Links */}
             <div className="border border-slate-800/80 bg-[#070a12] p-4 rounded-xl space-y-1.5">
               <h5 className="font-bold text-white mb-2">For the Intermediate plan</h5>
               {["CPF/CNPJ Search", "Domain Search", "Review a source-linked result"].map((item) => (
@@ -505,10 +535,9 @@ export default function PricingPage() {
               ))}
             </div>
 
-            {/* Advanced Plan Links */}
             <div className="border border-slate-800/80 bg-[#070a12] p-4 rounded-xl space-y-1.5">
               <h5 className="font-bold text-white mb-2">For the Advanced plan & teams</h5>
-              {["OSINT due diligence", "OSINT contra fraude", "TRACEEYE AI vs alternativas"].map((item) => (
+              {["OSINT due diligence", "OSINT contra fraude", "footpryx vs alternatives"].map((item) => (
                 <button
                   key={item}
                   onClick={() => setSelectedGuide(item)}
@@ -524,7 +553,7 @@ export default function PricingPage() {
 
       </main>
 
-      {/* 🔒 7. BOTTOM GUARANTEE BAR */}
+      {/* 🔒 BOTTOM GUARANTEE BAR */}
       <footer className="w-full border-t border-slate-900/80 py-6 px-4">
         <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-8 text-[10px] font-mono tracking-wider uppercase text-slate-400">
           <span className="flex items-center gap-1.5">
@@ -539,17 +568,16 @@ export default function PricingPage() {
         </div>
       </footer>
 
-      {/* 📄 8. PAGE FOOTER */}
+      {/* 📄 PAGE FOOTER */}
       <footer className="w-full border-t border-slate-900/80 py-8 px-4 text-center text-[10px] text-slate-600 font-mono">
-        © 2026 TRACEEYE AI. All rights reserved. • Blog • About • Privacy • Terms
+        © 2026 footpryx.com. All rights reserved. • Blog • About • Privacy • Terms
       </footer>
 
-      {/* 🪟 9. DYNAMIC MODAL POPUP FOR GUIDES */}
+      {/* 🪟 DYNAMIC MODAL POPUP FOR GUIDES */}
       {selectedGuide && guideDetails[selectedGuide] && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fadeIn">
           <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl relative space-y-4">
             
-            {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2 text-[#a3e635]">
                 <Info size={16} />
@@ -565,12 +593,10 @@ export default function PricingPage() {
               </button>
             </div>
 
-            {/* Modal Body */}
             <p className="text-xs text-slate-300 leading-relaxed font-sans">
               {guideDetails[selectedGuide].description}
             </p>
 
-            {/* Modal Footer Action */}
             <div className="pt-2 flex justify-end">
               <button
                 onClick={() => setSelectedGuide(null)}
