@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Eye } from 'lucide-react'; // 👻 Lucide-React चा Eye आयकॉन इंपोर्ट केला आहे
+import { Eye } from 'lucide-react'; //  Lucide-React चा Eye आयकॉन इंपोर्ट केला आहे
 
 export default function Navbar() {
   const pathname = usePathname();

@@ -54,13 +54,14 @@ export default function Login() {
         <div className="w-full max-w-md bg-[#0b0e17]/80 border border-slate-900 rounded-[28px] p-8 md:p-10 shadow-2xl relative overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-slate-800 before:to-transparent">
           
           {/* Logo Assembly */}
-          <div className="flex flex-col items-center mb-6 text-center">
-            <div className="flex items-center gap-2.5 text-white mb-2">
-              <span className="text-2xl">👻</span>
-              <h2 className="text-xl font-bold tracking-tight">footpryx</h2>
-            </div>
-            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">FOOTPRINT INTELLIGENCE PLATFORM</p>
-          </div>
+          {/* Logo Assembly */}
+<div className="flex flex-col items-center mb-6 text-center">
+  <div className="flex items-center gap-2.5 text-white mb-2">
+    <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-slate-800" />
+    <h2 className="text-xl font-bold tracking-tight">footpryx</h2>
+  </div>
+  <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">FOOTPRINT INTELLIGENCE PLATFORM</p>
+</div>
 
           <div className="text-center mb-8">
             <h3 className="text-xl font-bold text-white">Sign In</h3>

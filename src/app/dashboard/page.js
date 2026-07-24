@@ -10,7 +10,7 @@ import {
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("email");
   const [inputValue, setInputValue] = useState("");
-  const [selectedCountryCode, setSelectedCountryCode] = useState("+91"); // 🟢 डीफॉल्ट इंडिया कोड
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+91"); 
   const [isDeepSearch, setIsDeepSearch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -112,7 +112,6 @@ export default function Dashboard() {
 
   const currentTab = tabs.find(t => t.id === activeTab);
 
-  // 🔍 SMART VALIDATION LOGIC
   const validateInput = () => {
     const val = inputValue.trim();
     if (!val) return "Please enter a search target.";
@@ -242,7 +241,7 @@ export default function Dashboard() {
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white">👻</div>
+              <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-xl object-cover border border-slate-800" />
               <div>
                 <h1 className="text-sm font-bold tracking-wide text-white">footpryx</h1>
                 <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
@@ -336,8 +335,8 @@ export default function Dashboard() {
         {/* Center Search Content */}
         <div className="w-full max-w-2xl mx-auto space-y-8 my-auto py-10">
           
-          <div className="text-center space-y-2">
-            <div className="flex justify-center text-4xl mb-2">👻</div>
+          <div className="text-center space-y-2 flex flex-col items-center">
+            <img src="/logo.png" alt="Footpryx Logo" className="w-12 h-12 rounded-2xl object-cover border border-slate-800 mb-2 shadow-lg" />
             <h2 className="text-3xl font-bold tracking-tight text-white">
               {user ? `Hello, ${user.name.split(" ")[0]}.` : "footpryx OSINT"}
             </h2>
@@ -366,7 +365,6 @@ export default function Dashboard() {
               <div className="pl-4 text-slate-500 flex items-center gap-2">
                 <Search size={16} />
 
-                {/* 🌍 फोन टॅब निवडल्यावर जगातील सर्व देशांचे कोड्स आणि झेंडे */}
                 {activeTab === "phone" && (
                   <select
                     value={selectedCountryCode}
@@ -419,7 +417,6 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* RESULTS WITH UNLOCK CARDS */}
           {result && (
             <div className="space-y-6 my-6">
               <div className="text-center space-y-2">
@@ -432,7 +429,6 @@ export default function Dashboard() {
                 <p className="text-[11px] text-slate-400">Unlock your plan to reveal names, profiles, photos and the full dossier.</p>
               </div>
 
-              {/* Brand Blur Cards Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { name: "Adobe", category: "Account", logo: "🎨" },

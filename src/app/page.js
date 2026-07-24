@@ -34,7 +34,7 @@ export default function Home() {
       <header className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-900 px-6 py-4 flex items-center justify-between">
        {/* Logo */}
 <div className="flex items-center gap-3">
-  <img src="/logo.png" alt="Footpryx Logo" className="w-10 h-10 rounded-xl object-contain bg-black border border-gray-800" />
+  <img src="/logo.png" alt="Footpryx Logo" className="w-10 h-10 rounded-xl object-cover border border-emerald-900/60 shadow-[0_0_15px_rgba(163,230,53,0.1)]" />
   <span className="text-xl font-extrabold tracking-wider text-white">
     footpryx
   </span>
