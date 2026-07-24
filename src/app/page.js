@@ -32,15 +32,13 @@ export default function Home() {
       
       {/* 🌐 NAVBAR SECTION (Fixed at top) */}
       <header className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-900 px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-lime-500 rounded-lg flex items-center justify-center font-bold text-black text-lg">
-            👻
-          </div>
-          <span className="text-xl font-extrabold tracking-wider text-white">
-            footpryx
-          </span>
-        </div>
+       {/* Logo */}
+<div className="flex items-center gap-3">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-lg object-cover border border-gray-800" />
+  <span className="text-xl font-extrabold tracking-wider text-white">
+    footpryx
+  </span>
+</div>
 
         {/* Center Menu Links */}
         <nav className="hidden md:flex items-center gap-6 bg-gray-950/90 border border-gray-800 px-6 py-2 rounded-full text-xs font-medium text-gray-400">
@@ -219,7 +217,7 @@ export default function Home() {
         </div>
 
       </section>
-      
+
       {/* 📊 2. STATS BAR STRIP */}
       <section className="py-8 border-y border-gray-900/80 bg-gray-950/40">
         <div className="max-w-4xl mx-auto px-6 flex flex-wrap items-center justify-center gap-8 md:gap-16 text-sm text-gray-400 font-medium">
@@ -887,10 +885,10 @@ export default function Home() {
       <footer className="border-t border-gray-900/80 bg-black pt-16 pb-12 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-12 text-xs">
           <div className="md:col-span-2 space-y-6">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-lime-500 rounded-md flex items-center justify-center font-bold text-black text-sm">👻</div>
-              <span className="text-lg font-extrabold tracking-wider text-white">footpryx</span>
-            </div>
+            <div className="flex items-center gap-3">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-lg object-cover border border-gray-800" />
+  <span className="text-lg font-extrabold tracking-wider text-white">footpryx</span>
+</div>
             <p className="text-gray-400 leading-relaxed max-w-sm">AI-powered automated OSINT intelligence. Open source data cross-referenced in seconds for investigations and digital protection.</p>
             <div className="flex items-center gap-4 text-gray-400 text-base">
               <a href="#" className="hover:text-white transition">𝕏</a>
