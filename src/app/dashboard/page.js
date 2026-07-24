@@ -240,7 +240,7 @@ export default function Dashboard() {
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0d1a] border-r border-slate-900/80 p-5 flex flex-col justify-between transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative shrink-0`}>
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
-         <div className="flex items-center gap-3">
+   <div className="flex items-center gap-3">
   <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-xl object-cover border border-slate-800" />
   <div>
     <h1 className="text-sm font-bold tracking-wide text-white">footpryx</h1>
@@ -419,15 +419,15 @@ export default function Dashboard() {
 
           {result && (
             <div className="space-y-6 my-6">
-              <div className="text-center space-y-2">
-                <span className="bg-[#a3e635]/10 border border-[#a3e635]/30 text-[#a3e635] text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-widest">
-                  PREVIEW
-                </span>
-                <h3 className="text-lg md:text-xl font-extrabold text-white">
-                  Possible exposed data for <span className="text-[#a3e635] font-mono">«{result.scan_query}»</span>
-                </h3>
-                <p className="text-[11px] text-slate-400">Unlock your plan to reveal names, profiles, photos and the full dossier.</p>
-              </div>
+              <div className="text-center space-y-2 flex flex-col items-center">
+  <img src="/logo.png" alt="Footpryx Logo" className="w-12 h-12 rounded-2xl object-cover border border-slate-800 mb-2 shadow-lg" />
+  <h2 className="text-3xl font-bold tracking-tight text-white">
+    {user ? `Hello, ${user.name.split(" ")[0]}.` : "footpryx OSINT"}
+  </h2>
+  <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+    Search by email, phone, username, domain, CPF, CNPJ or name across hundreds of open sources
+  </p>
+</div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
