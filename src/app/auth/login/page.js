@@ -8,11 +8,15 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  
+  // 🟢 नवीन ॲड केलेले: Render सर्व्हर लोडिंग स्क्रीन दाखवण्यासाठी
+  const [isWakingUp, setIsWakingUp] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+    setIsWakingUp(true); // लोडिंग पॉपअप ऑन करा
 
     try {
       const response = await fetch("https://footpryx-backend.onrender.com/api/auth/login", {
@@ -22,7 +26,6 @@ export default function Login() {
       });
 
       if (response.ok) {
-        // लॉगिन यशस्वी झाल्यावर युझर डेटा localStorage मध्ये सेव्ह करणे
         const userName = email.split("@")[0];
         localStorage.setItem(
           "footpryx_user",
@@ -31,9 +34,11 @@ export default function Login() {
         setMessage("Success! Redirecting...");
         setTimeout(() => { window.location.href = "/"; }, 1200);
       } else {
+        setIsWakingUp(false); // एरर आल्यास पॉपअप बंद करा
         setMessage("Invalid credentials. Please check email/password.");
       }
     } catch (error) {
+      setIsWakingUp(false); // एरर आल्यास पॉपअप बंद करा
       setMessage("Connection failure. Ensure backend server is running.");
     } finally {
       setLoading(false);
@@ -41,12 +46,26 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
+    setIsWakingUp(true); // Google लॉगिन करताना लोडिंग पॉपअप ऑन करा
     window.location.href = "https://footpryx-backend.onrender.com/api/auth/google/login";
   };
 
   return (
-    <div className="min-h-screen bg-[#030508] text-white flex flex-col justify-between font-sans selection:bg-[#a3e635] selection:text-black">
+    <div className="min-h-screen bg-[#030508] text-white flex flex-col justify-between font-sans selection:bg-[#a3e635] selection:text-black relative">
       
+      {/* 🚀 🟢 WAKING UP / LOADING POPUP MODAL */}
+      {isWakingUp && (
+        <div className="fixed inset-0 bg-black/85 z-50 flex flex-col items-center justify-center p-6 text-center space-y-4 backdrop-blur-md animate-fadeIn">
+          <div className="w-12 h-12 border-4 border-[#a3e635] border-t-transparent rounded-full animate-spin shadow-[0_0_20px_rgba(163,230,53,0.3)]"></div>
+          <div className="space-y-1.5 max-w-sm">
+            <h3 className="text-sm font-extrabold text-white uppercase tracking-wider">Connecting to OSINT Matrix...</h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Server is waking up from sleep mode. Please wait ~30 seconds for initial connection.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* 🎯 Middle Centered Form Layout */}
       <div className="flex-grow flex items-center justify-center px-4 py-12">
         
@@ -54,14 +73,13 @@ export default function Login() {
         <div className="w-full max-w-md bg-[#0b0e17]/80 border border-slate-900 rounded-[28px] p-8 md:p-10 shadow-2xl relative overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-slate-800 before:to-transparent">
           
           {/* Logo Assembly */}
-          {/* Logo Assembly */}
-<div className="flex flex-col items-center mb-6 text-center">
-  <div className="flex items-center gap-2.5 text-white mb-2">
-    <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-slate-800" />
-    <h2 className="text-xl font-bold tracking-tight">footpryx</h2>
-  </div>
-  <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">FOOTPRINT INTELLIGENCE PLATFORM</p>
-</div>
+          <div className="flex flex-col items-center mb-6 text-center">
+            <div className="flex items-center gap-2.5 text-white mb-2">
+              <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-slate-800" />
+              <h2 className="text-xl font-bold tracking-tight">footpryx</h2>
+            </div>
+            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">FOOTPRINT INTELLIGENCE PLATFORM</p>
+          </div>
 
           <div className="text-center mb-8">
             <h3 className="text-xl font-bold text-white">Sign In</h3>
@@ -103,7 +121,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#a3e635] hover:bg-[#bef264] text-black font-bold py-3 px-4 rounded-xl text-xs transition-all active:scale-[0.99] shadow-lg shadow-lime-500/5"
+                className="w-full bg-[#a3e635] hover:bg-[#bef264] text-black font-bold py-3 px-4 rounded-xl text-xs transition-all active:scale-[0.99] shadow-lg shadow-lime-500/5 cursor-pointer"
               >
                 {loading ? "Signing In..." : "Sign In"}
               </button>
@@ -120,7 +138,7 @@ export default function Login() {
           <button 
             type="button"
             onClick={handleGoogleLogin}
-            className="w-full bg-transparent border border-slate-850 hover:bg-slate-900/50 text-white py-2.5 px-4 rounded-xl flex items-center justify-between transition-all text-xs shadow-sm hover:border-slate-800 group"
+            className="w-full bg-transparent border border-slate-850 hover:bg-slate-900/50 text-white py-2.5 px-4 rounded-xl flex items-center justify-between transition-all text-xs shadow-sm hover:border-slate-800 group cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-full bg-lime-500/10 text-lime-400 flex items-center justify-center text-[10px] font-bold border border-lime-500/20">

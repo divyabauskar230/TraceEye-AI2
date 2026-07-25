@@ -4,9 +4,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  // 🔄 हे शब्द आपोआप स्क्रीनवर बदलत राहतील:
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+
+  // 🟢 नवीन ॲड केलेले: जर युजर आधीच लॉग्ड इन असेल तर थेट डॅशबोर्डवर पाठवा
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedUser = localStorage.getItem("footpryx_user");
+      if (savedUser) {
+        router.push("/dashboard");
+      }
+    }
+  }, [router]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -489,6 +498,7 @@ export default function Home() {
             <span className={`text-xs font-bold ${isYearly ? 'text-white' : 'text-gray-500'}`}>
               Yearly <span className="text-lime-400 text-[10px] bg-lime-950 px-2 py-0.5 rounded-full border border-lime-500/30">Save 20%</span>
             </span>
+
           </div>
         </div>
 
