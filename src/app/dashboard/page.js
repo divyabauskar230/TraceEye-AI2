@@ -15,18 +15,13 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
 
-  // 🚨 ERROR POPUP STATE
   const [errorMessage, setErrorMessage] = useState("");
-
-  // 📱 Mobile Sidebar Toggle
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // 👤 DYNAMIC USER & LIVE CREDITS STATE
   const [user, setUser] = useState(null);
   const [credits, setCredits] = useState(2);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-  // 🌍 जगातील सर्व मुख्य देशांचे कोड्स आणि झेंडे
   const countryCodes = [
     { name: "India", code: "+91", flag: "🇮🇳" },
     { name: "United States", code: "+1", flag: "🇺🇸" },
@@ -35,7 +30,7 @@ export default function Dashboard() {
     { name: "United Arab Emirates", code: "+971", flag: "🇦🇪" },
     { name: "Germany", code: "+49", flag: "🇩🇪" },
     { name: "Canada", code: "+1", flag: "🇨🇦" },
-    { name: "Australia", code: "+61", flag: "🇦🇺" },
+    { name: "Australia", code: "+61", flag: "🇺🇸" },
     { name: "France", code: "+33", flag: "🇫🇷" },
     { name: "Japan", code: "+81", flag: "🇯🇵" },
     { name: "China", code: "+86", flag: "🇨🇳" },
@@ -240,13 +235,13 @@ export default function Dashboard() {
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0a0d1a] border-r border-slate-900/80 p-5 flex flex-col justify-between transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative shrink-0`}>
         <div>
           <div className="flex items-center justify-between mb-8 p-1">
-   <div className="flex items-center gap-3">
-  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-xl object-cover border border-slate-800" />
-  <div>
-    <h1 className="text-sm font-bold tracking-wide text-white">footpryx</h1>
-    <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
-  </div>
-</div>
+            <div className="flex items-center gap-3">
+              <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-xl object-cover border border-slate-800" />
+              <div>
+                <h1 className="text-sm font-bold tracking-wide text-white">footpryx</h1>
+                <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">FOOTPRINT INTELLIGENCE</p>
+              </div>
+            </div>
             <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-slate-400 hover:text-white p-1">
               <X size={18} />
             </button>
@@ -336,14 +331,14 @@ export default function Dashboard() {
         <div className="w-full max-w-2xl mx-auto space-y-8 my-auto py-10">
           
           <div className="text-center space-y-2 flex flex-col items-center">
-  <img src="/logo.png" alt="Footpryx Logo" className="w-12 h-12 rounded-2xl object-cover border border-slate-800 mb-2 shadow-lg" />
-  <h2 className="text-3xl font-bold tracking-tight text-white">
-    {user ? `Hello, ${user.name.split(" ")[0]}.` : "footpryx OSINT"}
-  </h2>
-  <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
-    Search by email, phone, username, domain, CPF, CNPJ or name across hundreds of open sources
-  </p>
-</div>
+            <img src="/logo.png" alt="Footpryx Logo" className="w-12 h-12 rounded-2xl object-cover border border-slate-800 mb-2 shadow-lg" />
+            <h2 className="text-3xl font-bold tracking-tight text-white">
+              {user ? `Hello, ${user.name.split(" ")[0]}.` : "footpryx OSINT"}
+            </h2>
+            <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+              Search by email, phone, username, domain, CPF, CNPJ or name across hundreds of open sources
+            </p>
+          </div>
 
           <div className="bg-[#0b0f19] border border-slate-900 rounded-2xl p-3 shadow-xl overflow-x-auto">
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 min-w-[320px]">
@@ -419,15 +414,15 @@ export default function Dashboard() {
 
           {result && (
             <div className="space-y-6 my-6">
-              <div className="text-center space-y-2 flex flex-col items-center">
-  <img src="/logo.png" alt="Footpryx Logo" className="w-12 h-12 rounded-2xl object-cover border border-slate-800 mb-2 shadow-lg" />
-  <h2 className="text-3xl font-bold tracking-tight text-white">
-    {user ? `Hello, ${user.name.split(" ")[0]}.` : "footpryx OSINT"}
-  </h2>
-  <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
-    Search by email, phone, username, domain, CPF, CNPJ or name across hundreds of open sources
-  </p>
-</div>
+              <div className="text-center space-y-2">
+                <span className="bg-[#a3e635]/10 border border-[#a3e635]/30 text-[#a3e635] text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-widest">
+                  PREVIEW
+                </span>
+                <h3 className="text-lg md:text-xl font-extrabold text-white">
+                  Possible exposed data for <span className="text-[#a3e635] font-mono">«{result.scan_query}»</span>
+                </h3>
+                <p className="text-[11px] text-slate-400">Unlock your plan to reveal names, profiles, photos and the full dossier.</p>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
