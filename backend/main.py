@@ -9,6 +9,9 @@ from pydantic import BaseModel
 import httpx
 from dotenv import load_dotenv
 import google.generativeai as genai
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # `.env` फाईलमधील व्हॅरियबल्स लोड करणे
 load_dotenv()
@@ -29,7 +32,6 @@ DB_NAME = "footpryx.db"
 # 🔑 Google OAuth credentials
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "YOUR_GOOGLE_CLIENT_ID_HERE")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "YOUR_GOOGLE_CLIENT_SECRET_HERE")
-# 🟢 Render ची लाईव्ह Callback URL
 GOOGLE_REDIRECT_URI = os.getenv("GOOGLE_REDIRECT_URI", "https://footpryx-backend.onrender.com/api/auth/google/callback")
 
 # 🤖 Gemini AI Config
@@ -37,7 +39,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
-# 🛠️ डेटाबेस टेबल्स
+# 🛠️ डेटाबेस टेबल्स (phone कॉलमसह अपडेटेड)
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -53,12 +55,13 @@ def init_db():
         )
     ''')
     
-    # २. युझर्स टेबल
+    # २. युझर्स टेबल (phone कॉलम ॲड केला आहे)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             email TEXT UNIQUE,
+            phone TEXT,
             password TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
@@ -75,6 +78,7 @@ init_db()
 class RegisterRequest(BaseModel):
     name: str
     email: str
+    phone: str   # 📱 मोबाईल नंबर फील्ड
     password: str
 
 class LoginRequest(BaseModel):
@@ -87,18 +91,53 @@ class DeleteUserRequest(BaseModel):
 class GeminiChatRequest(BaseModel):
     prompt: str
 
-# 📝 १. युझर रजिस्ट्रेशन एंडपॉईंट
+# 📧 SMTP द्वारे ईमेल पाठवण्याचे फंक्शन
+def send_smtp_email(to_email, name):
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+    sender_email = os.getenv("SMTP_EMAIL", "your_email@gmail.com")
+    sender_password = os.getenv("SMTP_PASSWORD", "your_app_password")
+
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = to_email
+        msg['Subject'] = "Welcome to Footpryx - Account Created Successfully!"
+
+        body = f"""
+        Hello {name},
+        
+        Your account has been successfully created on Footpryx OSINT Platform with your email and mobile number.
+        
+        Welcome aboard!
+        """
+        msg.attach(MIMEText(body, 'plain'))
+
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, to_email, msg.as_string())
+        server.quit()
+        print("Welcome email sent successfully via SMTP!")
+    except Exception as e:
+        print("SMTP Email Error:", e)
+
+# 📝 १. युझर रजिस्ट्रेशन एंडपॉईंट (Phone आणि SMTP सह)
 @app.post("/api/auth/register")
 async def register_user(user: RegisterRequest):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     try:
         cursor.execute(
-            "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-            (user.name, user.email, user.password)
+            "INSERT INTO users (name, email, phone, password) VALUES (?, ?, ?, ?)",
+            (user.name, user.email, user.phone, user.password)
         )
         conn.commit()
-        return {"message": "User registered successfully", "data": {"name": user.name, "email": user.email}}
+        
+        # 📧 युजर रजिस्टर झाल्यावर ऑटोमॅटिक ईमेल पाठवा
+        send_smtp_email(user.email, user.name)
+        
+        return {"message": "User registered successfully", "data": {"name": user.name, "email": user.email, "phone": user.phone}}
     except sqlite3.IntegrityError:
         raise HTTPException(status_code=400, detail="Email already registered in system node.")
     except Exception as e:
@@ -125,7 +164,7 @@ async def login_user(user: LoginRequest):
     
     return {"message": "Initialize Access Successful!", "user": {"name": db_name, "email": db_email}}
 
-# 🗑️ ३. युझर अकाऊंट पूर्णपणे डिलीट करणे (Hard Delete Endpoint)
+# 🗑️ ३. युझर अकाऊंट पूर्णपणे डिलीट करणे
 @app.delete("/api/auth/delete")
 async def delete_user(user: DeleteUserRequest):
     conn = sqlite3.connect(DB_NAME)
@@ -183,8 +222,8 @@ async def google_callback(code: str):
         cursor = conn.cursor()
         try:
             cursor.execute(
-                "INSERT OR IGNORE INTO users (name, email, password) VALUES (?, ?, ?)",
-                (name, email, "GOOGLE_AUTH_USER")
+                "INSERT OR IGNORE INTO users (name, email, phone, password) VALUES (?, ?, ?, ?)",
+                (name, email, "N/A", "GOOGLE_AUTH_USER")
             )
             conn.commit()
         except Exception as e:
@@ -192,7 +231,6 @@ async def google_callback(code: str):
         finally:
             conn.close()
 
-        # 🟢 Live Domain Dashboard Redirect
         return RedirectResponse(f"https://footpryx.com/dashboard?email={email}&name={name}")
 
 # 🤖 💡 ५. GEMINI AI CHAT ENDPOINT
@@ -206,7 +244,6 @@ async def gemini_chat(req: GeminiChatRequest):
     
     try:
         model = genai.GenerativeModel("gemini-1.5-flash")
-        
         system_context = f"You are Footpryx OSINT AI Assistant. Answer concisely for cybersecurity and intelligence query: {req.prompt}"
         response = model.generate_content(system_context)
         
@@ -224,7 +261,7 @@ def read_root():
     return {"status": "Operational", "message": "Footpryx AI Backend Operational Node Online"}
 
 # ----------------------------------------------------------------
-# 🎯 REAL & DYNAMIC OSINT SCAN ENGINE WITH FREE PUBLIC APIS
+# 🎯 REAL & DYNAMIC OSINT SCAN ENGINE
 # ----------------------------------------------------------------
 
 class ScanRequest(BaseModel):
@@ -243,12 +280,9 @@ async def execute_osint_scan(scan: ScanRequest):
 
     async with httpx.AsyncClient() as client:
         try:
-            # 📧 1. REAL EMAIL OSINT RECON
             if s_type == "email":
                 sources_count = "120"
                 found_list = []
-
-                # A. Real Gravatar Profile Lookup
                 email_clean = query.lower()
                 email_hash = hashlib.md5(email_clean.encode('utf-8')).hexdigest()
                 gravatar_url = f"https://www.gravatar.com/{email_hash}.json"
@@ -266,7 +300,6 @@ async def execute_osint_scan(scan: ScanRequest):
                         "status": f"Profile Active: '{profile_name}' | Loc: {location} | Avatar: {avatar_photo}"
                     })
 
-                # B. Real Disposable & Domain Mailserver Check
                 domain_part = email_clean.split("@")[-1] if "@" in email_clean else ""
                 if domain_part:
                     deb_res = await client.get(f"https://disposable.debounces.io/?email={email_clean}", timeout=4.0)
@@ -278,7 +311,6 @@ async def execute_osint_scan(scan: ScanRequest):
                             "status": status_str
                         })
 
-                # C. Real Breach Check
                 hibp_res = await client.get(f"https://haveibeenpwned.com/api/v3/breachedaccount/{email_clean}", timeout=3.0)
                 if hibp_res.status_code == 200:
                     breaches = hibp_res.json()
@@ -298,7 +330,6 @@ async def execute_osint_scan(scan: ScanRequest):
                     risk_level = "MED"
                 simulated_results = found_list
 
-            # 🌐 2. IP Address Real Lookup
             elif s_type == "ip":
                 ip_res = await client.get(f"http://ip-api.com/json/{query}", timeout=5.0)
                 if ip_res.status_code == 200:
@@ -313,7 +344,6 @@ async def execute_osint_scan(scan: ScanRequest):
                             {"source": "Network Coordinates", "status": f"Lat: {ip_data.get('lat')}, Lon: {ip_data.get('lon')}"}
                         ]
             
-            # 🌐 3. Domain / URL Real Subdomain Lookup
             elif s_type == "domain":
                 domain_res = await client.get(f"https://crt.sh/?q={query}&output=json", timeout=6.0)
                 if domain_res.status_code == 200 and domain_res.content:
@@ -328,33 +358,13 @@ async def execute_osint_scan(scan: ScanRequest):
                         {"source": "DNS Security Assessment", "status": "Standard Secure Transport Layer"}
                     ]
         except Exception as api_err:
-            print("External API Fetch Error (Fallback to simulation):", api_err)
+            print("External API Fetch Error:", api_err)
 
     if not simulated_results:
-        if s_type == "phone":
-            accounts_found = "3"
-            sources_count = "25"
-            risk_level = "LOW"
-            simulated_results = [
-                {"source": "Telecom Numbering Plan Registry", "status": "Carrier Format Verified"},
-                {"source": "Global Messenger Sync Database", "status": "Messaging Endpoint Checked"}
-            ]
-        elif s_type == "username":
-            accounts_found = "5"
-            sources_count = "50"
-            risk_level = "MED"
-            simulated_results = [
-                {"source": "Social Alias Cross-Check", "status": "Public Profile Handle Scanned"},
-                {"source": "Developer Code Repositories", "status": "Public Commit Trails Mapped"}
-            ]
-        else:
-            accounts_found = "2"
-            sources_count = "15"
-            risk_level = "LOW"
-            simulated_results = [
-                {"source": "Global Open Source Intelligence Index", "status": "Query Processed Successfully"},
-                {"source": "Metadata Extraction Node", "status": "Standard Entity Resolution Done"}
-            ]
+        simulated_results = [
+            {"source": "Global Open Source Intelligence Index", "status": "Query Processed Successfully"},
+            {"source": "Metadata Extraction Node", "status": "Standard Entity Resolution Done"}
+        ]
 
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
