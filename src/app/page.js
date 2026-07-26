@@ -896,9 +896,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-12 text-xs">
           <div className="md:col-span-2 space-y-6">
             <div className="flex items-center gap-3">
-  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-lg object-cover border border-gray-800" />
-  <span className="text-lg font-extrabold tracking-wider text-white">footpryx</span>
-</div>
+              <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-lg object-cover border border-gray-800" />
+              <span className="text-lg font-extrabold tracking-wider text-white">footpryx</span>
+            </div>
             <p className="text-gray-400 leading-relaxed max-w-sm">AI-powered automated OSINT intelligence. Open source data cross-referenced in seconds for investigations and digital protection.</p>
             <div className="flex items-center gap-4 text-gray-400 text-base">
               <a href="#" className="hover:text-white transition">𝕏</a>
@@ -920,7 +920,7 @@ export default function Home() {
               <li><a href="#modules" className="hover:text-white transition">Modules</a></li>
               <li><a href="#plans" className="hover:text-white transition">Pricing</a></li>
               <li><a href="#how-it-works" className="hover:text-white transition">How It Works</a></li>
-              <li><a href="#" className="hover:text-white transition">For Institutions</a></li>
+              <li><Link href="/about" className="hover:text-white transition">For Institutions</Link></li>
               <li><a href="#faq" className="hover:text-white transition">FAQ</a></li>
             </ul>
           </div>
@@ -928,10 +928,10 @@ export default function Home() {
           <div className="space-y-4">
             <h4 className="font-bold text-white uppercase tracking-wider text-[11px]">COMPANY</h4>
             <ul className="space-y-2.5 text-gray-400">
-              <li><a href="#" className="hover:text-white transition">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition">Methodology</a></li>
+              <li><Link href="/about" className="hover:text-white transition">About Us</Link></li>
+              <li><Link href="/about" className="hover:text-white transition">Methodology</Link></li>
               <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
-              <li><a href="#" className="hover:text-white transition">Contact</a></li>
+              <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
               <li><Link href="/auth/register" className="hover:text-white transition">Create Account</Link></li>
               <li><Link href="/auth/login" className="hover:text-white transition">Sign In</Link></li>
             </ul>
@@ -940,11 +940,11 @@ export default function Home() {
           <div className="space-y-4">
             <h4 className="font-bold text-white uppercase tracking-wider text-[11px]">LEGAL</h4>
             <ul className="space-y-2.5 text-gray-400">
-              <li><a href="#" className="hover:text-white transition">Privacy</a></li>
-              <li><a href="#" className="hover:text-white transition">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition">LGPD</a></li>
-              <li><a href="#" className="hover:text-white transition">Cookie preferences</a></li>
-              <li><a href="#" className="hover:text-white transition">Contact</a></li>
+              <li><Link href="/privacy" className="hover:text-white transition">Privacy</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition">Terms of Service</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition">LGPD</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition">Cookie preferences</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
             </ul>
           </div>
         </div>
@@ -952,9 +952,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto border-t border-gray-900/80 mt-12 pt-8 flex flex-wrap items-center justify-between gap-4 text-gray-500 text-[11px]">
           <p>© 2026 footpryxint. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-gray-400 transition">Privacy</a>
+            <Link href="/privacy" className="hover:text-gray-400 transition">Privacy</Link>
             <span>·</span>
-            <a href="#" className="hover:text-gray-400 transition">Terms</a>
+            <Link href="/terms" className="hover:text-gray-400 transition">Terms</Link>
           </div>
         </div>
       </footer>

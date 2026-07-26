@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --keyframes-marquee: marquee 20s linear infinite;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --background: #000000;
+    --foreground: #a3e635;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #10b981; /* Emerald-500 text color default */
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    overflow-x: hidden;
+  }
+
+  /* Cyber Security Tech-Grid Background (Matrix Emerald Green) */
+  body {
+    background-image: 
+      linear-gradient(rgba(2, 44, 34, 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(2, 44, 34, 0.4) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* Glowing Ambient Matrix Lights (Lime Green glow) */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: 
+      radial-gradient(circle at 15% 15%, rgba(163, 230, 53, 0.03), transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(4, 120, 87, 0.02), transparent 40%);
+    z-index: 0;
+  }
+}
+
+/* Infinite Scrolling Marquee Utility */
+.animate-marquee {
+  display: flex;
+  animation: marquee 20s linear infinite;
+}
