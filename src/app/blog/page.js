@@ -3,10 +3,55 @@ import React from "react";
 import Link from "next/link";
 
 export default function BlogListingPage() {
-  // 📚 सर्व ब्लॉग आर्टिकल्सची लिस्ट
+  // 📚 सर्व १४ ब्लॉग आर्टिकल्सची लिस्ट
   const articles = [
     {
       id: 1,
+      category: "DATA BREACH",
+      title: "Massive 2026 Enterprise Data Leak Exposes Millions of Records",
+      desc: "An analysis of the latest corporate security failure, compromised cloud buckets, and leaked enterprise credentials.",
+      slug: "/blog/comparison",
+      date: "Jul 2026",
+      readTime: "6 min read"
+    },
+    {
+      id: 2,
+      category: "HACKING",
+      title: "New Infostealer Malware Variant Targets Remote Workers",
+      desc: "How modern session-hijacking and browser-cookie theft bypass standard multi-factor authentication (MFA).",
+      slug: "/blog/free-tools",
+      date: "Jul 2026",
+      readTime: "9 min read"
+    },
+    {
+      id: 3,
+      category: "THREAT INTEL",
+      title: "Ransomware Gangs Shift Tactics: Zero-Day Exploits in 2026",
+      desc: "Examining how threat actors leverage unpatched vulnerabilities in enterprise VPNs and firewalls for initial access.",
+      slug: "/blog/due-diligence",
+      date: "Jul 2026",
+      readTime: "11 min read"
+    },
+    {
+      id: 4,
+      category: "DATA BREACH",
+      title: "Third-Party Vendor Breach Compromises Financial Sector",
+      desc: "A detailed OSINT breakdown of supply chain vulnerabilities and how third-party software risks expose banking data.",
+      slug: "/blog/comparison",
+      date: "Jul 2026",
+      readTime: "8 min read"
+    },
+    {
+      id: 5,
+      category: "HACKING",
+      title: "API Vulnerabilities: The Hidden Attack Vector for Data Exfiltration",
+      desc: "Understanding broken object level authorization (BOLA) and how hackers exploit unprotected backend endpoints.",
+      slug: "/blog/free-tools",
+      date: "Jul 2026",
+      readTime: "10 min read"
+    },
+    {
+      id: 6,
       category: "COMPARISON",
       title: "footpryx vs Alternatives: 2026 OSINT Platform Comparison",
       desc: "footpryx vs OSINT Industries, Maltego and SpiderFoot. Complete comparison table with prices, sources and features.",
@@ -15,7 +60,7 @@ export default function BlogListingPage() {
       readTime: "8 min read"
     },
     {
-      id: 2,
+      id: 7,
       category: "TOOLS",
       title: "12 Free OSINT Tools for Investigations in 2026",
       desc: "From Sherlock to Shodan: the best free tools for email, username, domain and breaches.",
@@ -24,7 +69,7 @@ export default function BlogListingPage() {
       readTime: "12 min read"
     },
     {
-      id: 3,
+      id: 8,
       category: "INVESTIGATION",
       title: "OSINT for Due Diligence: Complete Investigator Checklist",
       desc: "12 verification points, KYC/AML, and how to build due diligence reports with open source intelligence.",
@@ -33,7 +78,7 @@ export default function BlogListingPage() {
       readTime: "15 min read"
     },
     {
-      id: 4,
+      id: 9,
       category: "GUIDE",
       title: "What is OSINT and How Open Source Intelligence Works?",
       desc: "A beginner-to-advanced guide on methodology, data privacy, and active vs passive intelligence gathering.",
@@ -42,7 +87,7 @@ export default function BlogListingPage() {
       readTime: "10 min read"
     },
     {
-      id: 5,
+      id: 10,
       category: "LOOKUP",
       title: "How to Investigate Email Addresses Across 200+ Platforms",
       desc: "Discover social profiles, hidden gravatars, and domain registrations attached to any email ID.",
@@ -51,7 +96,7 @@ export default function BlogListingPage() {
       readTime: "7 min read"
     },
     {
-      id: 6,
+      id: 11,
       category: "BREACHES",
       title: "Detecting Credentials Exposure in Data Dumps",
       desc: "How infostealer malware and database leaks compromise enterprise security and how to monitor them.",
@@ -60,7 +105,7 @@ export default function BlogListingPage() {
       readTime: "9 min read"
     },
     {
-      id: 7,
+      id: 12,
       category: "SOCIAL MEDIA",
       title: "Cross-Platform Handle Tracking: Username OSINT",
       desc: "Correlating digital footprints across Telegram, Discord, Steam, Instagram, and Reddit.",
@@ -69,7 +114,7 @@ export default function BlogListingPage() {
       readTime: "6 min read"
     },
     {
-      id: 8,
+      id: 13,
       category: "COMPLIANCE",
       title: "LGPD & GDPR Compliance for Digital Investigators",
       desc: "Legal frameworks for handling public data, data masking, and maintaining chain of custody.",
@@ -78,7 +123,7 @@ export default function BlogListingPage() {
       readTime: "11 min read"
     },
     {
-      id: 9,
+      id: 14,
       category: "CRYPTO",
       title: "Blockchain Forensics: Tracking Bitcoin & Ethereum Wallets",
       desc: "Mapping crypto transactions, identifying wallet clusters, and tracing public ledger activity.",
@@ -94,9 +139,9 @@ export default function BlogListingPage() {
       {/* 🌐 NAVBAR */}
       <header className="px-6 py-6 max-w-7xl mx-auto flex items-center justify-between border-b border-gray-900/80">
         <Link href="/" className="flex items-center gap-3">
-  <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-lg object-cover border border-gray-800" />
-  <span className="text-xl font-extrabold tracking-wider text-white">footpryx</span>
-</Link>
+          <img src="/logo.png" alt="Footpryx Logo" className="w-8 h-8 rounded-lg object-cover border border-gray-800" />
+          <span className="text-xl font-extrabold tracking-wider text-white">footpryx</span>
+        </Link>
         
         <Link href="/" className="text-xs text-gray-400 hover:text-white transition">
           ← Back to site
@@ -109,13 +154,13 @@ export default function BlogListingPage() {
         {/* Page Hero Header */}
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-950/40 border border-lime-500/30 text-lime-400 text-xs font-semibold tracking-wider uppercase">
-            ARTICLES & GUIDES
+            THREAT INTEL & ARTICLES
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
-            OSINT Intelligence Blog
+            Security & Hacking Blog
           </h1>
           <p className="text-gray-400 text-sm md:text-base leading-relaxed">
-            Explorations, comparison guides, and practical checklists for digital investigators, security teams, and researchers.
+            Real-time threat intelligence, data breach alerts, hacking case studies, and practical guides for digital investigators.
           </p>
         </div>
 
