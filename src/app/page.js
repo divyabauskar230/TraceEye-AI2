@@ -305,152 +305,155 @@ export default function Home() {
 
       </section>
 
-      {/* ⚙️ 4. HOW THE PLATFORM WORKS SECTION */}
-      <section id="how-it-works" className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80">
-        <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 text-lime-400 text-xs font-semibold tracking-widest uppercase">
-            <span className="w-4 h-[2px] bg-lime-500"></span> HOW THE PLATFORM WORKS <span className="w-4 h-[2px] bg-lime-500"></span>
-          </div>
-          
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
-            From a single identifier to a verified investigation.
-          </h2>
+   {/* ⚙️ 4. HOW THE PLATFORM WORKS SECTION */}
+<section id="how-it-works" className="py-28 px-6 max-w-7xl mx-auto border-t border-gray-900/80 relative">
+  
+  {/* Header */}
+  <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
+    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-lime-950/60 border border-lime-500/30 text-lime-400 text-xs font-mono font-bold tracking-widest uppercase">
+      ⚡ WORKFLOW ARCHITECTURE
+    </div>
+    
+    <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white">
+      From a single identifier to a <span className="text-lime-400">verified investigation.</span>
+    </h2>
 
-          <p className="text-gray-400 text-sm md:text-base leading-relaxed">
-            Start with an email, phone, name, username, IP or domain. Footpryx returns a structured, source-linked result your team can review.
+    <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+      Start with an email, phone, name, username, IP or domain. Footpryx returns a structured, source-linked result your team can review.
+    </p>
+  </div>
+
+  {/* Cards Grid */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+    {/* Step 01 */}
+    <div className="bg-gray-950/90 border border-gray-800/80 hover:border-lime-500/50 p-8 rounded-3xl space-y-6 transition-all duration-300 group shadow-xl">
+      <div className="flex items-center justify-between">
+        <span className="text-lime-400 font-mono text-xs font-bold tracking-widest bg-lime-950/50 px-3 py-1 rounded-full border border-lime-500/20">
+          Step 01
+        </span>
+      </div>
+
+      <div className="w-12 h-12 rounded-2xl bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-lime-400 text-xl group-hover:bg-lime-500 group-hover:text-black transition-all duration-300">
+        🔍
+      </div>
+
+      <div className="space-y-3">
+        <h3 className="text-xl font-bold text-white group-hover:text-lime-400 transition-colors">Enter an identifier</h3>
+        <p className="text-gray-400 text-xs md:text-sm leading-relaxed">
+          Search securely by email, phone, name, username, IP or domain across global records.
+        </p>
+      </div>
+    </div>
+
+    {/* Step 02 */}
+    <div className="bg-gray-950/90 border border-gray-800/80 hover:border-lime-500/50 p-8 rounded-3xl space-y-6 transition-all duration-300 group shadow-xl">
+      <div className="flex items-center justify-between">
+        <span className="text-lime-400 font-mono text-xs font-bold tracking-widest bg-lime-950/50 px-3 py-1 rounded-full border border-lime-500/20">
+          Step 02
+        </span>
+      </div>
+
+      <div className="w-12 h-12 rounded-2xl bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-lime-400 text-xl group-hover:bg-lime-500 group-hover:text-black transition-all duration-300">
+        🕸️
+      </div>
+
+      <div className="space-y-3">
+        <h3 className="text-xl font-bold text-white group-hover:text-lime-400 transition-colors">Map available evidence</h3>
+        <p className="text-gray-400 text-xs md:text-sm leading-relaxed">
+          Connect public records, profiles, corporate entities, domains and breach intelligence signals.
+        </p>
+      </div>
+    </div>
+
+    {/* Step 03 */}
+    <div className="bg-gray-950/90 border border-gray-800/80 hover:border-lime-500/50 p-8 rounded-3xl space-y-6 transition-all duration-300 group shadow-xl">
+      <div className="flex items-center justify-between">
+        <span className="text-lime-400 font-mono text-xs font-bold tracking-widest bg-lime-950/50 px-3 py-1 rounded-full border border-lime-500/20">
+          Step 03
+        </span>
+      </div>
+
+      <div className="w-12 h-12 rounded-2xl bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-lime-400 text-xl group-hover:bg-lime-500 group-hover:text-black transition-all duration-300">
+        📋
+      </div>
+
+      <div className="space-y-3">
+        <h3 className="text-xl font-bold text-white group-hover:text-lime-400 transition-colors">Review source-linked results</h3>
+        <p className="text-gray-400 text-xs md:text-sm leading-relaxed">
+          Verify each finding, check its original source, linked entities and risk indicators instantly.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{/* 📦 5. ONE TOOL, ALL SOURCES (MODULE CARDS) */}
+<section className="py-28 px-6 max-w-7xl mx-auto border-t border-gray-900/80">
+  
+  {/* Section Header */}
+  <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
+    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-950/40 border border-lime-500/30 text-lime-400 text-xs font-semibold tracking-wider uppercase">
+      MODULES & CAPABILITIES
+    </div>
+    
+    <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+      One tool, <span className="text-lime-400">all sources.</span>
+    </h2>
+
+    <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+      Each module specializes in a data type, ensuring depth, speed, and absolute accuracy in investigations.
+    </p>
+  </div>
+
+  {/* Modules Grid */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {[
+      { icon: "✉️", title: "Email Search", desc: "Find profiles, accounts and breaches associated with any address." },
+      { icon: "📞", title: "Phone Search", desc: "Identify owner, carrier and accounts linked to the number." },
+      { icon: "👤", title: "Username Search", desc: "Track presence across 500+ platforms with a single identifier." },
+      { icon: "🌐", title: "Domain Search", desc: "Whois, DNS, technologies used and exposed subdomains." },
+      { icon: "🏠", title: "Name Search", desc: "Name investigation. Track online presence across multiple platforms." },
+      { icon: "🪙", title: "Blockchain Search", desc: "Blockchain investigation. Track crypto wallets and transactions." },
+      { icon: "🔑", title: "Password Search", desc: "Find which breaches a password appeared in and accounts exposed." },
+      { icon: "🔗", title: "Link Search", desc: "Link and URL analysis. Identify connections and relationships." },
+      { icon: "🌱", title: "Social Media Analysis", desc: "Cross-reference between platforms and connection analysis." },
+      { icon: "🛡️", title: "Breach Detection", desc: "Exposed credentials in known data breaches and dumps." },
+      { icon: "💻", title: "IP Search", desc: "Geolocation, ISP, reputation and open ports of the address." },
+      { icon: "🏢", title: "Corporate Records", desc: "Global company registry search, directors and compliance data." }
+    ].map((mod, index) => (
+      <div 
+        key={index} 
+        className="bg-gray-950/90 border border-gray-800/80 hover:border-lime-500/50 p-6 rounded-3xl space-y-4 transition-all duration-300 group hover:-translate-y-1 shadow-xl hover:shadow-[0_0_25px_rgba(132,204,22,0.15)] flex flex-col justify-between"
+      >
+        <div className="space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-xl group-hover:bg-lime-500 group-hover:text-black transition-all duration-300">
+            {mod.icon}
+          </div>
+          <h3 className="text-lg font-bold text-white group-hover:text-lime-400 transition-colors">
+            {mod.title}
+          </h3>
+          <p className="text-gray-400 text-xs leading-relaxed">
+            {mod.desc}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-8 rounded-3xl space-y-6 transition duration-300 group">
-            <span className="text-lime-400 font-mono text-xs font-bold tracking-widest block">01</span>
-            <div className="w-12 h-12 rounded-2xl bg-gray-900/90 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">
-              🔍
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-bold text-white">Enter an identifier</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">
-                Search by email, phone, name, username, IP or domain.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-8 rounded-3xl space-y-6 transition duration-300 group">
-            <span className="text-lime-400 font-mono text-xs font-bold tracking-widest block">02</span>
-            <div className="w-12 h-12 rounded-2xl bg-gray-900/90 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">
-              🕸️
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-bold text-white">Map the available evidence</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">
-                Connect public records, profiles, companies, domains and breach signals relevant to the investigation.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-8 rounded-3xl space-y-6 transition duration-300 group">
-            <span className="text-lime-400 font-mono text-xs font-bold tracking-widest block">03</span>
-            <div className="w-12 h-12 rounded-2xl bg-gray-900/90 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">
-              📋
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-bold text-white">Review a source-linked result</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">
-                See each finding, its source, linked entities and risk signals in one investigation workspace.
-              </p>
-            </div>
-          </div>
+        <div className="pt-4 border-t border-gray-900/80 flex items-center justify-between text-[11px] font-semibold text-lime-400 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span>Explore module ➔</span>
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
 
-      {/* 📦 5. ONE TOOL, ALL SOURCES (MODULE CARDS) */}
-      <section className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80">
-        <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 text-lime-400 text-xs font-semibold tracking-widest uppercase">
-            <span className="w-4 h-[2px] bg-lime-500"></span> MODULES <span className="w-4 h-[2px] bg-lime-500"></span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
-            One tool, all sources
-          </h2>
-          <p className="text-gray-400 text-sm md:text-base leading-relaxed">
-            Each module specializes in a data type, ensuring depth and accuracy in results.
-          </p>
-        </div>
+  {/* View All Button */}
+  <div className="mt-14 text-center">
+    <button className="bg-gray-950 border border-gray-800 hover:border-lime-500 text-gray-300 hover:text-white font-semibold px-8 py-3 rounded-2xl text-xs transition duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(132,204,22,0.2)]">
+      View all enterprise modules
+    </button>
+  </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">✉️</div>
-            <h3 className="text-lg font-bold text-white">Email Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Find profiles, accounts and breaches associated with any address.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">📞</div>
-            <h3 className="text-lg font-bold text-white">Phone Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Identify owner, carrier and accounts linked to the number.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">👤</div>
-            <h3 className="text-lg font-bold text-white">Username Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Track presence across 500+ platforms with a single identifier.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">🌐</div>
-            <h3 className="text-lg font-bold text-white">Domain Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Whois, DNS, technologies used and exposed subdomains.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">🏠</div>
-            <h3 className="text-lg font-bold text-white">Name Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Name investigation. Track online presence across multiple platforms.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">🪙</div>
-            <h3 className="text-lg font-bold text-white">Blockchain Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Blockchain investigation. Track crypto wallets and transactions.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">🔑</div>
-            <h3 className="text-lg font-bold text-white">Password Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Find which breaches a password appeared in and which accounts it exposes.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">🔗</div>
-            <h3 className="text-lg font-bold text-white">Link Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Link and URL analysis. Identify connections and online relationships.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">🌱</div>
-            <h3 className="text-lg font-bold text-white">Social Media Analysis</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Cross-reference between platforms and connection analysis.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">🛡️</div>
-            <h3 className="text-lg font-bold text-white">Breach Detection</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Exposed credentials in known data breaches and dumps.</p>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 hover:border-lime-500/40 p-6 rounded-3xl space-y-4 transition duration-300 group">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 group-hover:scale-110 transition duration-300">💻</div>
-            <h3 className="text-lg font-bold text-white">IP Search</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">Geolocation, ISP, reputation and open ports of the address.</p>
-          </div>
-        </div>
-
-        <div className="mt-12 text-center">
-          <button className="bg-gray-900/90 border border-gray-800 hover:border-gray-700 text-gray-300 hover:text-white font-medium px-6 py-2.5 rounded-xl text-xs transition">
-            View all modules
-          </button>
-        </div>
-      </section>
+</section>
 
       {/* 📊 6. RESULT EXAMPLE SECTION */}
       <section id="results" className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80 text-center space-y-6">
@@ -579,67 +582,101 @@ export default function Home() {
         </p>
       </section>
 
-      {/* 🏛️ 8. FOR INSTITUTIONS SECTION */}
-      <section className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80 text-center space-y-16">
-        <div className="space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-950/40 border border-lime-500/30 text-lime-400 text-xs font-semibold tracking-wider uppercase">
-            FOR INSTITUTIONS
-          </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
-            Institutional access for those who investigate responsibly
-          </h2>
-          <p className="text-gray-400 text-sm md:text-base leading-relaxed">
-            Public safety, integrity bodies and the press get dedicated access to footpryx — with audit, masking and compliance.
+{/* 🏛️ 8. FOR INSTITUTIONS SECTION */}
+<section className="py-28 px-6 max-w-7xl mx-auto border-t border-gray-900/80 bg-black text-white">
+  
+  {/* Section Header */}
+  <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
+    <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-lime-950/40 border border-lime-500/30 text-lime-400 text-xs font-semibold tracking-wider uppercase">
+      For Institutions
+    </div>
+    
+    <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+      Institutional access for those who <span className="text-lime-400">investigate responsibly.</span>
+    </h2>
+
+    <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+      Public safety, integrity bodies and the press get dedicated access to footpryx — equipped with enterprise audit, data masking, and compliance frameworks.
+    </p>
+  </div>
+
+  {/* Cards Grid */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left max-w-6xl mx-auto">
+    
+    {/* Card 01 */}
+    <div className="bg-gray-950/90 border border-gray-800/80 hover:border-lime-500/50 p-8 rounded-3xl flex flex-col justify-between space-y-8 transition-all duration-300 group shadow-xl">
+      <div className="space-y-6">
+        <div className="w-12 h-12 rounded-2xl bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-lime-400 text-xl group-hover:bg-lime-500 group-hover:text-black transition-all duration-300">
+          ⚖️
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="text-xl font-bold text-white group-hover:text-lime-400 transition-colors">
+            Public Safety & Justice
+          </h3>
+          <p className="text-gray-400 text-xs md:text-sm leading-relaxed">
+            Police, public prosecutors, internal affairs, judiciary, and state intelligence.
           </p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left max-w-6xl mx-auto">
-          <div className="bg-gray-950/80 border border-gray-800/80 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-lime-500/40 transition group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 text-xl group-hover:scale-110 transition duration-300">
-                ⚖️
-              </div>
-              <h3 className="text-xl font-bold text-white">Public Safety & Justice</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">
-                Police, public prosecutors, internal affairs, judiciary and intelligence.
-              </p>
-            </div>
-            <Link href="/institutions/public-safety" className="inline-flex items-center gap-2 text-xs font-bold text-lime-400 hover:underline pt-2">
-              Request institutional access ➔
-            </Link>
-          </div>
+      <div className="pt-4 border-t border-gray-900/80">
+        <Link href="/institutions/public-safety" className="inline-flex items-center gap-2 text-xs font-bold text-lime-400 hover:underline">
+          Request institutional access &rarr;
+        </Link>
+      </div>
+    </div>
 
-          <div className="bg-gray-950/80 border border-gray-800/80 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-lime-500/40 transition group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 text-xl group-hover:scale-110 transition duration-300">
-                🏛️
-              </div>
-              <h3 className="text-xl font-bold text-white">Public Bodies & Integrity</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">
-                Comptrollers, audit courts, procurement and integrity teams.
-              </p>
-            </div>
-            <Link href="/institutions/public-bodies" className="inline-flex items-center gap-2 text-xs font-bold text-lime-400 hover:underline pt-2">
-              Request institutional pilot ➔
-            </Link>
-          </div>
-
-          <div className="bg-gray-950/80 border border-gray-800/80 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-lime-500/40 transition group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center text-lime-400 text-xl group-hover:scale-110 transition duration-300">
-                📰
-              </div>
-              <h3 className="text-xl font-bold text-white">Journalism & Fact-Checking</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">
-                Investigative journalists, newsrooms and fact-checking agencies.
-              </p>
-            </div>
-            <Link href="/institutions/journalism" className="inline-flex items-center gap-2 text-xs font-bold text-lime-400 hover:underline pt-2">
-              Request press access ➔
-            </Link>
-          </div>
+    {/* Card 02 */}
+    <div className="bg-gray-950/90 border border-gray-800/80 hover:border-lime-500/50 p-8 rounded-3xl flex flex-col justify-between space-y-8 transition-all duration-300 group shadow-xl">
+      <div className="space-y-6">
+        <div className="w-12 h-12 rounded-2xl bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-lime-400 text-xl group-hover:bg-lime-500 group-hover:text-black transition-all duration-300">
+          🏛️
         </div>
-      </section>
+
+        <div className="space-y-3">
+          <h3 className="text-xl font-bold text-white group-hover:text-lime-400 transition-colors">
+            Public Bodies & Integrity
+          </h3>
+          <p className="text-gray-400 text-xs md:text-sm leading-relaxed">
+            Comptrollers, audit courts, procurement, and integrity compliance teams.
+          </p>
+        </div>
+      </div>
+
+      <div className="pt-4 border-t border-gray-900/80">
+        <Link href="/institutions/public-bodies" className="inline-flex items-center gap-2 text-xs font-bold text-lime-400 hover:underline">
+          Request institutional pilot &rarr;
+        </Link>
+      </div>
+    </div>
+
+    {/* Card 03 */}
+    <div className="bg-gray-950/90 border border-gray-800/80 hover:border-lime-500/50 p-8 rounded-3xl flex flex-col justify-between space-y-8 transition-all duration-300 group shadow-xl">
+      <div className="space-y-6">
+        <div className="w-12 h-12 rounded-2xl bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-lime-400 text-xl group-hover:bg-lime-500 group-hover:text-black transition-all duration-300">
+          📰
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="text-xl font-bold text-white group-hover:text-lime-400 transition-colors">
+            Journalism & Fact-Checking
+          </h3>
+          <p className="text-gray-400 text-xs md:text-sm leading-relaxed">
+            Investigative journalists, accredited newsrooms, and fact-checking agencies.
+          </p>
+        </div>
+      </div>
+
+      <div className="pt-4 border-t border-gray-900/80">
+        <Link href="/institutions/journalism" className="inline-flex items-center gap-2 text-xs font-bold text-lime-400 hover:underline">
+          Request press access &rarr;
+        </Link>
+      </div>
+    </div>
+
+  </div>
+</section>
 
       {/* 📰 9. BLOG SECTION (With Images & Working Links) */}
       <section id="blog" className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80 text-center space-y-16">
