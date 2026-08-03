@@ -69,7 +69,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* 🚀 1. HERO SECTION */}
+      {/* 🚀 1. HERO SECTION WITH SIR'S UPDATED DASHBOARD */}
       <section className="relative pt-28 pb-20 px-4 md:px-8 max-w-[1400px] mx-auto overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
 
@@ -126,93 +126,117 @@ export default function Home() {
             </div>
           </div>
 
-          {/* RIGHT DASHBOARD MOCKUP */}
-          <div className="lg:col-span-7 z-10 relative opacity-90 lg:-ml-12">
-            <div className="bg-gray-950/90 border border-gray-800/80 rounded-3xl p-5 md:p-6 space-y-5 shadow-2xl backdrop-blur-sm">
-              <div className="flex items-center justify-between border-b border-gray-800/80 pb-3 text-xs text-gray-400">
-                <div className="flex items-center gap-6">
-                  <span className="text-lime-400 font-bold font-mono">200+ <span className="text-gray-500 font-normal">Sources</span></span>
-                  <span className="text-white font-bold font-mono">18.7K <span className="text-gray-500 font-normal">Data Points</span></span>
-                  <span className="text-white font-bold font-mono">25 <span className="text-gray-500 font-normal">OSINT Modules</span></span>
+          {/* RIGHT DASHBOARD MOCKUP - UPDATED WITH LOW RISK & BREACH STREAM */}
+          <div className="lg:col-span-7 z-10 relative opacity-95 lg:-ml-12">
+            <div className="bg-[#090a0f] border border-gray-800/80 rounded-3xl p-5 md:p-6 space-y-4 shadow-2xl backdrop-blur-md">
+              
+              {/* TOP STATS BAR */}
+              <div className="flex items-center justify-between border-b border-gray-800/60 pb-3 text-[11px] text-gray-400">
+                <div className="flex items-center gap-4 md:gap-6 font-mono">
+                  <span className="text-lime-400 font-bold">200+ <span className="text-gray-500 font-normal">Sources</span></span>
+                  <span className="text-white font-bold">18.7K <span className="text-gray-500 font-normal">Data Points</span></span>
+                  <span className="text-white font-bold">25 <span className="text-gray-500 font-normal">OSINT Modules</span></span>
                 </div>
                 <div className="hidden sm:flex items-center gap-2">
                   <span className="text-[10px] text-gray-500">Risk Score:</span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-400 text-[10px] font-bold">Low Risk (23/100)</span>
+                  <span className="px-2.5 py-1 rounded-md bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold tracking-wide">
+                    Low Risk (23/100)
+                  </span>
                 </div>
               </div>
 
+              {/* DATA SOURCES & RECENT ACTIVITY GRID */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <div className="bg-black/60 border border-gray-900 p-4 rounded-2xl space-y-2">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Data Sources</span>
-                  <div className="space-y-1.5 text-[11px]">
-                    <div className="flex justify-between text-gray-400"><span className="flex items-center gap-2">🔒 Public Records</span><span className="text-gray-300 font-mono">45</span></div>
-                    <div className="flex justify-between text-gray-400"><span className="flex items-center gap-2">📱 Social Media</span><span className="text-gray-300 font-mono">28</span></div>
-                    <div className="flex justify-between text-gray-400"><span className="flex items-center gap-2">🌐 Web Intelligence</span><span className="text-gray-300 font-mono">32</span></div>
-                    <div className="flex justify-between text-gray-400"><span className="flex items-center gap-2">🛡️ Breaches & Leaks</span><span className="text-gray-300 font-mono">28</span></div>
+                
+                {/* Data Sources Card */}
+                <div className="bg-black/60 border border-gray-900/80 p-4 rounded-2xl space-y-3">
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block">Data Sources</span>
+                  <div className="space-y-2 text-[11px]">
+                    <div className="flex justify-between text-gray-400 items-center">
+                      <span className="flex items-center gap-2">🔒 Public Records</span>
+                      <span className="text-gray-200 font-mono">45</span>
+                    </div>
+                    <div className="flex justify-between text-gray-400 items-center">
+                      <span className="flex items-center gap-2">📱 Social Media</span>
+                      <span className="text-gray-200 font-mono">28</span>
+                    </div>
+                    <div className="flex justify-between text-gray-400 items-center">
+                      <span className="flex items-center gap-2">🌐 Web Intelligence</span>
+                      <span className="text-gray-200 font-mono">32</span>
+                    </div>
+                    <div className="flex justify-between text-gray-400 items-center">
+                      <span className="flex items-center gap-2">🛡️ Breaches & Leaks</span>
+                      <span className="text-gray-200 font-mono">28</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="bg-black/60 border border-gray-900 p-4 rounded-2xl space-y-2">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Recent Activity</span>
+                {/* Recent Activity Card */}
+                <div className="bg-black/60 border border-gray-900/80 p-4 rounded-2xl space-y-3">
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block">Recent Activity</span>
                   <div className="space-y-2 text-[11px]">
-                    <div className="p-2 bg-gray-900/40 rounded-xl border border-gray-800/50 flex items-center justify-between">
+                    <div className="p-2.5 bg-gray-900/40 rounded-xl border border-gray-800/40 flex items-center justify-between">
                       <div>
                         <p className="font-bold text-white text-[11px]">Phone number found</p>
-                        <p className="text-[10px] text-gray-500">+55 11 98765-4321</p>
+                        <p className="text-[10px] text-gray-500 font-mono">+55 11 98765-4321</p>
                       </div>
-                      <span className="text-[9px] text-gray-600">2m ago</span>
+                      <span className="text-[9px] text-gray-500">2m ago</span>
                     </div>
 
-                    <div className="p-2 bg-gray-900/40 rounded-xl border border-gray-800/50 flex items-center justify-between">
+                    <div className="p-2.5 bg-gray-900/40 rounded-xl border border-gray-800/40 flex items-center justify-between">
                       <div>
                         <p className="font-bold text-white text-[11px]">Email discovered</p>
-                        <p className="text-[10px] text-gray-500">john.doe@company.com</p>
+                        <p className="text-[10px] text-gray-500 font-mono">john.doe@company.com</p>
                       </div>
-                      <span className="text-[9px] text-gray-600">5m ago</span>
+                      <span className="text-[9px] text-gray-500">5m ago</span>
                     </div>
                   </div>
                 </div>
+
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
-                <div className="md:col-span-2 bg-black/60 border border-gray-900 p-3 rounded-2xl relative overflow-hidden h-32 flex flex-col justify-between">
-                  <div className="flex justify-between text-[10px] text-gray-400 z-10 items-center">
+              {/* LIVE BREACH STREAM BOX */}
+              <div className="bg-black/80 border border-gray-900 p-4 rounded-2xl space-y-3 relative overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-lime-400 animate-pulse"></span>
+                    <span className="text-[11px] font-bold text-lime-400 uppercase tracking-wider">Live Breach Stream</span>
+                  </div>
+                  <span className="text-[9px] font-mono text-lime-400/90 bg-lime-950/60 px-2 py-0.5 rounded border border-lime-500/20">
+                    THREAT_RADAR_ACTIVE
+                  </span>
+                </div>
+
+                <div className="space-y-2 font-mono text-[11px]">
+                  <div className="flex items-center justify-between bg-gray-900/50 px-3 py-2 rounded-xl border border-gray-800/60">
                     <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-lime-400 animate-ping"></span>
-                      <span className="text-lime-400 font-bold uppercase tracking-wider">Live Breach Stream</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                      <span className="text-red-400 font-bold text-[10px]">CRED_DUMP</span>
                     </div>
-                    <span className="text-[9px] font-mono text-lime-400/80 bg-lime-950/60 px-2 py-0.5 rounded border border-lime-500/20">THREAT_RADAR_ACTIVE</span>
+                    <span className="text-gray-300">target@enterprise.io</span>
+                    <span className="text-gray-500 text-[10px]">Just now</span>
                   </div>
 
-                  <div className="space-y-1.5 z-10 animate-pulse my-auto">
-                    <div className="flex items-center justify-between text-[10px] font-mono bg-gray-900/60 px-2.5 py-1 rounded-lg border border-gray-800">
-                      <span className="text-red-400 flex items-center gap-1.5">● CRED_DUMP</span>
-                      <span className="text-gray-300">target@enterprise.io</span>
-                      <span className="text-gray-500">Just now</span>
+                  <div className="flex items-center justify-between bg-gray-900/50 px-3 py-2 rounded-xl border border-gray-800/60">
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
+                      <span className="text-yellow-400 font-bold text-[10px]">LEAK_MATCH</span>
                     </div>
-                    <div className="flex items-center justify-between text-[10px] font-mono bg-gray-900/60 px-2.5 py-1 rounded-lg border border-gray-800">
-                      <span className="text-yellow-400 flex items-center gap-1.5">● LEAK_MATCH</span>
-                      <span className="text-gray-300">+55 11 98765-XXXX</span>
-                      <span className="text-gray-500">14s ago</span>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4 text-[9px] text-gray-500 z-10">
-                    <span>Indexed: <strong className="text-white">14.2B</strong></span>
-                    <span>Threats Found: <strong className="text-lime-400">843K</strong></span>
-                    <span>Status: <strong className="text-emerald-400">Secure</strong></span>
+                    <span className="text-gray-300">+55 11 98765-XXXX</span>
+                    <span className="text-gray-500 text-[10px]">14s ago</span>
                   </div>
                 </div>
 
-                <div className="bg-black/60 border border-gray-900 p-3 rounded-2xl text-[10px] space-y-1.5 flex flex-col justify-center">
-                  <span className="font-bold text-gray-500 uppercase tracking-wider block">Key Identifiers</span>
-                  <div className="flex justify-between text-gray-400"><span>CPF:</span><span className="text-gray-200 font-mono">123.456.789-09</span></div>
-                  <div className="flex justify-between text-gray-400"><span>ID:</span><span className="text-gray-200 font-mono">MG-12.345.678</span></div>
-                  <div className="flex justify-between text-gray-400"><span>Phone:</span><span className="text-gray-200 font-mono">+55 11 98765</span></div>
+                <div className="flex flex-wrap items-center justify-between text-[10px] text-gray-400 pt-1 border-t border-gray-900">
+                  <span>Indexed: <strong className="text-white font-mono">14.2B</strong></span>
+                  <span>Threats Found: <strong className="text-lime-400 font-mono">843K</strong></span>
+                  <span>Status: <strong className="text-emerald-400 font-mono">Secure</strong></span>
                 </div>
               </div>
+
             </div>
           </div>
+
         </div>
       </section>
 
@@ -371,7 +395,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 📊 6. RESULT EXAMPLE SECTION */}
+      {/* 📊 6. RESULT EXAMPLE SECTION (Network Graph Map) */}
       <section id="results" className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80 text-center space-y-6">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gray-950 border border-gray-800 flex items-center justify-center text-lime-400">🕸️</div>
@@ -391,6 +415,9 @@ export default function Home() {
 
         <ResultExampleComponent />
       </section>
+
+      {/* 🌍 6.1 GLOBAL THREAT RADAR SECTION (NEW WORLD MAP LIVE BREACH RADAR) */}
+      <GlobalThreatRadarComponent />
 
       {/* 💳 7. PRICING PLANS SECTION */}
       <section id="plans" className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80 text-center space-y-16">
@@ -538,7 +565,7 @@ export default function Home() {
         </div>
       </section>
 
-     {/* 📰 9. BLOG SECTION */}
+     {/* 📰 9. BLOG SECTION - 6 BLOGS GRID */}
       <section id="blog" className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80 text-center space-y-16">
         <div className="space-y-4 max-w-3xl mx-auto">
           <div className="flex justify-center"><div className="w-10 h-10 rounded-xl bg-gray-950 border border-gray-800 flex items-center justify-center text-lime-400">📖</div></div>
@@ -548,7 +575,7 @@ export default function Home() {
           </p>
         </div>
 
-        {/* 5+ New Blogs Grid Layout */}
+        {/* 6 Cards Grid Layout (3 on top, 3 on bottom) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left max-w-7xl mx-auto">
           
           {/* Blog 1 */}
@@ -602,7 +629,7 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* New Blog 4 (Digital Footprinting) */}
+          {/* Blog 4 (New) */}
           <Link href="/blog/comparison" className="block group">
             <div className="bg-gray-950/80 border border-gray-800/80 rounded-3xl overflow-hidden group-hover:border-lime-500/50 transition duration-300 flex flex-col h-full shadow-xl">
               <div className="h-48 w-full relative overflow-hidden bg-gray-900">
@@ -619,7 +646,7 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* New Blog 5 (Threat Intelligence) */}
+          {/* Blog 5 (New) */}
           <Link href="/blog/free-tools" className="block group">
             <div className="bg-gray-950/80 border border-gray-800/80 rounded-3xl overflow-hidden group-hover:border-lime-500/50 transition duration-300 flex flex-col h-full shadow-xl">
               <div className="h-48 w-full relative overflow-hidden bg-gray-900">
@@ -636,7 +663,7 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* New Blog 6 (Credential Dumps) */}
+          {/* Blog 6 (New) */}
           <Link href="/blog/due-diligence" className="block group">
             <div className="bg-gray-950/80 border border-gray-800/80 rounded-3xl overflow-hidden group-hover:border-lime-500/50 transition duration-300 flex flex-col h-full shadow-xl">
               <div className="h-48 w-full relative overflow-hidden bg-gray-900">
@@ -659,7 +686,7 @@ export default function Home() {
           <Link href="/blog" className="text-xs text-lime-400 font-bold hover:underline">See all articles ➔</Link>
         </div>
       </section>
-      
+
       {/* 🌟 10. REVIEWS / TESTIMONIALS SECTION */}
       <section className="py-20 px-6 max-w-7xl mx-auto border-t border-gray-900/80 text-center space-y-12">
         <div className="space-y-3">
@@ -849,29 +876,31 @@ export default function Home() {
   );
 }
 
-// 🕸️ Interactive Result View Component
+// 🕸️ Interactive Result View Component - Enhanced with Connecting Lines & Rich UI
 export function ResultExampleComponent() {
   const [viewMode, setViewMode] = useState("graph");
 
   const profiles = [
-    { name: "Pinterest", handle: "@ferschmidt", icon: "📌", color: "border-red-500/40 text-red-400", pos: "top-[4%] left-1/2 -translate-x-[120%]" },
-    { name: "Instagram", handle: "@fernanda.schmidt", icon: "📸", color: "border-pink-500/40 text-pink-400", pos: "top-[4%] left-1/2 translate-x-[20%]" },
-    { name: "LinkedIn", handle: "@fernandaschmidt", icon: "💼", color: "border-blue-500/40 text-blue-400", pos: "top-[22%] right-[8%]" },
-    { name: "GitHub", handle: "@fernanda-schmidt", icon: "🐙", color: "border-gray-500/40 text-gray-300", pos: "top-[45%] right-[2%]" },
-    { name: "Facebook", handle: "@fernanda.schmidt", icon: "🌐", color: "border-blue-600/40 text-blue-500", pos: "bottom-[22%] right-[8%]" },
-    { name: "X / Twitter", handle: "@ferschmidt", icon: "𝕏", color: "border-gray-600/40 text-gray-300", pos: "bottom-[5%] left-1/2 translate-x-[40%]" },
-    { name: "TikTok", handle: "@fer.schmidt", icon: "🎵", color: "border-teal-500/40 text-teal-300", pos: "bottom-[5%] left-1/2 -translate-x-[140%]" },
-    { name: "Spotify", handle: "@fernanda_schmidt", icon: "🎧", color: "border-emerald-500/40 text-emerald-400", pos: "bottom-[22%] left-[8%]" },
+    { name: "Pinterest", handle: "@ferschmidt", icon: "📌", color: "border-red-500/40 text-red-400 bg-red-950/20", x: 25, y: 18 },
+    { name: "Instagram", handle: "@fernanda.schmidt", icon: "📸", color: "border-pink-500/40 text-pink-400 bg-pink-950/20", x: 62, y: 15 },
+    { name: "LinkedIn", handle: "@fernandaschmidt", icon: "💼", color: "border-blue-500/40 text-blue-400 bg-blue-950/20", x: 82, y: 38 },
+    { name: "GitHub", handle: "@fernanda-schmidt", icon: "🐙", color: "border-gray-500/40 text-gray-300 bg-gray-900/40", x: 85, y: 65 },
+    { name: "Facebook", handle: "@fernanda.schmidt", icon: "🌐", color: "border-blue-600/40 text-blue-500 bg-blue-950/20", x: 75, y: 85 },
+    { name: "X / Twitter", handle: "@ferschmidt", icon: "𝕏", color: "border-gray-600/40 text-gray-300 bg-gray-900/40", x: 45, y: 88 },
+    { name: "TikTok", handle: "@fer.schmidt", icon: "🎵", color: "border-teal-500/40 text-teal-300 bg-teal-950/20", x: 18, y: 78 },
+    { name: "Spotify", handle: "@fernanda_schmidt", icon: "🎧", color: "border-emerald-500/40 text-emerald-400 bg-emerald-950/20", x: 12, y: 45 },
+    { name: "Telegram", handle: "@fernandatarget", icon: "✈️", color: "border-sky-500/40 text-sky-400 bg-sky-950/20", x: 38, y: 12 },
   ];
 
   return (
     <div className="mt-8 max-w-5xl mx-auto space-y-4">
+      {/* Toggle Buttons */}
       <div className="flex justify-center items-center gap-3">
         <button
           onClick={() => setViewMode("graph")}
           type="button"
           className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 border cursor-pointer ${
-            viewMode === "graph" ? "bg-lime-500 text-black border-lime-400" : "bg-gray-950 text-gray-400 border-gray-800"
+            viewMode === "graph" ? "bg-lime-500 text-black border-lime-400 shadow-lg shadow-lime-500/20" : "bg-gray-950 text-gray-400 border-gray-800 hover:text-white"
           }`}
         >
           🕸️ Network Graph Map
@@ -880,42 +909,185 @@ export function ResultExampleComponent() {
           onClick={() => setViewMode("grid")}
           type="button"
           className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 border cursor-pointer ${
-            viewMode === "grid" ? "bg-lime-500 text-black border-lime-400" : "bg-gray-950 text-gray-400 border-gray-800"
+            viewMode === "grid" ? "bg-lime-500 text-black border-lime-400 shadow-lg shadow-lime-500/20" : "bg-gray-950 text-gray-400 border-gray-800 hover:text-white"
           }`}
         >
           📋 Profiles Grid
         </button>
       </div>
 
-      <div className="bg-gray-950/90 border border-gray-800/90 rounded-3xl p-6 md:p-8 text-left space-y-6 shadow-2xl relative overflow-hidden min-h-[520px]">
+      {/* Main Container */}
+      <div className="bg-gray-950/95 border border-gray-800/90 rounded-3xl p-6 md:p-8 text-left space-y-6 shadow-2xl relative overflow-hidden min-h-[520px] backdrop-blur-md">
+        
         {viewMode === "graph" ? (
-          <div className="relative w-full h-[420px] flex items-center justify-center overflow-hidden bg-black/40 rounded-2xl border border-gray-900/80">
-            <div className="z-10 relative flex flex-col items-center justify-center bg-gray-900/90 border-2 border-lime-400 px-6 py-4 rounded-2xl shadow-[0_0_25px_rgba(132,204,22,0.3)]">
-              <span className="text-xs font-bold text-white">fernanda.schmidt</span>
-              <span className="text-[9px] text-lime-400 font-mono mt-0.5">11 VÍNCULOS CONFIRMADOS</span>
+          <div className="relative w-full h-[450px] flex items-center justify-center overflow-hidden bg-black/60 rounded-2xl border border-gray-900">
+            
+            {/* Background SVG Connecting Lines to Center */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none">
+              {profiles.map((p, i) => (
+                <line
+                  key={i}
+                  x1="50%"
+                  y1="50%"
+                  x2={`${p.x}%`}
+                  y2={`${p.y}%`}
+                  stroke="#84cc16"
+                  strokeOpacity="0.25"
+                  strokeWidth="1.5"
+                  strokeDasharray="4 4"
+                />
+              ))}
+            </svg>
+
+            {/* Central Node */}
+            <div className="z-20 relative flex flex-col items-center justify-center bg-gray-950 border-2 border-lime-400 px-6 py-4 rounded-2xl shadow-[0_0_35px_rgba(132,204,22,0.35)]">
+              <span className="w-2.5 h-2.5 rounded-full bg-lime-400 animate-ping absolute -top-1 -right-1"></span>
+              <span className="text-xs font-bold text-white tracking-wider">fernanda.schmidt</span>
+              <span className="text-[9px] text-lime-400 font-mono mt-1 bg-lime-950/60 px-2 py-0.5 rounded border border-lime-500/30">11 VÍNCULOS CONFIRMADOS</span>
             </div>
+
+            {/* Orbiting Profile Nodes */}
             {profiles.map((p, i) => (
-              <div key={i} className={`absolute ${p.pos} bg-gray-950/90 border ${p.color} px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-lg z-10`}>
-                <span className="text-xs">{p.icon}</span>
+              <div 
+                key={i} 
+                style={{ top: `${p.y}%`, left: `${p.x}%` }}
+                className={`absolute -translate-x-1/2 -translate-y-1/2 ${p.color} border px-3 py-2 rounded-xl flex items-center gap-2.5 shadow-xl z-20 backdrop-blur-sm hover:scale-105 transition duration-200 cursor-pointer`}
+              >
+                <span className="text-sm">{p.icon}</span>
                 <div>
-                  <p className="text-[10px] font-bold text-white leading-none">{p.name}</p>
+                  <p className="text-[11px] font-bold text-white leading-tight">{p.name}</p>
                   <p className="text-[9px] text-gray-400 font-mono">{p.handle}</p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-gray-900/60 border border-gray-800/80 rounded-2xl p-4 flex items-center justify-between">
-              <div>
-                <h5 className="text-sm font-bold text-white">Fernanda Schmidt</h5>
-                <p className="text-xs text-gray-400">@fernanda.schmidt</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {profiles.map((p, i) => (
+              <div key={i} className="bg-gray-900/60 border border-gray-800/80 rounded-2xl p-4 flex items-center justify-between hover:border-lime-500/40 transition">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl p-2 rounded-xl bg-black/40 border border-gray-800">{p.icon}</span>
+                  <div>
+                    <h5 className="text-xs font-bold text-white">{p.name}</h5>
+                    <p className="text-[11px] text-gray-400 font-mono">{p.handle}</p>
+                  </div>
+                </div>
+                <span className="text-[10px] text-lime-400 font-mono bg-lime-950/40 px-2 py-1 rounded border border-lime-500/20">Verified</span>
               </div>
-              <span className="text-[10px] text-lime-400 font-mono">96%</span>
-            </div>
+            ))}
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+// 🌍 GLOBAL LIVE THREAT & DATA BREACH RADAR COMPONENT (Exact World Map Match)
+export function GlobalThreatRadarComponent() {
+  const [activeThreats, setActiveThreats] = useState([
+    { id: 1, type: "CREDENTIAL_LEAK", location: "São Paulo, BR", target: "enterprise.io", time: "Just now" },
+    { id: 2, type: "API_TOKEN_EXPOSE", location: "New York, US", target: "fintech-auth.com", time: "2s ago" },
+    { id: 3, type: "DARKWEB_DUMP", location: "Frankfurt, DE", target: "cloud-storage.net", time: "5s ago" },
+    { id: 4, type: "ZERO_DAY_PROBE", location: "Tokyo, JP", target: "gov-gateway.jp", time: "8s ago" },
+  ]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const locations = ["London, UK", "Mumbai, IN", "Singapore, SG", "Toronto, CA", "Sydney, AU", "São Paulo, BR"];
+      const types = ["CRED_DUMP", "API_EXPOSE", "SQL_INJECTION", "DARKWEB_MATCH"];
+      const targets = ["corp-net.io", "bank-secure.com", "cloud-bucket.org", "api-gateway.co"];
+      
+      const newThreat = {
+        id: Date.now(),
+        type: types[Math.floor(Math.random() * types.length)],
+        location: locations[Math.floor(Math.random() * locations.length)],
+        target: targets[Math.floor(Math.random() * targets.length)],
+        time: "Just now"
+      };
+
+      setActiveThreats(prev => [newThreat, ...prev.slice(0, 3)]);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="py-24 px-6 max-w-7xl mx-auto border-t border-gray-900/80 text-center space-y-12">
+      <div className="space-y-4 max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-950/50 border border-lime-500/30 text-lime-400 text-xs font-mono font-bold tracking-widest uppercase">
+          <span className="w-2 h-2 rounded-full bg-lime-400 animate-ping"></span>
+          GLOBAL THREAT INTELLIGENCE RADAR
+        </div>
+        <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+          Real-Time Data Breaches Across the <span className="text-lime-400">Globe</span>
+        </h2>
+        <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+          Live monitoring of credential leaks, corporate data exposures, and active threat vectors worldwide mapped instantly.
+        </p>
+      </div>
+
+      {/* World Map Radar Container */}
+      <div className="relative max-w-5xl mx-auto bg-gray-950/95 border border-lime-500/30 rounded-3xl p-6 md:p-8 shadow-[0_0_50px_rgba(132,204,22,0.12)] overflow-hidden backdrop-blur-md">
+        
+        {/* Background Grid Lines */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:2.5rem_2.5rem] pointer-events-none"></div>
+
+        {/* Professional World Map Graphic Container */}
+        <div className="relative w-full h-[350px] md:h-[420px] flex items-center justify-center rounded-2xl overflow-hidden bg-[#020617] border border-gray-800/80">
+          
+          {/* Neon Green World Map Image (Exact match to Sir's reference) */}
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <img 
+              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop" 
+              alt="Neon World Map Network" 
+              className="w-full h-full object-cover opacity-60 filter brightness-125 contrast-150 saturate-200 hue-rotate-[60deg]"
+            />
+          </div>
+
+          {/* Cyber Vignette Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 pointer-events-none"></div>
+
+          {/* Live Location Tags / Pins on Map */}
+          <div className="absolute top-[25%] left-[22%] flex items-center gap-2 bg-black/90 border border-lime-500/50 px-3 py-1.5 rounded-xl shadow-xl z-10">
+            <span className="w-2.5 h-2.5 rounded-full bg-lime-400 animate-ping"></span>
+            <span className="text-[11px] font-mono text-lime-300 font-bold">North America: 42 Leaks</span>
+          </div>
+
+          <div className="absolute top-[32%] right-[28%] flex items-center gap-2 bg-black/90 border border-red-500/50 px-3 py-1.5 rounded-xl shadow-xl z-10">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+            <span className="text-[11px] font-mono text-red-400 font-bold">Europe: Critical Breach</span>
+          </div>
+
+          <div className="absolute bottom-[28%] right-[22%] flex items-center gap-2 bg-black/90 border border-yellow-500/50 px-3 py-1.5 rounded-xl shadow-xl z-10">
+            <span className="w-2.5 h-2.5 rounded-full bg-yellow-400 animate-ping"></span>
+            <span className="text-[11px] font-mono text-yellow-300 font-bold">Asia-Pacific: Probe</span>
+          </div>
+
+          <div className="absolute bottom-[24%] left-[30%] flex items-center gap-2 bg-black/90 border border-lime-500/50 px-3 py-1.5 rounded-xl shadow-xl z-10">
+            <span className="w-2.5 h-2.5 rounded-full bg-lime-400 animate-ping"></span>
+            <span className="text-[11px] font-mono text-lime-300 font-bold">South America: Active Scan</span>
+          </div>
+
+        </div>
+
+        {/* Live Breach Ticker Stream Cards */}
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
+          {activeThreats.map((t) => (
+            <div key={t.id} className="bg-black/90 border border-gray-800 p-4 rounded-2xl space-y-1.5 font-mono shadow-inner">
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-red-400 font-bold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
+                  {t.type}
+                </span>
+                <span className="text-gray-500">{t.time}</span>
+              </div>
+              <p className="text-xs text-white font-bold truncate">{t.target}</p>
+              <p className="text-[10px] text-gray-400">Origin: <strong className="text-lime-400">{t.location}</strong></p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
   );
 }
