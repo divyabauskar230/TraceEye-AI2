@@ -7,14 +7,7 @@ export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedUser = localStorage.getItem("footpryx_user");
-      if (savedUser) {
-        router.push("/dashboard");
-      }
-    }
-  }, [router]);
+
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -66,6 +59,21 @@ export default function Home() {
           >
             Create Account
           </Link>
+          {/* Quick Panel Navigation Buttons */}
+        <div className="hidden lg:flex items-center gap-3">
+          <Link 
+  href="/user-panel" 
+  className="bg-gray-900 border border-gray-700 hover:border-lime-400 text-lime-400 font-bold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-1.5"
+>
+  <span>👤</span> User Panel
+</Link>
+          <Link 
+            href="/admin" 
+            className="bg-gray-900 border border-gray-700 hover:border-yellow-400 text-yellow-400 font-bold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-1.5"
+          >
+            <span>👑</span> Admin Panel
+          </Link>
+        </div>
         </div>
       </header>
 
@@ -126,118 +134,180 @@ export default function Home() {
             </div>
           </div>
 
-          {/* RIGHT DASHBOARD MOCKUP - UPDATED WITH LOW RISK & BREACH STREAM */}
-          <div className="lg:col-span-7 z-10 relative opacity-95 lg:-ml-12">
-            <div className="bg-[#090a0f] border border-gray-800/80 rounded-3xl p-5 md:p-6 space-y-4 shadow-2xl backdrop-blur-md">
-              
-              {/* TOP STATS BAR */}
-              <div className="flex items-center justify-between border-b border-gray-800/60 pb-3 text-[11px] text-gray-400">
-                <div className="flex items-center gap-4 md:gap-6 font-mono">
-                  <span className="text-lime-400 font-bold">200+ <span className="text-gray-500 font-normal">Sources</span></span>
-                  <span className="text-white font-bold">18.7K <span className="text-gray-500 font-normal">Data Points</span></span>
-                  <span className="text-white font-bold">25 <span className="text-gray-500 font-normal">OSINT Modules</span></span>
-                </div>
-                <div className="hidden sm:flex items-center gap-2">
-                  <span className="text-[10px] text-gray-500">Risk Score:</span>
-                  <span className="px-2.5 py-1 rounded-md bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold tracking-wide">
-                    Low Risk (23/100)
-                  </span>
-                </div>
-              </div>
+  {/* RIGHT DASHBOARD MOCKUP - ENHANCED CYBER INTEL FEED */}
+<div className="lg:col-span-7 z-10 relative opacity-95 lg:-ml-12">
+  <div className="bg-[#0b0f17] border border-lime-500/30 rounded-3xl p-5 md:p-6 space-y-4 shadow-[0_0_50px_rgba(132,204,22,0.12)] backdrop-blur-xl">
+    
+    {/* TOP STATS CARDS BAR */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="bg-black/60 border border-gray-800/80 rounded-2xl p-3 text-center">
+        <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider block">GLOBAL INDEX</span>
+        <span className="text-lg font-black text-lime-400 font-mono">214+ SRC</span>
+      </div>
+      <div className="bg-black/60 border border-gray-800/80 rounded-2xl p-3 text-center">
+        <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider block">INTEL VECTORS</span>
+        <span className="text-lg font-black text-white font-mono">18.7K PTS</span>
+      </div>
+      <div className="bg-black/60 border border-gray-800/80 rounded-2xl p-3 text-center">
+        <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider block">ACTIVE MODULES</span>
+        <span className="text-lg font-black text-purple-400 font-mono">25 OSINT</span>
+      </div>
+      <div className="bg-black/60 border border-gray-800/80 rounded-2xl p-3 text-center">
+        <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider block">THREAT LEVEL</span>
+        <span className="text-lg font-black text-amber-400 font-mono">72<span className="text-xs text-gray-500">/100 MED</span></span>
+      </div>
+    </div>
 
-              {/* DATA SOURCES & RECENT ACTIVITY GRID */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                
-                {/* Data Sources Card */}
-                <div className="bg-black/60 border border-gray-900/80 p-4 rounded-2xl space-y-3">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block">Data Sources</span>
-                  <div className="space-y-2 text-[11px]">
-                    <div className="flex justify-between text-gray-400 items-center">
-                      <span className="flex items-center gap-2">🔒 Public Records</span>
-                      <span className="text-gray-200 font-mono">45</span>
-                    </div>
-                    <div className="flex justify-between text-gray-400 items-center">
-                      <span className="flex items-center gap-2">📱 Social Media</span>
-                      <span className="text-gray-200 font-mono">28</span>
-                    </div>
-                    <div className="flex justify-between text-gray-400 items-center">
-                      <span className="flex items-center gap-2">🌐 Web Intelligence</span>
-                      <span className="text-gray-200 font-mono">32</span>
-                    </div>
-                    <div className="flex justify-between text-gray-400 items-center">
-                      <span className="flex items-center gap-2">🛡️ Breaches & Leaks</span>
-                      <span className="text-gray-200 font-mono">28</span>
-                    </div>
-                  </div>
-                </div>
+    {/* MIDDLE GRID: REPOSITORY & INTERCEPT LOGS */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+      
+      {/* LEFT: REPOSITORY BREAKDOWN */}
+      <div className="bg-black/80 border border-gray-900/90 p-4 rounded-2xl space-y-3 shadow-inner">
+        <div className="flex justify-between items-center border-b border-gray-800 pb-2">
+          <span className="text-[10px] font-bold text-lime-400 uppercase tracking-widest font-mono">TARGET REPOSITORIES</span>
+          <span className="text-[10px] text-gray-400 font-mono cursor-pointer hover:text-white">FULL INDEX →</span>
+        </div>
+        <div className="space-y-2.5 font-mono text-xs">
+          <div className="flex justify-between items-center text-gray-300 bg-gray-900/30 px-2.5 py-1.5 rounded-xl border border-gray-800/40">
+            <span className="flex items-center gap-2 text-[11px] text-gray-200">📂 Public Registry Records</span>
+            <span className="text-lime-400 text-[11px] font-bold">45 NODES</span>
+          </div>
+          <div className="flex justify-between items-center text-gray-300 bg-gray-900/30 px-2.5 py-1.5 rounded-xl border border-gray-800/40">
+            <span className="flex items-center gap-2 text-[11px] text-gray-200">🌐 Social Footprints</span>
+            <span className="text-blue-400 text-[11px] font-bold">28 NETS</span>
+          </div>
+          <div className="flex justify-between items-center text-gray-300 bg-gray-900/30 px-2.5 py-1.5 rounded-xl border border-gray-800/40">
+            <span className="flex items-center gap-2 text-[11px] text-gray-200">💻 Deep Web Telemetry</span>
+            <span className="text-purple-400 text-[11px] font-bold">32 API</span>
+          </div>
+          <div className="flex justify-between items-center text-gray-300 bg-gray-900/30 px-2.5 py-1.5 rounded-xl border border-gray-800/40">
+            <span className="flex items-center gap-2 text-[11px] text-gray-200">🛡️ Leak & Breach Dumps</span>
+            <span className="text-red-400 text-[11px] font-bold">28 SECURE</span>
+          </div>
+        </div>
+        <div className="text-[10px] font-mono text-lime-400/90 pt-0.5">
+          ⚡ Verified across 214+ active intelligence endpoints
+        </div>
+      </div>
 
-                {/* Recent Activity Card */}
-                <div className="bg-black/60 border border-gray-900/80 p-4 rounded-2xl space-y-3">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block">Recent Activity</span>
-                  <div className="space-y-2 text-[11px]">
-                    <div className="p-2.5 bg-gray-900/40 rounded-xl border border-gray-800/40 flex items-center justify-between">
-                      <div>
-                        <p className="font-bold text-white text-[11px]">Phone number found</p>
-                        <p className="text-[10px] text-gray-500 font-mono">+55 11 98765-4321</p>
-                      </div>
-                      <span className="text-[9px] text-gray-500">2m ago</span>
-                    </div>
-
-                    <div className="p-2.5 bg-gray-900/40 rounded-xl border border-gray-800/40 flex items-center justify-between">
-                      <div>
-                        <p className="font-bold text-white text-[11px]">Email discovered</p>
-                        <p className="text-[10px] text-gray-500 font-mono">john.doe@company.com</p>
-                      </div>
-                      <span className="text-[9px] text-gray-500">5m ago</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* LIVE BREACH STREAM BOX */}
-              <div className="bg-black/80 border border-gray-900 p-4 rounded-2xl space-y-3 relative overflow-hidden">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-lime-400 animate-pulse"></span>
-                    <span className="text-[11px] font-bold text-lime-400 uppercase tracking-wider">Live Breach Stream</span>
-                  </div>
-                  <span className="text-[9px] font-mono text-lime-400/90 bg-lime-950/60 px-2 py-0.5 rounded border border-lime-500/20">
-                    THREAT_RADAR_ACTIVE
-                  </span>
-                </div>
-
-                <div className="space-y-2 font-mono text-[11px]">
-                  <div className="flex items-center justify-between bg-gray-900/50 px-3 py-2 rounded-xl border border-gray-800/60">
-                    <div className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                      <span className="text-red-400 font-bold text-[10px]">CRED_DUMP</span>
-                    </div>
-                    <span className="text-gray-300">target@enterprise.io</span>
-                    <span className="text-gray-500 text-[10px]">Just now</span>
-                  </div>
-
-                  <div className="flex items-center justify-between bg-gray-900/50 px-3 py-2 rounded-xl border border-gray-800/60">
-                    <div className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
-                      <span className="text-yellow-400 font-bold text-[10px]">LEAK_MATCH</span>
-                    </div>
-                    <span className="text-gray-300">+55 11 98765-XXXX</span>
-                    <span className="text-gray-500 text-[10px]">14s ago</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between text-[10px] text-gray-400 pt-1 border-t border-gray-900">
-                  <span>Indexed: <strong className="text-white font-mono">14.2B</strong></span>
-                  <span>Threats Found: <strong className="text-lime-400 font-mono">843K</strong></span>
-                  <span>Status: <strong className="text-emerald-400 font-mono">Secure</strong></span>
-                </div>
-              </div>
-
+      {/* RIGHT: REAL-TIME INTERCEPT TIMELINE */}
+      <div className="bg-black/80 border border-gray-900/90 p-4 rounded-2xl space-y-3 shadow-inner flex flex-col justify-between">
+        <div className="flex justify-between items-center border-b border-gray-800 pb-2">
+          <span className="text-[10px] font-bold text-lime-400 uppercase tracking-widest font-mono">REAL-TIME INTERCEPTS</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-lime-400 animate-ping"></span>
+        </div>
+        <div className="space-y-2 font-mono text-xs">
+          <div className="bg-gray-900/50 p-2.5 rounded-xl border border-gray-800/60 flex justify-between items-center">
+            <div>
+              <p className="text-white font-bold text-[11px] flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-lime-400"></span> Phone Vector Resolved
+              </p>
+              <p className="text-[10px] text-gray-400 font-mono">+1 (555) 987-6543</p>
             </div>
+            <span className="text-[9px] text-lime-400 bg-lime-950/60 px-2 py-0.5 rounded border border-lime-500/30">2m ago</span>
+          </div>
+          <div className="bg-gray-900/50 p-2.5 rounded-xl border border-gray-800/60 flex justify-between items-center">
+            <div>
+              <p className="text-white font-bold text-[11px] flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span> Identity Hash Matched
+              </p>
+              <p className="text-[10px] text-gray-400 font-mono">john.doe@example.com</p>
+            </div>
+            <span className="text-[9px] text-blue-400 bg-blue-950/60 px-2 py-0.5 rounded border border-blue-500/30">5m ago</span>
+          </div>
+        </div>
+        <div className="text-[10px] font-mono text-lime-400 text-right cursor-pointer hover:underline pt-1">
+          Access full telemetry log →
+        </div>
+      </div>
+
+    </div>
+
+    {/* BOTTOM SECTION: LIVE THREAT FEED & MATRIX METRICS */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+      
+      {/* LIVE THREAT FEED */}
+      <div className="bg-black/90 border border-lime-500/30 p-4 rounded-2xl space-y-3 relative overflow-hidden shadow-lg">
+        <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider font-mono">LIVE THREAT MATRIX</span>
+          </div>
+          <span className="text-[9px] font-mono text-red-400 bg-red-950/60 px-2 py-0.5 rounded border border-red-500/30 flex items-center gap-1">
+            CRITICAL WATCH
+          </span>
+        </div>
+
+        <div className="space-y-2 font-mono text-[11px]">
+          <div className="flex items-center justify-between bg-gray-900/70 px-3 py-2 rounded-xl border border-gray-800/80">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+              <span className="text-red-400 font-bold text-[10px]">Credential Leak Vector</span>
+            </div>
+            <span className="text-gray-300 text-[10px]">user@target.io</span>
+            <span className="px-1.5 py-0.5 bg-red-950 text-red-400 text-[9px] rounded font-bold border border-red-900">HIGH</span>
           </div>
 
+          <div className="flex items-center justify-between bg-gray-900/70 px-3 py-2 rounded-xl border border-gray-800/80">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              <span className="text-amber-400 font-bold text-[10px]">Carrier Proxy Match</span>
+            </div>
+            <span className="text-gray-300 text-[10px]">+1 (555) 987</span>
+            <span className="px-1.5 py-0.5 bg-amber-950 text-amber-400 text-[9px] rounded font-bold border border-amber-900">MED</span>
+          </div>
         </div>
+
+        <div className="flex items-center justify-between text-[10px] text-gray-400 pt-1 font-mono border-t border-gray-900">
+          <span>INDEXED: <strong className="text-white">14.2B</strong></span>
+          <span>THREATS: <strong className="text-lime-400">843K</strong></span>
+          <span>STATUS: <strong className="text-emerald-400">SECURE</strong></span>
+        </div>
+      </div>
+
+      {/* MATRIX WEIGHT & QUICK CONTROLS */}
+      <div className="bg-black/90 border border-gray-900/90 p-4 rounded-2xl space-y-3 flex flex-col justify-between">
+        <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+          <span className="text-[10px] font-bold text-lime-400 uppercase tracking-widest font-mono">MATRIX WEIGHT DISTRIBUTION</span>
+        </div>
+        <div className="space-y-1.5 font-mono text-[11px]">
+          <div className="flex justify-between text-gray-300">
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-lime-400"></span> Public Registry Match</span>
+            <span className="text-gray-400 font-bold">28%</span>
+          </div>
+          <div className="flex justify-between text-gray-300">
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500"></span> Social Graph Intersect</span>
+            <span className="text-gray-400 font-bold">22%</span>
+          </div>
+          <div className="flex justify-between text-gray-300">
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-purple-500"></span> Deep Web Telemetry</span>
+            <span className="text-gray-400 font-bold">20%</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 pt-1">
+          <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 text-lime-400 py-2 rounded-xl text-[10px] font-mono font-bold transition cursor-pointer">
+            📄 Generate Report
+          </button>
+          <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white py-2 rounded-xl text-[10px] font-mono font-bold transition cursor-pointer">
+            📥 Export Telemetry
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    {/* FOOTER ENCRYPTION STATUS */}
+    <div className="flex items-center justify-between text-[10px] font-mono text-gray-500 pt-1 border-t border-gray-900">
+      <span>🔒 End-to-end zero-knowledge encryption active.</span>
+      <span>Engine sync: 2 min ago ⟳</span>
+    </div>
+
+  </div>
+</div>
+</div>
+
+      
       </section>
 
       {/* 📊 2. STATS BAR STRIP */}

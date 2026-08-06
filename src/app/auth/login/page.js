@@ -32,7 +32,8 @@ export default function Login() {
           JSON.stringify({ name: userName, email: email })
         );
         setMessage("Success! Redirecting...");
-        setTimeout(() => { window.location.href = "/"; }, 1200);
+        // 🟢 इथे बदल केला आहे: यशस्वी लॉगिन झाल्यावर थेट युजर पॅनलवर जाईल
+        setTimeout(() => { window.location.href = "/user-panel"; }, 1200);
       } else {
         setIsWakingUp(false); // एरर आल्यास पॉपअप बंद करा
         setMessage("Invalid credentials. Please check email/password.");
