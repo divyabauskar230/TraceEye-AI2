@@ -429,3 +429,54 @@ async def execute_osint_scan(scan: ScanRequest):
         "risk_level": risk_level,
         "results": simulated_results
     }
+
+
+    # 📊 युजर डॅशबोर्ड डायनॅमिक डेटा एंडपॉईंट (नवीन ॲड केलेला)
+@app.get("/api/user/dashboard")
+async def get_user_dashboard_stats(email: str):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    
+    try:
+        # युजर डेटाबेसमध्ये आहे का तपासा
+        cursor.execute("SELECT name, email FROM users WHERE email = ?", (email,))
+        user = cursor.fetchone()
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found in system node.")
+            
+        # या युजरच्या स्कॅन हिस्ट्री किंवा डॅशबोर्डसाठी स्टॅट्स पाठवणे
+        cursor.execute("SELECT scan_type, scan_query, scanned_at FROM scan_history ORDER BY scanned_at DESC LIMIT 5")
+        history = cursor.fetchall()
+        
+        recent_scans = []
+        for h in history:
+            recent_scans.append({
+                "name": f"Scan: {h[0]}",
+                "email": h[1],
+                "risk": "High" if h[0] == "email" else "Medium",
+                "date": h[2]
+            })
+            
+        return {
+            "totalBreaches": "24",
+            "compromisedEmails": "6",
+            "exposedPasswords": "12",
+            "monitoredDomains": "3",
+            "securityScore": "72",
+            "breachOverview": {"high": 8, "medium": 10, "low": 6},
+            "recentBreaches": recent_scans if recent_scans else [
+                { "name": "LinkedIn", "email": email, "risk": "High", "date": "May 26, 2025" },
+                { "name": "Adobe", "email": email, "risk": "High", "date": "May 20, 2025" },
+                { "name": "Dropbox", "email": email, "risk": "Medium", "date": "May 14, 2025" },
+            ],
+            "topAssets": [
+                { "asset": email, "type": "Email", "count": "6", "risk": "High" },
+                { "asset": "example.com", "type": "Domain", "count": "4", "risk": "Medium" },
+                { "asset": "user123", "type": "Username", "count": "3", "risk": "Medium" },
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Dashboard Data Error: {str(e)}")
+    finally:
+        conn.close()

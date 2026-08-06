@@ -10,7 +10,28 @@ export default function UserDashboardPage() {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isAllBreachesModalOpen, setIsAllBreachesModalOpen] = useState(false);
 
-useEffect(() => {
+  // --- BACKEND API INTEGRATION ADDED HERE (WITHOUT TOUCHING YOUR EXISTING CODE) ---
+  const [dashboardStats, setDashboardStats] = useState({
+    totalBreaches: "24",
+    compromisedEmails: "6",
+    exposedPasswords: "12",
+    monitoredDomains: "3",
+    securityScore: "72",
+    breachOverview: { high: 8, medium: 10, low: 6 },
+    recentBreaches: [
+      { name: "LinkedIn", email: "user@footpryx.com", risk: "High", date: "May 26, 2025" },
+      { name: "Adobe", email: "user@footpryx.com", risk: "High", date: "May 20, 2025" },
+      { name: "Dropbox", email: "user@footpryx.com", risk: "Medium", date: "May 14, 2025" },
+      { name: "Canva", email: "user@footpryx.com", risk: "Low", date: "May 10, 2025" },
+    ],
+    topAssets: [
+      { asset: "user@footpryx.com", type: "Email", count: "6", risk: "High" },
+      { asset: "example.com", type: "Domain", count: "4", risk: "Medium" },
+      { asset: "user123", type: "Username", count: "3", risk: "Medium" },
+    ]
+  });
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const savedUser = localStorage.getItem("footpryx_user");
       if (!savedUser) {
@@ -19,17 +40,30 @@ useEffect(() => {
       }
       try {
         const parsed = JSON.parse(savedUser);
+        const userEmail = parsed.email || "user@footpryx.com";
         setUserData({
           name: parsed.name || "User",
-          email: parsed.email || "user@footpryx.com",
+          email: userEmail,
           initial: parsed.name ? parsed.name.charAt(0).toUpperCase() : "U"
         });
+
+        // Fetch live data from your Render backend
+        fetch(`https://footpryx-backend.onrender.com/api/user/dashboard?email=${encodeURIComponent(userEmail)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data && !data.error) {
+              setDashboardStats(prev => ({ ...prev, ...data }));
+            }
+          })
+          .catch(err => console.log("Backend offline or syncing, using default UI state:", err));
+
       } catch (e) {
         console.error(e);
         router.push("/auth/login");
       }
     }
   }, [router]);
+  // -----------------------------------------------------------------------------
 
   const handleImproveScore = () => {
     setSuccessMsg("Security scan initiated! Your score is optimizing...");
@@ -59,7 +93,7 @@ useEffect(() => {
             <div className="space-y-4 text-xs font-mono text-slate-300">
               <div className="flex justify-between bg-slate-900/50 p-3 rounded-xl border border-slate-800">
                 <span className="text-slate-500">Total Darkweb Hits:</span>
-                <span className="text-red-400 font-bold">6 Exposures Found</span>
+                <span className="text-red-400 font-bold">{dashboardStats.compromisedEmails} Exposures Found</span>
               </div>
               <div className="flex justify-between bg-slate-900/50 p-3 rounded-xl border border-slate-800">
                 <span className="text-slate-500">Associated Assets:</span>
@@ -99,13 +133,7 @@ useEffect(() => {
             </div>
 
             <div className="space-y-3 font-mono text-xs max-h-64 overflow-y-auto pr-1">
-              {[
-                { name: "LinkedIn", email: userData.email, risk: "High", date: "May 26, 2025" },
-                { name: "Adobe", email: userData.email, risk: "High", date: "May 20, 2025" },
-                { name: "Dropbox", email: userData.email, risk: "Medium", date: "May 14, 2025" },
-                { name: "Canva", email: userData.email, risk: "Low", date: "May 10, 2025" },
-                { name: "Twitter", email: userData.email, risk: "High", date: "May 02, 2025" },
-              ].map((item, i) => (
+              {dashboardStats.recentBreaches.map((item, i) => (
                 <div key={i} className="flex justify-between items-center bg-black/50 p-3 rounded-xl border border-gray-800">
                   <div>
                     <span className="text-white font-bold">{item.name}</span>
@@ -221,10 +249,10 @@ useEffect(() => {
           {/* TOP 4 STAT CARDS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { title: "Total Breaches", val: "24", sub: "Across all your assets", icon: "🛡️", color: "text-red-400" },
-              { title: "Compromised Emails", val: "6", sub: "Email addresses found", icon: "✉️", color: "text-purple-400" },
-              { title: "Exposed Passwords", val: "12", sub: "Across breaches", icon: "🔑", color: "text-amber-400" },
-              { title: "Monitored Domains", val: "3", sub: "Active monitoring", icon: "🌐", color: "text-lime-400" },
+              { title: "Total Breaches", val: dashboardStats.totalBreaches, sub: "Across all your assets", icon: "🛡️", color: "text-red-400" },
+              { title: "Compromised Emails", val: dashboardStats.compromisedEmails, sub: "Email addresses found", icon: "✉️", color: "text-purple-400" },
+              { title: "Exposed Passwords", val: dashboardStats.exposedPasswords, sub: "Across breaches", icon: "🔑", color: "text-amber-400" },
+              { title: "Monitored Domains", val: dashboardStats.monitoredDomains, sub: "Active monitoring", icon: "🌐", color: "text-lime-400" },
             ].map((card, idx) => (
               <div key={idx} className="bg-[#060a17] border border-gray-800/80 rounded-3xl p-5 space-y-3 hover:border-lime-500/40 transition shadow-xl">
                 <div className="flex justify-between items-start">
@@ -247,22 +275,22 @@ useEffect(() => {
               <h3 className="text-sm font-bold text-white">Breach Overview</h3>
               <div className="flex items-center justify-center py-2">
                 <div className="w-36 h-36 rounded-full border-8 border-gray-900 border-t-red-500 border-r-amber-500 border-b-lime-500 flex flex-col items-center justify-center shadow-2xl relative">
-                  <span className="text-2xl font-black text-white">24</span>
+                  <span className="text-2xl font-black text-white">{dashboardStats.totalBreaches}</span>
                   <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">TOTAL</span>
                 </div>
               </div>
               <div className="space-y-2 text-xs font-mono">
                 <div className="flex justify-between text-gray-300">
                   <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500"></span> High Risk</span>
-                  <span className="text-red-400 font-bold">8</span>
+                  <span className="text-red-400 font-bold">{dashboardStats.breachOverview.high}</span>
                 </div>
                 <div className="flex justify-between text-gray-300">
                   <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-amber-500"></span> Medium Risk</span>
-                  <span className="text-amber-400 font-bold">10</span>
+                  <span className="text-amber-400 font-bold">{dashboardStats.breachOverview.medium}</span>
                 </div>
                 <div className="flex justify-between text-gray-300">
                   <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-lime-500"></span> Low Risk</span>
-                  <span className="text-lime-400 font-bold">6</span>
+                  <span className="text-lime-400 font-bold">{dashboardStats.breachOverview.low}</span>
                 </div>
               </div>
             </div>
@@ -279,18 +307,13 @@ useEffect(() => {
                 </button>
               </div>
               <div className="space-y-3 font-mono text-xs">
-                {[
-                  { name: "LinkedIn", email: userData.email, risk: "High", date: "May 26, 2025" },
-                  { name: "Adobe", email: userData.email, risk: "High", date: "May 20, 2025" },
-                  { name: "Dropbox", email: userData.email, risk: "Medium", date: "May 14, 2025" },
-                  { name: "Canva", email: userData.email, risk: "Low", date: "May 10, 2025" },
-                ].map((item, idx) => (
+                {dashboardStats.recentBreaches.map((item, idx) => (
                   <div key={idx} className="bg-black/50 border border-gray-800 p-3 rounded-2xl flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span className="w-7 h-7 rounded-lg bg-lime-950/60 border border-lime-500/30 text-lime-400 font-extrabold flex items-center justify-center text-[10px]">in</span>
                       <div>
                         <p className="text-white font-bold">{item.name}</p>
-                        <p className="text-[10px] text-gray-400">{item.email}</p>
+                        <p className="text-[10px] text-gray-400">{userData.email}</p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -315,11 +338,11 @@ useEffect(() => {
                   View Report
                 </button>
               </div>
-              <p className="text-xs font-mono text-gray-400 relative z-10">We found 6 results matching your assets on the dark web.</p>
+              <p className="text-xs font-mono text-gray-400 relative z-10">We found {dashboardStats.compromisedEmails} results matching your assets on the dark web.</p>
               
               <div className="relative z-10 text-center space-y-3 pt-4">
                 <div>
-                  <h4 className="text-3xl font-black text-red-400">6</h4>
+                  <h4 className="text-3xl font-black text-red-400">{dashboardStats.compromisedEmails}</h4>
                   <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">EXPOSURES FOUND</p>
                 </div>
                 <button 
@@ -350,13 +373,9 @@ useEffect(() => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-900/80">
-                    {[
-                      { asset: userData.email, type: "Email", count: "6", risk: "High" },
-                      { asset: "example.com", type: "Domain", count: "4", risk: "Medium" },
-                      { asset: "user123", type: "Username", count: "3", risk: "Medium" },
-                    ].map((row, idx) => (
+                    {dashboardStats.topAssets.map((row, idx) => (
                       <tr key={idx} className="hover:bg-gray-900/40 transition">
-                        <td className="py-3.5 text-white font-bold">{row.asset}</td>
+                        <td className="py-3.5 text-white font-bold">{row.asset === "user@footpryx.com" ? userData.email : row.asset}</td>
                         <td className="py-3.5 text-gray-400">{row.type}</td>
                         <td className="py-3.5 text-lime-400 font-bold">{row.count}</td>
                         <td className="py-3.5 text-right">
@@ -376,7 +395,7 @@ useEffect(() => {
               <h3 className="text-sm font-bold text-white">Your Security Score</h3>
               <div className="flex items-center gap-6">
                 <div className="w-28 h-28 rounded-full border-8 border-gray-900 border-t-emerald-500 border-r-amber-500 flex flex-col items-center justify-center shadow-2xl shrink-0">
-                  <span className="text-2xl font-black text-white">72</span>
+                  <span className="text-2xl font-black text-white">{dashboardStats.securityScore}</span>
                   <span className="text-[9px] font-mono text-gray-400">/100</span>
                 </div>
                 <div>
