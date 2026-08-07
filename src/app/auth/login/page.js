@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import emailjs from '@emailjs/browser'; // 🌟 EmailJS इम्पोर्ट केला आहे
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -34,22 +35,23 @@ export default function Login() {
         );
         setMessage("Success! Sending security email & Redirecting...");
 
-        // 🌟 नवीन ॲड केले: यशस्वी लॉगिन झाल्यावर आपल्या Nodemailer API ला मेल पाठवण्यासाठी रिक्वेस्ट पाठवणे
-        try {
-          await fetch("/api/send-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              to: email,
-              title: "Login Security Alert",
-              message: `Hello ${userName}, we detected a successful login to your Footpryx account. If this was you, you can safely ignore this message.`,
-              buttonText: "Go to Dashboard",
-              buttonUrl: "http://localhost:3000/dashboard", // किंवा तुझी लाईव्ह वेबसाईटची लिंक
-            }),
-          });
-        } catch (mailErr) {
-          console.log("Mail trigger error:", mailErr);
-        }
+        // 🌟 EmailJS द्वारे युजरला यशस्वी लॉगिनचा मेल पाठवण्यासाठी कोड
+       try {
+  const templateParams = {
+    to_name: userName,
+    user_email: email,
+  };
+
+  await emailjs.send(
+    'service_d18o81o',       // Service ID
+    'template_xuhayhy',      // Template ID
+    templateParams,
+    '55DybHZcEegoxVNCS'      // Public Key
+  );
+  console.log("EmailJS Success!");
+} catch (mailErr) {
+  console.log("Mail trigger error:", mailErr);
+}
 
         // 🟢 यशस्वी लॉगिन झाल्यावर थेट युजर पॅनलवर जाईल
         setTimeout(() => { window.location.href = "/user-panel"; }, 1200);

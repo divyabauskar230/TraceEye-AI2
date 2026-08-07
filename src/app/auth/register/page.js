@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import emailjs from '@emailjs/browser'; // 🌟 EmailJS इम्पोर्ट केला आहे
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -17,7 +18,7 @@ export default function Register() {
     setMessage("");
 
     try {
-      // 🟢 लोकल सर्व्हरसाठी लिंक सेट केली आहे (मेल येण्यासाठी)
+      // 🟢 लोकल सर्व्हरसाठी लिंक सेट केली आहे
       const response = await fetch("http://127.0.0.1:8000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,19 +33,20 @@ export default function Register() {
         );
         setMessage("Account created! Sending welcome email...");
 
-        // 🌟 नवीन ॲड केले: यशस्वी रजिस्ट्रेशन झाल्यावर आपल्या Nodemailer API ला वेलकम मेल पाठवण्यासाठी रिक्वेस्ट पाठवणे
+        // 🌟 EmailJS द्वारे यशस्वी रजिस्ट्रेशन झाल्यावर वेलकम मेल पाठवणे
         try {
-          await fetch("/api/send-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              to: email,
-              title: "Welcome to Footpryx OSINT Platform",
-              message: `Hello ${name}, thank you for registering with Footpryx. Your intelligence workspace is now ready.`,
-              buttonText: "Access Dashboard",
-              buttonUrl: "http://localhost:3000/dashboard", // किंवा तुझी लाईव्ह वेबसाईटची लिंक
-            }),
-          });
+          const templateParams = {
+            to_name: name,
+            user_email: email,
+          };
+
+          await emailjs.send(
+            'service_d18o81o',       // Service ID
+            'template_xuhayhy',      // Template ID
+            templateParams,
+            '55DybHZcEegoxVNCS'      // Public Key
+          );
+          console.log("Welcome EmailJS Success!");
         } catch (mailErr) {
           console.log("Welcome mail error:", mailErr);
         }
@@ -113,7 +115,7 @@ export default function Register() {
               />
             </div>
 
-            {/* 📱 Mobile Number Field Added Here */}
+            {/* 📱 Mobile Number Field */}
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-2 ml-1">Mobile Number</label>
               <input
