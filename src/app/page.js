@@ -59,22 +59,9 @@ export default function Home() {
           >
             Create Account
           </Link>
-          {/* Quick Panel Navigation Buttons */}
-        <div className="hidden lg:flex items-center gap-3">
-          <Link 
-  href="/user-panel" 
-  className="bg-gray-900 border border-gray-700 hover:border-lime-400 text-lime-400 font-bold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-1.5"
->
-  <span>👤</span> User Panel
-</Link>
-          <Link 
-            href="/admin" 
-            className="bg-gray-900 border border-gray-700 hover:border-yellow-400 text-yellow-400 font-bold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-1.5"
-          >
-            <span>👑</span> Admin Panel
-          </Link>
+      
         </div>
-        </div>
+       
       </header>
 
       {/* 🚀 1. HERO SECTION WITH SIR'S UPDATED DASHBOARD */}

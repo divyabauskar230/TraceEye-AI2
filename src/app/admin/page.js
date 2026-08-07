@@ -18,26 +18,22 @@ export default function AdminDashboardPage() {
     highRisk: "232"
   });
 
- useEffect(() => {
+  // --- ADMIN AUTHENTICATION CHECK (ADDED WITHOUT TOUCHING YOUR UI CODE) ---
+  useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedUser = localStorage.getItem("footpryx_user");
-      if (!savedUser) {
-        router.push("/auth/login");
+      const savedAdmin = localStorage.getItem("footpryx_admin");
+      if (!savedAdmin) {
+        router.push("/admin/login");
         return;
       }
-      try {
-        const parsed = JSON.parse(savedUser);
-        setAdminUser({
-          name: parsed.name || "Admin",
-          role: "Super Admin",
-          initial: parsed.name ? parsed.name.charAt(0).toUpperCase() : "A"
-        });
-      } catch (e) {
-        console.error(e);
-        router.push("/auth/login");
-      }
+      setAdminUser({
+        name: "Super Admin",
+        role: "Super Admin",
+        initial: "A"
+      });
     }
   }, [router]);
+  // ------------------------------------------------------------------------
 
   const handleRefreshTelemetry = () => {
     setSuccessMsg("Telemetry streams re-calibrated successfully!");
@@ -278,11 +274,8 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <svg className="absolute inset-x-4 inset-y-8 h-36 w-[calc(100%-2rem)] overflow-visible" preserveAspectRatio="none" viewBox="0 0 500 150">
-                  {/* Lime Line (Scans) */}
                   <path d="M 0 40 Q 80 20, 160 60 T 320 50 T 480 30" fill="none" stroke="#84cc16" strokeWidth="2.5" />
-                  {/* Green Line (Reports) */}
                   <path d="M 0 90 Q 80 60, 160 80 T 320 70 T 480 50" fill="none" stroke="#10b981" strokeWidth="2.5" />
-                  {/* Purple Line (Users) */}
                   <path d="M 0 120 Q 80 100, 160 110 T 320 95 T 480 85" fill="none" stroke="#a855f7" strokeWidth="2.5" />
                 </svg>
 
@@ -440,7 +433,6 @@ export default function AdminDashboardPage() {
                 <Link href="/admin/logs" className="text-xs font-mono text-lime-400 hover:underline">View Logs</Link>
               </div>
 
-              {/* Background Shield Graphic */}
               <div className="absolute right-4 bottom-4 opacity-15 pointer-events-none">
                 <svg className="w-36 h-36 text-lime-500" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>

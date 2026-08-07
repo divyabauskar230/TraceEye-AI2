@@ -26,6 +26,23 @@ export default function Login() {
       });
 
       if (response.ok) {
+        // 📧 नवीन जोडलेले: यशस्वी लॉगिन झाल्यावर जीमेलवरून सिक्युरिटी अलर्ट मेल पाठवणे
+        try {
+        await fetch('/api/send-email', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    to: email,
+    title: 'Security Alert: New Login 🔐',
+    message: `Hello! A successful login to your Footpryx account was detected. If this was you, you're good to go!`,
+    buttonText: 'Open Workspace',
+    buttonUrl: 'https://footpryx.com/user-panel'
+  }),
+});
+        } catch (mailErr) {
+          console.error("Login email alert failed:", mailErr);
+        }
+
         const userName = email.split("@")[0];
         localStorage.setItem(
           "footpryx_user",

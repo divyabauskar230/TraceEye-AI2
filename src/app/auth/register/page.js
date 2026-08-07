@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState(""); // 📱 मोबाईल नंबरसाठी नवीन स्टेट
+  const [phone, setPhone] = useState(""); // 📱 मोबाईल नंबरसाठी स्टेट
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -24,6 +24,23 @@ export default function Register() {
       });
 
       if (response.ok) {
+        // 📧 नवीन जोडलेले: यशस्वी रजिस्ट्रेशनवर ऑटोमॅटिक वेलकम ईमेल पाठवणे
+        try {
+         await fetch('/api/send-email', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    to: email,
+    title: 'Welcome to Footpryx! 🎉',
+    message: `Hello ${name}, your account has been successfully created. You can now access your intelligence workspace.`,
+    buttonText: 'Login to Dashboard',
+    buttonUrl: 'https://footpryx.com/auth/login'
+  }),
+});
+        } catch (mailErr) {
+          console.error("Welcome email failed to trigger:", mailErr);
+        }
+
         // Registration यशस्वी झाल्यावर युझरचा डेटा localStorage मध्ये सेव्ह करा
         localStorage.setItem(
           "footpryx_user",
@@ -55,14 +72,13 @@ export default function Register() {
         <div className="w-full max-w-md bg-[#0b0e17]/80 border border-slate-900 rounded-[28px] p-8 md:p-10 shadow-2xl relative overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-slate-800 before:to-transparent">
           
           {/* Logo Assembly */}
-          {/* Logo Assembly */}
-<div className="flex flex-col items-center mb-6 text-center">
-  <div className="flex items-center gap-2.5 text-white mb-2">
-    <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-slate-800" />
-    <h2 className="text-xl font-bold tracking-tight">footpryx</h2>
-  </div>
-  <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">FOOTPRINT INTELLIGENCE PLATFORM</p>
-</div>
+          <div className="flex flex-col items-center mb-6 text-center">
+            <div className="flex items-center gap-2.5 text-white mb-2">
+              <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-slate-800" />
+              <h2 className="text-xl font-bold tracking-tight">footpryx</h2>
+            </div>
+            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">FOOTPRINT INTELLIGENCE PLATFORM</p>
+          </div>
 
           <div className="text-center mb-8">
             <h3 className="text-xl font-bold text-white">Create Account</h3>
