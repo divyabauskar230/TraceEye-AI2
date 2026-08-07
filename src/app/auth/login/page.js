@@ -9,7 +9,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   
-  // 🟢 नवीन ॲड केलेले: Render सर्व्हर लोडिंग स्क्रीन दाखवण्यासाठी
+  // 🟢 Render सर्व्हर लोडिंग स्क्रीन दाखवण्यासाठी
   const [isWakingUp, setIsWakingUp] = useState(false);
 
   const handleLogin = async (e) => {
@@ -19,37 +19,39 @@ export default function Login() {
     setIsWakingUp(true); // लोडिंग पॉपअप ऑन करा
 
     try {
-      const response = await fetch("https://footpryx-backend.onrender.com/api/auth/login", {
+      // 🟢 इथे लोकल किंवा लाईव्ह युआरएल टाकू शकतोस (सध्या लोकलसाठी सेट केले आहे)
+      const response = await fetch("http://127.0.0.1:8000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
-        // 📧 नवीन जोडलेले: यशस्वी लॉगिन झाल्यावर जीमेलवरून सिक्युरिटी अलर्ट मेल पाठवणे
-        try {
-        await fetch('/api/send-email', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    to: email,
-    title: 'Security Alert: New Login 🔐',
-    message: `Hello! A successful login to your Footpryx account was detected. If this was you, you're good to go!`,
-    buttonText: 'Open Workspace',
-    buttonUrl: 'https://footpryx.com/user-panel'
-  }),
-});
-        } catch (mailErr) {
-          console.error("Login email alert failed:", mailErr);
-        }
-
         const userName = email.split("@")[0];
         localStorage.setItem(
           "footpryx_user",
           JSON.stringify({ name: userName, email: email })
         );
-        setMessage("Success! Redirecting...");
-        // 🟢 इथे बदल केला आहे: यशस्वी लॉगिन झाल्यावर थेट युजर पॅनलवर जाईल
+        setMessage("Success! Sending security email & Redirecting...");
+
+        // 🌟 नवीन ॲड केले: यशस्वी लॉगिन झाल्यावर आपल्या Nodemailer API ला मेल पाठवण्यासाठी रिक्वेस्ट पाठवणे
+        try {
+          await fetch("/api/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              to: email,
+              title: "Login Security Alert",
+              message: `Hello ${userName}, we detected a successful login to your Footpryx account. If this was you, you can safely ignore this message.`,
+              buttonText: "Go to Dashboard",
+              buttonUrl: "http://localhost:3000/dashboard", // किंवा तुझी लाईव्ह वेबसाईटची लिंक
+            }),
+          });
+        } catch (mailErr) {
+          console.log("Mail trigger error:", mailErr);
+        }
+
+        // 🟢 यशस्वी लॉगिन झाल्यावर थेट युजर पॅनलवर जाईल
         setTimeout(() => { window.location.href = "/user-panel"; }, 1200);
       } else {
         setIsWakingUp(false); // एरर आल्यास पॉपअप बंद करा
@@ -65,7 +67,7 @@ export default function Login() {
 
   const handleGoogleLogin = () => {
     setIsWakingUp(true); // Google लॉगिन करताना लोडिंग पॉपअप ऑन करा
-    window.location.href = "https://footpryx-backend.onrender.com/api/auth/google/login";
+    window.location.href = "http://127.0.0.1:8000/api/auth/google/login";
   };
 
   return (

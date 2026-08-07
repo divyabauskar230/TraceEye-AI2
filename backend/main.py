@@ -78,7 +78,6 @@ def send_welcome_email(to_email: str, user_name: str):
         msg['From'] = 'footpryxofficial@gmail.com'
         msg['To'] = to_email
 
-        # इथे प्रोफेशनल आणि इंग्रजी HTML टेम्पलेट सेट केला आहे
         html_content = f"""
         <!DOCTYPE html>
         <html>
@@ -113,12 +112,61 @@ def send_welcome_email(to_email: str, user_name: str):
 
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server.login("footpryxofficial@gmail.com", "ebum nclu bxfu sknl")
+        server.login(os.getenv("SMTP_EMAIL"), os.getenv("SMTP_PASSWORD"))
         server.send_message(msg)
         server.quit()
         print("Professional English Welcome Email Sent Successfully!")
     except Exception as e:
         print("Email Error:", e)
+
+# 🔐 📧 SMTP Login Security Email Function (नवीन जोडलेले)
+def send_login_email(to_email: str, user_name: str):
+    try:
+        msg = EmailMessage()
+        msg['Subject'] = 'Security Alert: New Login 🔐'
+        msg['From'] = 'footpryxofficial@gmail.com'
+        msg['To'] = to_email
+
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; background-color: #f4f4f7; padding: 20px; }}
+                .container {{ max-width: 600px; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }}
+                .header {{ color: #10B981; font-size: 24px; font-weight: bold; margin-bottom: 20px; }}
+                .content {{ color: #333333; font-size: 16px; line-height: 1.6; }}
+                .footer {{ margin-top: 30px; color: #888888; font-size: 12px; border-top: 1px solid #eaeaea; padding-top: 15px; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">Security Alert: New Login 🔐</div>
+                <div class="content">
+                    <p>Hello <b>{user_name}</b>,</p>
+                    <p>A successful login to your <b>Footpryx</b> account was detected.</p>
+                    <p>If this was you, you're good to go! If you didn't initiate this, please secure your account immediately.</p>
+                    <p>Best regards,<br><b>The Footpryx Team</b></p>
+                </div>
+                <div class="footer">
+                    <p>&copy; 2026 Footpryx. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        msg.set_content(f"Hello {user_name},\n\nA successful login to your Footpryx account was detected.")
+        msg.add_alternative(html_content, subtype='html')
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login("footpryxofficial@gmail.com", "ebum nclu bxfu sknl")
+        server.send_message(msg)
+        server.quit()
+        print("Login Security Email Sent Successfully!")
+    except Exception as e:
+        print("Login Email Error:", e)
 
 # ----------------------------------------------------------------
 # 🔒 AUTHENTICATION SCHEMAS & ENDPOINTS
@@ -151,7 +199,7 @@ async def register_user(user: RegisterRequest, background_tasks: BackgroundTasks
         )
         conn.commit()
 
-        # 📧 ईमेल आता बॅकग्राउंडमध्ये पाठवला जाईल (फ्रीझ होणार नाही)
+        # 📧 ईमेल आता बॅकग्राउंडमध्ये पाठवला जाईल
         background_tasks.add_task(send_welcome_email, user.email, user.name)
 
         return {"message": "User registered successfully", "data": {"name": user.name, "email": user.email}}
@@ -162,9 +210,9 @@ async def register_user(user: RegisterRequest, background_tasks: BackgroundTasks
     finally:
         conn.close()
 
-# 🔑 २. युझर लॉगिन एंडपॉईंट
+# 🔑 २. युझर लॉगिन एंडपॉईंट (सहित सिक्युरिटी मेल - अपडेटेड)
 @app.post("/api/auth/login")
-async def login_user(user: LoginRequest):
+async def login_user(user: LoginRequest, background_tasks: BackgroundTasks):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("SELECT name, email, password FROM users WHERE email = ?", (user.email,))
@@ -179,6 +227,9 @@ async def login_user(user: LoginRequest):
     if user.password != db_password:
         raise HTTPException(status_code=401, detail="Access Denied: Invalid Password Hash.")
     
+    # 📧 लॉगिन केल्यावर सिक्युरिटी मेल बॅकग्राउंडमध्ये पाठवा
+    background_tasks.add_task(send_login_email, db_email, db_name if db_name else "User")
+
     return {"message": "Initialize Access Successful!", "user": {"name": db_name, "email": db_email}}
 
 # 🗑️ ३. युझर अकाऊंट पूर्णपणे डिलीट करणे
@@ -431,21 +482,19 @@ async def execute_osint_scan(scan: ScanRequest):
     }
 
 
-    # 📊 युजर डॅशबोर्ड डायनॅमिक डेटा एंडपॉईंट (नवीन ॲड केलेला)
+# 📊 युजर डॅशबोर्ड डायनॅमिक डेटा एंडपॉईंट
 @app.get("/api/user/dashboard")
 async def get_user_dashboard_stats(email: str):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     
     try:
-        # युजर डेटाबेसमध्ये आहे का तपासा
         cursor.execute("SELECT name, email FROM users WHERE email = ?", (email,))
         user = cursor.fetchone()
         
         if not user:
             raise HTTPException(status_code=404, detail="User not found in system node.")
             
-        # या युजरच्या स्कॅन हिस्ट्री किंवा डॅशबोर्डसाठी स्टॅट्स पाठवणे
         cursor.execute("SELECT scan_type, scan_query, scanned_at FROM scan_history ORDER BY scanned_at DESC LIMIT 5")
         history = cursor.fetchall()
         

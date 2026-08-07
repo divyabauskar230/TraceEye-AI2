@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState(""); // 📱 मोबाईल नंबरसाठी स्टेट
+  const [phone, setPhone] = useState(""); 
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -17,35 +17,38 @@ export default function Register() {
     setMessage("");
 
     try {
-      const response = await fetch("https://footpryx-backend.onrender.com/api/auth/register", {
+      // 🟢 लोकल सर्व्हरसाठी लिंक सेट केली आहे (मेल येण्यासाठी)
+      const response = await fetch("http://127.0.0.1:8000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, password }), // 📱 API मध्ये phone सुद्धा पाठवला आहे
+        body: JSON.stringify({ name, email, phone, password }), 
       });
 
       if (response.ok) {
-        // 📧 नवीन जोडलेले: यशस्वी रजिस्ट्रेशनवर ऑटोमॅटिक वेलकम ईमेल पाठवणे
-        try {
-         await fetch('/api/send-email', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    to: email,
-    title: 'Welcome to Footpryx! 🎉',
-    message: `Hello ${name}, your account has been successfully created. You can now access your intelligence workspace.`,
-    buttonText: 'Login to Dashboard',
-    buttonUrl: 'https://footpryx.com/auth/login'
-  }),
-});
-        } catch (mailErr) {
-          console.error("Welcome email failed to trigger:", mailErr);
-        }
-
         // Registration यशस्वी झाल्यावर युझरचा डेटा localStorage मध्ये सेव्ह करा
         localStorage.setItem(
           "footpryx_user",
           JSON.stringify({ name, email, phone })
         );
+        setMessage("Account created! Sending welcome email...");
+
+        // 🌟 नवीन ॲड केले: यशस्वी रजिस्ट्रेशन झाल्यावर आपल्या Nodemailer API ला वेलकम मेल पाठवण्यासाठी रिक्वेस्ट पाठवणे
+        try {
+          await fetch("/api/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              to: email,
+              title: "Welcome to Footpryx OSINT Platform",
+              message: `Hello ${name}, thank you for registering with Footpryx. Your intelligence workspace is now ready.`,
+              buttonText: "Access Dashboard",
+              buttonUrl: "http://localhost:3000/dashboard", // किंवा तुझी लाईव्ह वेबसाईटची लिंक
+            }),
+          });
+        } catch (mailErr) {
+          console.log("Welcome mail error:", mailErr);
+        }
+
         setMessage("Account created successfully! Redirecting...");
         setTimeout(() => { window.location.href = "/"; }, 1200);
       } else {
@@ -59,7 +62,7 @@ export default function Register() {
   };
 
   const handleGoogleRegister = () => {
-    window.location.href = "https://footpryx-backend.onrender.com/api/auth/google/login";
+    window.location.href = "http://127.0.0.1:8000/api/auth/google/login";
   };
 
   return (

@@ -36,10 +36,11 @@ export async function POST(req) {
       </div>
     `;
 
-    await transporter.sendMail({
-      from: `"Footpryx Support" <${process.env.SMTP_EMAIL}>`,
+   await transporter.sendMail({
+      from: "Footpryx Support <footpryxofficial@gmail.com>", // 👈 हे असं व्यवस्थित नाव दे
+      replyTo: "footpryxofficial@gmail.com",
       to,
-      subject: title,
+      subject: `🔒 ${title}`,
       html: htmlTemplate,
     });
 
