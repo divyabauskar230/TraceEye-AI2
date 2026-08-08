@@ -30,7 +30,7 @@ function CheckoutContent() {
         }
       }
 
-      // ⚡ Razorpay Script Load करण्यासाठी हे ॲड केले आहे (जुना कोड सुरक्षित आहे)
+      // ⚡ Razorpay Script Load
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.async = true;
@@ -69,7 +69,7 @@ function CheckoutContent() {
   const selectedPlan = plansData[planParam.toLowerCase()] || plansData.intermediate;
   const currentPrice = currency === "INR" ? selectedPlan.inr : selectedPlan.brl;
 
-  // 💳 Original Stripe / Mock Submit Handler
+  // 💳 Original Stripe / Mock Submit Handler (तसाच ठेवला आहे)
   const handleSubscribe = (e) => {
     e.preventDefault();
     setIsProcessing(true);
@@ -81,11 +81,11 @@ function CheckoutContent() {
     }, 2000);
   };
 
-  // 🟢 NEW ADDED: Razorpay Payment Handler (तुझी टेस्ट की वापरून)
+  // 🟢 Razorpay Handler (एरर काढण्यासाठी modal.ondismiss ॲड केले आहे)
   const handleRazorpayPayment = () => {
     const options = {
-      key: "rzp_test_TNGFEDoqojeKic", // 👈 तुझी टेस्ट की इथे सुरक्षितपणे टाकली आहे
-      amount: selectedPlan.amountValue * 100, // Razorpay पैशांमध्ये मोजतो (Paise)
+      key: "rzp_test_TNGFEDoqojeKic", 
+      amount: selectedPlan.amountValue * 100, 
       currency: "INR",
       name: "Footpryx Cyber Intelligence",
       description: `Upgrade to ${selectedPlan.name}`,
@@ -93,6 +93,12 @@ function CheckoutContent() {
       handler: function (response) {
         alert(`🎉 Razorpay Test Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
         window.location.href = "/dashboard";
+      },
+      // 🛡️ नवीन सेफ्टी फिचर: विंडो बंद केल्यावर फालतू 'Payment Failed' अलर्ट येणार नाही
+      modal: {
+        ondismiss: function () {
+          console.log("Payment popup closed by user.");
+        }
       },
       prefill: {
         name: user?.name || "Valued User",
@@ -192,7 +198,7 @@ function CheckoutContent() {
         </div>
       </div>
 
-      {/* 🤍 RIGHT SIDE: STRIPE / CARD PAYMENT FORM + NEW RAZORPAY BUTTON */}
+      {/* 🤍 RIGHT SIDE: STRIPE CARD FORM + RAZORPAY BUTTON */}
       <div className="w-full md:w-1/2 bg-white text-black p-8 md:p-16 flex flex-col justify-center min-h-[50vh] md:min-h-screen">
         <div className="max-w-md w-full mx-auto space-y-6">
           
@@ -205,7 +211,7 @@ function CheckoutContent() {
             <span className="text-base">Pay</span> / GPay
           </button>
 
-          {/* 🟢 NEWLY ADDED: RAZORPAY QUICK PAY BUTTON (सरान दाखवण्यासाठी एकदम भारी ऑप्शन) */}
+          {/* ⚡ RAZORPAY QUICK PAY BUTTON */}
           <button 
             type="button" 
             onClick={handleRazorpayPayment}
@@ -220,7 +226,7 @@ function CheckoutContent() {
             <div className="flex-1 h-[1px] bg-slate-200"></div>
           </div>
 
-          {/* Original Payment Form (तुझा जुना कोड अजिबात बदललेला नाही) */}
+          {/* Original Payment Form (सुरक्षित) */}
           <form onSubmit={handleSubscribe} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">Contact information</label>
