@@ -21,7 +21,7 @@ export default function Register() {
       // 🟢 लाईव्ह किंवा लोकल सर्व्हरनुसार ऑटोमॅटिक लिंक सेट होईल (127.0.0.1 एरर येणार नाही)
       const backendUrl = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
         ? "http://127.0.0.1:8000/api/auth/register" 
-        : "/api/auth/register";
+        : "https://footpryx-backend.onrender.com/api/auth/register";
 
       const response = await fetch(backendUrl, {
         method: "POST",
@@ -68,10 +68,10 @@ export default function Register() {
   };
 
   const handleGoogleRegister = () => {
-    // 🟢 Google Sign-up साठी सुद्धा डायनॅमिक URL सेट केली आहे
+    // 🟢 Google Sign-up साठी Render च्या लाईव्ह बॅकएंड URL ची सोय केली आहे
     const googleAuthUrl = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
       ? "http://127.0.0.1:8000/api/auth/google/login" 
-      : "https://api.footpryx.com/api/auth/google/login";
+      : "https://footpryx-backend.onrender.com/api/auth/google/login";
 
     window.location.href = googleAuthUrl;
   };

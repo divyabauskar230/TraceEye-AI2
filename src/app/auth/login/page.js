@@ -15,7 +15,7 @@ export default function Login() {
 
   // 🌟 Google login करून परत आल्यावर जर URL मध्ये डेटा असेल तर मेल पाठवणे किंवा हँडल करणे
   useEffect(() => {
-    // समजा युजर Google Login वरून यशस्वी परत आला, तर localStorage तपासून EmailJS ट्रिगर करू शकतो
+    // समजा युजर Google Login वरून यशस्वी परत आला, तर localStorage तपासून ईमेल ट्रिगर करू शकतो
   }, []);
 
   const handleLogin = async (e) => {
@@ -75,12 +75,10 @@ export default function Login() {
   const handleGoogleLogin = () => {
     setIsWakingUp(true); // Google लॉगिन करताना लोडिंग पॉपअप ऑन करा
     
-    // 🟢 लक्षात घ्या: जर बॅकएंड लाईव्ह सर्व्हरवर (उदा. Render किंवा MilesWeb) असेल, 
-    // तर खालील 127.0.0.1 ऐवजी तुमच्या लाईव्ह बॅकएंडची URL यायला हवी. 
-    // सध्या लोकल एरर जाऊ नये म्हणून relative किंवा live domain path सेट केलाय:
+    // 🟢 इथे localhost साठी लोकल आणि लाईव्हसाठी थेट Render च्या बॅकएंडची लिंक सेट केली आहे
     const backendUrl = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
       ? "http://127.0.0.1:8000/api/auth/google/login" 
-      : "https://api.footpryx.com/api/auth/google/login"; // तुमची लाईव्ह बॅकएंड लिंक इथे आपोआप काम करेल
+      : "https://footpryx-backend.onrender.com/api/auth/google/login"; 
 
     window.location.href = backendUrl;
   };

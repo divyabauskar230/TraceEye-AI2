@@ -2,7 +2,7 @@ import os
 import sqlite3
 import hashlib
 from datetime import datetime
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Depends, Request, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel  
@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 import smtplib
 from email.message import EmailMessage
-from fastapi import FastAPI, HTTPException, Depends, Request, BackgroundTasks
 
 # `.env` फाईलमधील व्हॅरियबल्स लोड करणे
 load_dotenv()
@@ -112,14 +111,14 @@ def send_welcome_email(to_email: str, user_name: str):
 
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server.login(os.getenv("SMTP_EMAIL"), os.getenv("SMTP_PASSWORD"))
+        server.login(os.getenv("SMTP_EMAIL", "footpryxofficial@gmail.com"), os.getenv("SMTP_PASSWORD", "ebum nclu bxfu sknl"))
         server.send_message(msg)
         server.quit()
         print("Professional English Welcome Email Sent Successfully!")
     except Exception as e:
         print("Email Error:", e)
 
-# 🔐 📧 SMTP Login Security Email Function (नवीन जोडलेले)
+# 🔐 📧 SMTP Login Security Email Function
 def send_login_email(to_email: str, user_name: str):
     try:
         msg = EmailMessage()
@@ -210,7 +209,7 @@ async def register_user(user: RegisterRequest, background_tasks: BackgroundTasks
     finally:
         conn.close()
 
-# 🔑 २. युझर लॉगिन एंडपॉईंट (सहित सिक्युरिटी मेल - अपडेटेड)
+# 🔑 २. युझर लॉगिन एंडपॉईंट (सहित सिक्युरिटी मेल)
 @app.post("/api/auth/login")
 async def login_user(user: LoginRequest, background_tasks: BackgroundTasks):
     conn = sqlite3.connect(DB_NAME)
@@ -295,7 +294,6 @@ async def google_callback(code: str):
             )
             conn.commit()
             
-            # गुगल लॉगिनद्वारे नवीन युजर आल्यावरही वेलकम मेल पाठवा
             send_welcome_email(email, name)
             
         except Exception as e:
@@ -480,7 +478,6 @@ async def execute_osint_scan(scan: ScanRequest):
         "risk_level": risk_level,
         "results": simulated_results
     }
-
 
 # 📊 युजर डॅशबोर्ड डायनॅमिक डेटा एंडपॉईंट
 @app.get("/api/user/dashboard")
