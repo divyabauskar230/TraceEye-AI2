@@ -192,26 +192,25 @@ class GeminiChatRequest(BaseModel):
 # 📝 १. युझर रजिस्ट्रेशन एंडपॉईंट (सहित वेलकम मेल)
 @app.post("/api/auth/register")
 async def register_user(user: RegisterRequest, background_tasks: BackgroundTasks):
-   # ४. डेटाबेसमध्ये युजर सेव्ह करणे
-        conn = sqlite3.connect(DB_NAME)
-        cursor = conn.cursor()
-        try:
-            # जर युजर आधीच असेल तर काहीही करू नको (INSERT OR IGNORE)
-            cursor.execute(
-                "INSERT OR IGNORE INTO users (name, email, password) VALUES (?, ?, ?)",
-                (name, email, "GOOGLE_AUTH_USER")
-            )
-            conn.commit()
-            
-            # 📧 इथे बदल करायचा आहे:
-            # जर नवीन युजर रजिस्टर झाला असेल तर वेलकम मेल आणि लॉगिनवर सिक्युरिटी मेल
-            background_tasks.add_task(send_welcome_email, email, name) # हा वेलकम मेल
-            background_tasks.add_task(send_login_email, email, name)    # हा लॉगिन अलर्ट मेल
-            
-        except Exception as e:
-            print("Google User DB Save Error:", e)
-        finally:
-            conn.close()
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+            (user.name, user.email, user.password)
+        )
+        conn.commit()
+
+        # 📧 ईमेल बॅकग्राउंडमध्ये इनबॉक्ससाठी पाठवला जाईल
+        background_tasks.add_task(send_welcome_email, user.email, user.name)
+
+        return {"message": "User registered successfully", "data": {"name": user.name, "email": user.email}}
+    except sqlite3.IntegrityError:
+        raise HTTPException(status_code=400, detail="Email already registered in system node.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database Error: {str(e)}")
+    finally:
+        conn.close()
 
 # 🔑 २. युझर लॉगिन एंडपॉईंट (सहित सिक्युरिटी मेल)
 @app.post("/api/auth/login")

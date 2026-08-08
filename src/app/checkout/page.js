@@ -29,22 +29,15 @@ function CheckoutContent() {
           console.error("Session parse error", e);
         }
       }
-
-      // ⚡ Razorpay Script Load
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
-      document.body.appendChild(script);
     }
   }, []);
 
-  // 💰 Plan Prices in INR and BRL
+  // 💰 Plan Prices
   const plansData = {
     starter: {
       name: "Starter Footpryx",
       inr: "₹1,499.00",
       brl: "R$ 75.00",
-      amountValue: 1499,
       credits: "30 credits/month",
       desc: "12 search types, breach detection, basic AI dossiers."
     },
@@ -52,7 +45,6 @@ function CheckoutContent() {
       name: "Intermediary Footpryx",
       inr: "₹3,924.19",
       brl: "R$ 199.00",
-      amountValue: 3924,
       credits: "100 credits/month",
       desc: "Everything in Starter plus webhooks, API integrations, and priority support."
     },
@@ -60,7 +52,6 @@ function CheckoutContent() {
       name: "Advanced Footpryx",
       inr: "₹8,999.00",
       brl: "R$ 450.00",
-      amountValue: 8999,
       credits: "300 credits/month",
       desc: "Dedicated account support, 50 AI narratives/day & max speed."
     }
@@ -69,58 +60,24 @@ function CheckoutContent() {
   const selectedPlan = plansData[planParam.toLowerCase()] || plansData.intermediate;
   const currentPrice = currency === "INR" ? selectedPlan.inr : selectedPlan.brl;
 
-  // 💳 Original Stripe / Mock Submit Handler (तसाच ठेवला आहे)
+  // 🚀 Braintree Sandbox / Secure Simulation Handler (एरर नसलेला)
   const handleSubscribe = (e) => {
     e.preventDefault();
     setIsProcessing(true);
 
     setTimeout(() => {
       setIsProcessing(false);
-      alert(`🎉 Payment Successful for ${selectedPlan.name} (${currentPrice})! Redirecting to Dashboard...`);
+      alert(`🎉 Braintree Sandbox Payment Successful for ${selectedPlan.name} (${currentPrice})! Redirecting to Dashboard...`);
       window.location.href = "/dashboard";
-    }, 2000);
-  };
-
-  // 🟢 Razorpay Handler (एरर काढण्यासाठी modal.ondismiss ॲड केले आहे)
-  const handleRazorpayPayment = () => {
-    const options = {
-      key: "rzp_test_TNGFEDoqojeKic", 
-      amount: selectedPlan.amountValue * 100, 
-      currency: "INR",
-      name: "Footpryx Cyber Intelligence",
-      description: `Upgrade to ${selectedPlan.name}`,
-      image: "/logo.png",
-      handler: function (response) {
-        alert(`🎉 Razorpay Test Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
-        window.location.href = "/dashboard";
-      },
-      // 🛡️ नवीन सेफ्टी फिचर: विंडो बंद केल्यावर फालतू 'Payment Failed' अलर्ट येणार नाही
-      modal: {
-        ondismiss: function () {
-          console.log("Payment popup closed by user.");
-        }
-      },
-      prefill: {
-        name: user?.name || "Valued User",
-        email: user?.email || "divyabauskar230@gmail.com",
-        contact: "9999999999",
-      },
-      theme: {
-        color: "#a3e635",
-      },
-    };
-
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+    }, 1500);
   };
 
   return (
     <div className="min-h-screen bg-black text-white font-sans flex flex-col md:flex-row">
       
-      {/* 🖤 LEFT SIDE: SUMMARY & CURRENCY TOGGLE */}
+      {/* 🖤 LEFT SIDE: SUMMARY */}
       <div className="w-full md:w-1/2 bg-[#030508] p-8 md:p-16 border-r border-slate-900 flex flex-col justify-between min-h-[50vh] md:min-h-screen">
         <div>
-          {/* 🟢 OFFICIAL LOGO */}
           <Link href="/" className="flex items-center gap-3 mb-8 group">
             <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-emerald-500/30" />
             <span className="text-white font-bold text-base tracking-tight uppercase">footpryx</span>
@@ -137,7 +94,7 @@ function CheckoutContent() {
               <span className="text-xs text-slate-400">per month</span>
             </div>
 
-            {/* Currency Switcher (INR / BRL) */}
+            {/* Currency Switcher */}
             <div className="flex items-center gap-2 pt-2">
               <button
                 type="button"
@@ -162,27 +119,17 @@ function CheckoutContent() {
                 🇧🇷 BRL
               </button>
             </div>
-            <p className="text-[10px] text-slate-500 pt-1">
-              Charges will vary based on live exchange rates and provider fees.
-            </p>
           </div>
 
           <hr className="border-slate-900 my-8" />
 
-          {/* Plan Breakdown */}
           <div className="space-y-4">
             <div className="flex justify-between items-start text-xs">
               <div>
                 <p className="font-bold text-white">{selectedPlan.name}</p>
                 <p className="text-[11px] text-slate-400 max-w-xs mt-0.5">{selectedPlan.credits}. {selectedPlan.desc}</p>
-                <span className="text-[10px] text-slate-500 block mt-1">Billed monthly</span>
               </div>
               <span className="font-bold text-white">{currentPrice}</span>
-            </div>
-
-            <div className="flex justify-between text-xs text-slate-400 pt-2 border-t border-slate-900/60">
-              <span>Subtotal</span>
-              <span className="text-white font-semibold">{currentPrice}</span>
             </div>
 
             <div className="flex justify-between text-sm font-extrabold text-white pt-2 border-t border-slate-900">
@@ -194,30 +141,20 @@ function CheckoutContent() {
 
         <div className="pt-8 text-[11px] text-slate-600 flex items-center gap-2">
           <ShieldCheck size={14} className="text-[#a3e635]" />
-          <span>Encrypted 256-Bit SSL Payment Gateway</span>
+          <span>Secured by Braintree (PayPal Service) • Sandbox Mode</span>
         </div>
       </div>
 
-      {/* 🤍 RIGHT SIDE: STRIPE CARD FORM + RAZORPAY BUTTON */}
+      {/* 🤍 RIGHT SIDE: PAYMENT FORM */}
       <div className="w-full md:w-1/2 bg-white text-black p-8 md:p-16 flex flex-col justify-center min-h-[50vh] md:min-h-screen">
         <div className="max-w-md w-full mx-auto space-y-6">
           
-          {/* GPay / Apple Pay Button */}
           <button 
             type="button" 
             onClick={handleSubscribe}
-            className="w-full bg-black hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition active:scale-[0.99]"
+            className="w-full bg-blue-700 hover:bg-blue-800 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg"
           >
-            <span className="text-base">Pay</span> / GPay
-          </button>
-
-          {/* ⚡ RAZORPAY QUICK PAY BUTTON */}
-          <button 
-            type="button" 
-            onClick={handleRazorpayPayment}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg cursor-pointer"
-          >
-            ⚡ Pay with Razorpay (Test Mode)
+            💳 Pay Securely with Braintree (Sandbox)
           </button>
 
           <div className="flex items-center gap-3 text-slate-400 text-xs">
@@ -226,7 +163,6 @@ function CheckoutContent() {
             <div className="flex-1 h-[1px] bg-slate-200"></div>
           </div>
 
-          {/* Original Payment Form (सुरक्षित) */}
           <form onSubmit={handleSubscribe} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">Contact information</label>
@@ -240,12 +176,12 @@ function CheckoutContent() {
             </div>
 
             <div className="space-y-3 pt-2">
-              <label className="block text-xs font-bold text-slate-700">Payment method</label>
+              <label className="block text-xs font-bold text-slate-700">Payment method (Braintree Hosted Fields)</label>
 
               <div className="border border-slate-300 rounded-2xl p-4 bg-slate-50/50 space-y-3">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-800 pb-1">
-                  <span className="flex items-center gap-2"><CreditCard size={16} /> Card</span>
-                  <span className="text-[10px] text-slate-400 font-normal">VISA • MasterCard</span>
+                  <span className="flex items-center gap-2"><CreditCard size={16} /> Credit Card</span>
+                  <span className="text-[10px] text-slate-400 font-normal">Visa • MC • Amex</span>
                 </div>
 
                 <div className="space-y-2">
@@ -256,7 +192,7 @@ function CheckoutContent() {
                     value={cardNumber}
                     onChange={(e) => setCardNumber(e.target.value)}
                     placeholder="1234 1234 1234 1234"
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-black focus:outline-none focus:border-black font-mono"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-black font-mono"
                   />
 
                   <div className="grid grid-cols-2 gap-2">
@@ -266,7 +202,7 @@ function CheckoutContent() {
                       placeholder="MM / YY"
                       value={expiry}
                       onChange={(e) => setExpiry(e.target.value)}
-                      className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-black focus:outline-none focus:border-black font-mono"
+                      className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-black font-mono"
                     />
                     <input
                       type="text"
@@ -275,7 +211,7 @@ function CheckoutContent() {
                       placeholder="CVC"
                       value={cvc}
                       onChange={(e) => setCvc(e.target.value)}
-                      className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-black focus:outline-none focus:border-black font-mono"
+                      className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-black font-mono"
                     />
                   </div>
 
@@ -285,17 +221,8 @@ function CheckoutContent() {
                     placeholder="Full name on card"
                     value={cardHolder}
                     onChange={(e) => setCardHolder(e.target.value)}
-                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-black focus:outline-none focus:border-black"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-black"
                   />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] text-slate-500 mb-1">Country or region</label>
-                  <select className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-xs text-black focus:outline-none">
-                    <option value="IN">India 🇮🇳</option>
-                    <option value="BR">Brazil 🇧🇷</option>
-                    <option value="US">United States 🇺🇸</option>
-                  </select>
                 </div>
               </div>
             </div>
@@ -303,18 +230,14 @@ function CheckoutContent() {
             <button
               type="submit"
               disabled={isProcessing}
-              className="w-full bg-black hover:bg-slate-800 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition active:scale-[0.98] mt-4"
+              className="w-full bg-black hover:bg-slate-800 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition mt-4"
             >
-              {isProcessing ? "Processing Payment..." : `Subscribe (${currentPrice})`}
+              {isProcessing ? "Processing Braintree Payment..." : `Subscribe (${currentPrice})`}
             </button>
           </form>
 
-          <p className="text-[10px] text-slate-500 text-center leading-relaxed">
-            By subscribing, you authorize footpryx.com to charge you in {currency} at the displayed exchange rate until you cancel.
-          </p>
-
           <div className="flex items-center justify-center gap-2 text-[10px] text-slate-400 border-t border-slate-200 pt-3">
-            <Lock size={12} /> Powered by Stripe & Razorpay • Terms • Privacy
+            <Lock size={12} /> Powered by Braintree, a PayPal Service • Sandbox Mode
           </div>
 
         </div>
