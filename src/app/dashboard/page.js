@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Search, Shield, Clock, Mail, Phone, User, Globe, FileText, Lock, 
-  Link2, Bitcoin, Server, Landmark, ArrowRight, Target, Network, Layers, ArrowUpRight, History, Settings, LogOut, Loader2, Menu, X, Zap, Trash2, AlertCircle
+  Link2, Bitcoin, Server, Landmark, ArrowRight, Target, Network, Layers, ArrowUpRight, History, Settings, LogOut, Loader2, Menu, X, Zap, Trash2, AlertCircle, LayoutDashboard
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -250,6 +250,10 @@ export default function Dashboard() {
           <p className="text-[10px] font-bold text-slate-600 tracking-wider uppercase mb-3 px-2">WORKSPACE</p>
 
           <nav className="space-y-1">
+            {/* 🌟 इथे User Panel (Dashboard) वर जाण्यासाठी ऑप्शन ॲड केला आहे */}
+            <Link href="/user-panel" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+              <LayoutDashboard size={16} /> User Panel
+            </Link>
             <Link href="/dashboard" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold bg-[#141a2e] text-[#a3e635] border border-slate-800/80 shadow-sm">
               <Search size={16} /> Search
             </Link>
