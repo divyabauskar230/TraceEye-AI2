@@ -29,6 +29,12 @@ function CheckoutContent() {
           console.error("Session parse error", e);
         }
       }
+
+      // ⚡ Razorpay Script Load करण्यासाठी हे ॲड केले आहे (जुना कोड सुरक्षित आहे)
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      document.body.appendChild(script);
     }
   }, []);
 
@@ -38,6 +44,7 @@ function CheckoutContent() {
       name: "Starter Footpryx",
       inr: "₹1,499.00",
       brl: "R$ 75.00",
+      amountValue: 1499,
       credits: "30 credits/month",
       desc: "12 search types, breach detection, basic AI dossiers."
     },
@@ -45,6 +52,7 @@ function CheckoutContent() {
       name: "Intermediary Footpryx",
       inr: "₹3,924.19",
       brl: "R$ 199.00",
+      amountValue: 3924,
       credits: "100 credits/month",
       desc: "Everything in Starter plus webhooks, API integrations, and priority support."
     },
@@ -52,6 +60,7 @@ function CheckoutContent() {
       name: "Advanced Footpryx",
       inr: "₹8,999.00",
       brl: "R$ 450.00",
+      amountValue: 8999,
       credits: "300 credits/month",
       desc: "Dedicated account support, 50 AI narratives/day & max speed."
     }
@@ -60,6 +69,7 @@ function CheckoutContent() {
   const selectedPlan = plansData[planParam.toLowerCase()] || plansData.intermediate;
   const currentPrice = currency === "INR" ? selectedPlan.inr : selectedPlan.brl;
 
+  // 💳 Original Stripe / Mock Submit Handler
   const handleSubscribe = (e) => {
     e.preventDefault();
     setIsProcessing(true);
@@ -71,13 +81,40 @@ function CheckoutContent() {
     }, 2000);
   };
 
+  // 🟢 NEW ADDED: Razorpay Payment Handler (तुझी टेस्ट की वापरून)
+  const handleRazorpayPayment = () => {
+    const options = {
+      key: "rzp_test_TNGFEDoqojeKic", // 👈 तुझी टेस्ट की इथे सुरक्षितपणे टाकली आहे
+      amount: selectedPlan.amountValue * 100, // Razorpay पैशांमध्ये मोजतो (Paise)
+      currency: "INR",
+      name: "Footpryx Cyber Intelligence",
+      description: `Upgrade to ${selectedPlan.name}`,
+      image: "/logo.png",
+      handler: function (response) {
+        alert(`🎉 Razorpay Test Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+        window.location.href = "/dashboard";
+      },
+      prefill: {
+        name: user?.name || "Valued User",
+        email: user?.email || "divyabauskar230@gmail.com",
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#a3e635",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
   return (
     <div className="min-h-screen bg-black text-white font-sans flex flex-col md:flex-row">
       
       {/* 🖤 LEFT SIDE: SUMMARY & CURRENCY TOGGLE */}
       <div className="w-full md:w-1/2 bg-[#030508] p-8 md:p-16 border-r border-slate-900 flex flex-col justify-between min-h-[50vh] md:min-h-screen">
         <div>
-          {/* 🟢 OFFICIAL LOGO ADDED HERE */}
+          {/* 🟢 OFFICIAL LOGO */}
           <Link href="/" className="flex items-center gap-3 mb-8 group">
             <img src="/logo.png" alt="Footpryx Logo" className="w-9 h-9 rounded-xl object-cover border border-emerald-500/30" />
             <span className="text-white font-bold text-base tracking-tight uppercase">footpryx</span>
@@ -155,7 +192,7 @@ function CheckoutContent() {
         </div>
       </div>
 
-      {/* 🤍 RIGHT SIDE: STRIPE / CARD PAYMENT FORM */}
+      {/* 🤍 RIGHT SIDE: STRIPE / CARD PAYMENT FORM + NEW RAZORPAY BUTTON */}
       <div className="w-full md:w-1/2 bg-white text-black p-8 md:p-16 flex flex-col justify-center min-h-[50vh] md:min-h-screen">
         <div className="max-w-md w-full mx-auto space-y-6">
           
@@ -168,13 +205,22 @@ function CheckoutContent() {
             <span className="text-base">Pay</span> / GPay
           </button>
 
+          {/* 🟢 NEWLY ADDED: RAZORPAY QUICK PAY BUTTON (सरान दाखवण्यासाठी एकदम भारी ऑप्शन) */}
+          <button 
+            type="button" 
+            onClick={handleRazorpayPayment}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg cursor-pointer"
+          >
+            ⚡ Pay with Razorpay (Test Mode)
+          </button>
+
           <div className="flex items-center gap-3 text-slate-400 text-xs">
             <div className="flex-1 h-[1px] bg-slate-200"></div>
-            <span>OR</span>
+            <span>OR PAY WITH CARD</span>
             <div className="flex-1 h-[1px] bg-slate-200"></div>
           </div>
 
-          {/* Payment Form */}
+          {/* Original Payment Form (तुझा जुना कोड अजिबात बदललेला नाही) */}
           <form onSubmit={handleSubscribe} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">Contact information</label>
@@ -262,7 +308,7 @@ function CheckoutContent() {
           </p>
 
           <div className="flex items-center justify-center gap-2 text-[10px] text-slate-400 border-t border-slate-200 pt-3">
-            <Lock size={12} /> Powered by Stripe • Terms • Privacy
+            <Lock size={12} /> Powered by Stripe & Razorpay • Terms • Privacy
           </div>
 
         </div>
