@@ -2,6 +2,7 @@ import os
 import sqlite3
 import hashlib
 from datetime import datetime
+from email.utils import make_msgid
 from fastapi import FastAPI, HTTPException, Depends, Request, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
@@ -69,13 +70,14 @@ def init_db():
 
 init_db()
 
-# 📧 SMTP Welcome Email Function
+# 📧 SMTP Welcome Email Function (Anti-Spam Optimized)
 def send_welcome_email(to_email: str, user_name: str):
     try:
         msg = EmailMessage()
         msg['Subject'] = 'Welcome to Footpryx! 🚀'
         msg['From'] = 'footpryxofficial@gmail.com'
         msg['To'] = to_email
+        msg['Message-ID'] = make_msgid(domain="gmail.com") # 🛡️ Spam मध्ये जाण्यापासून रोखण्यासाठी
 
         html_content = f"""
         <!DOCTYPE html>
@@ -114,17 +116,18 @@ def send_welcome_email(to_email: str, user_name: str):
         server.login(os.getenv("SMTP_EMAIL", "footpryxofficial@gmail.com"), os.getenv("SMTP_PASSWORD", "ebum nclu bxfu sknl"))
         server.send_message(msg)
         server.quit()
-        print("Professional English Welcome Email Sent Successfully!")
+        print("Professional English Welcome Email Sent Successfully to Inbox!")
     except Exception as e:
         print("Email Error:", e)
 
-# 🔐 📧 SMTP Login Security Email Function
+# 🔐 📧 SMTP Login Security Email Function (Anti-Spam Optimized)
 def send_login_email(to_email: str, user_name: str):
     try:
         msg = EmailMessage()
         msg['Subject'] = 'Security Alert: New Login 🔐'
         msg['From'] = 'footpryxofficial@gmail.com'
         msg['To'] = to_email
+        msg['Message-ID'] = make_msgid(domain="gmail.com") # 🛡️ Spam मध्ये जाण्यापासून रोखण्यासाठी
 
         html_content = f"""
         <!DOCTYPE html>
@@ -160,10 +163,10 @@ def send_login_email(to_email: str, user_name: str):
 
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server.login("footpryxofficial@gmail.com", "ebum nclu bxfu sknl")
+        server.login(os.getenv("SMTP_EMAIL", "footpryxofficial@gmail.com"), os.getenv("SMTP_PASSWORD", "ebum nclu bxfu sknl"))
         server.send_message(msg)
         server.quit()
-        print("Login Security Email Sent Successfully!")
+        print("Login Security Email Sent Successfully to Inbox!")
     except Exception as e:
         print("Login Email Error:", e)
 
@@ -198,7 +201,7 @@ async def register_user(user: RegisterRequest, background_tasks: BackgroundTasks
         )
         conn.commit()
 
-        # 📧 ईमेल आता बॅकग्राउंडमध्ये पाठवला जाईल
+        # 📧 ईमेल बॅकग्राउंडमध्ये इनबॉक्ससाठी पाठवला जाईल
         background_tasks.add_task(send_welcome_email, user.email, user.name)
 
         return {"message": "User registered successfully", "data": {"name": user.name, "email": user.email}}
@@ -258,7 +261,7 @@ def google_login():
     return RedirectResponse(google_auth_url)
 
 @app.get("/api/auth/google/callback")
-async def google_callback(code: str):
+async def google_callback(code: str, background_tasks: BackgroundTasks):
     token_url = "https://oauth2.googleapis.com/token"
     data = {
         "client_id": GOOGLE_CLIENT_ID,
@@ -294,14 +297,16 @@ async def google_callback(code: str):
             )
             conn.commit()
             
-            send_welcome_email(email, name)
+            # 📧 गुगल लॉगिन झाल्यावर बॅकग्राउंडमध्ये वेलकम मेल पाठवणे
+            background_tasks.add_task(send_welcome_email, email, name)
             
         except Exception as e:
             print("Google User DB Save Error:", e)
         finally:
             conn.close()
 
-        return RedirectResponse(f"https://footpryx.com/dashboard?email={email}&name={name}")
+        # 🟢 डॅशबोर्ड ऐवजी थेट युजर पॅनलवर पाठवणे (Fixed here)
+        return RedirectResponse(f"https://footpryx.com/user-panel?email={email}&name={name}")
 
 # 🤖 💡 ५. GEMINI AI CHAT ENDPOINT
 @app.post("/api/ai/chat")

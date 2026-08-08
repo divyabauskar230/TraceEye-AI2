@@ -33,6 +33,15 @@ export default function UserDashboardPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      
+      // 🌟 गुगल लॉगिन करून आल्यावर URL मधून name आणि email कॅप्चर करून localStorage मध्ये टाकण्यासाठी
+      const queryParams = new URLSearchParams(window.location.search);
+      const googleName = queryParams.get("name");
+      const googleEmail = queryParams.get("email");
+      if (googleName && googleEmail) {
+        localStorage.setItem("footpryx_user", JSON.stringify({ name: googleName, email: googleEmail }));
+      }
+
       const savedUser = localStorage.getItem("footpryx_user");
       if (!savedUser) {
         router.push("/auth/login");

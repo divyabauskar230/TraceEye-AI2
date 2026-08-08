@@ -75,10 +75,8 @@ export default function Login() {
   const handleGoogleLogin = () => {
     setIsWakingUp(true); // Google लॉगिन करताना लोडिंग पॉपअप ऑन करा
     
-    // 🟢 इथे localhost साठी लोकल आणि लाईव्हसाठी थेट Render च्या बॅकएंडची लिंक सेट केली आहे
-    const backendUrl = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
-      ? "http://127.0.0.1:8000/api/auth/google/login" 
-      : "https://footpryx-backend.onrender.com/api/auth/google/login"; 
+    // 🟢 थेट सरळ आणि पक्की लाईव्ह बॅकएंडची लिंक सेट केली आहे जेणेकरून एरर जाणार नाही
+    const backendUrl = "https://footpryx-backend.onrender.com/api/auth/google/login"; 
 
     window.location.href = backendUrl;
   };

@@ -68,10 +68,8 @@ export default function Register() {
   };
 
   const handleGoogleRegister = () => {
-    // 🟢 Google Sign-up साठी Render च्या लाईव्ह बॅकएंड URL ची सोय केली आहे
-    const googleAuthUrl = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
-      ? "http://127.0.0.1:8000/api/auth/google/login" 
-      : "https://footpryx-backend.onrender.com/api/auth/google/login";
+    // 🟢 थेट सरळ आणि पक्की लाईव्ह बॅकएंडची लिंक सेट केली आहे जेणेकरून एरर जाणार नाही
+    const googleAuthUrl = "https://footpryx-backend.onrender.com/api/auth/google/login";
 
     window.location.href = googleAuthUrl;
   };
