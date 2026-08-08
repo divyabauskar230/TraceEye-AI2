@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import emailjs from '@emailjs/browser'; // 🌟 गुगल लॉगिन ईमेलसाठी EmailJS इम्पोर्ट
 
 export default function UserDashboardPage() {
   const router = useRouter();
@@ -40,8 +41,39 @@ export default function UserDashboardPage() {
       const queryParams = new URLSearchParams(window.location.search);
       const googleName = queryParams.get("name");
       const googleEmail = queryParams.get("email");
+
+      // 🌟 जर URL मध्ये googleName आणि googleEmail आले, म्हणजे युजर गुगलवरून आला आहे
       if (googleName && googleEmail) {
         localStorage.setItem("footpryx_user", JSON.stringify({ name: googleName, email: googleEmail }));
+
+        // 📧 लगेच गुगलवरून आलेल्या युजरला Welcome/Security मेल पाठवण्याचा लॉजिक
+        const sendGoogleLoginMail = async () => {
+          try {
+            const templateParams = {
+              to_name: googleName,
+              user_email: googleEmail,
+            };
+
+            await emailjs.send(
+              'service_d18o81o',      // Service ID
+              'template_xuhayhy',     // Template ID
+              templateParams,
+              '55DybHZcEegoxVNCS'     // Public Key
+            );
+            console.log("Google Login EmailJS Alert Sent Successfully!");
+          } catch (mailErr) {
+            console.log("Google EmailJS Mail Error:", mailErr);
+          }
+        };
+
+        // जर आधी हा मेल पाठवला नसेल, तरच पाठवा (page refresh वर परत जाऊ नये म्हणून)
+        if (!sessionStorage.getItem("google_mail_sent")) {
+          sendGoogleLoginMail();
+          sessionStorage.setItem("google_mail_sent", "true");
+        }
+
+        // URL क्लीन करण्यासाठी (ईमेल आणि नाव लपवण्यासाठी)
+        router.replace('/user-panel');
       }
 
       const savedUser = localStorage.getItem("footpryx_user");
@@ -77,6 +109,7 @@ export default function UserDashboardPage() {
   // 🚪 लॉगआउट फंक्शन
   const handleLogout = () => {
     localStorage.removeItem("footpryx_user");
+    sessionStorage.removeItem("google_mail_sent"); // लॉगआउट करताना मेल सेशन रिसेट
     router.push("/auth/login");
   };
 
@@ -91,6 +124,7 @@ export default function UserDashboardPage() {
         console.log("Error deleting account:", err);
       }
       localStorage.removeItem("footpryx_user");
+      sessionStorage.removeItem("google_mail_sent");
       router.push("/auth/register");
     }
   };
