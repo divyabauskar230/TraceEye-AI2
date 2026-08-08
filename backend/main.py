@@ -75,7 +75,7 @@ def send_welcome_email(to_email: str, user_name: str):
     try:
         msg = EmailMessage()
         msg['Subject'] = 'Welcome to Footpryx! 🚀'
-        msg['From'] = 'footpryxofficial@gmail.com'
+        msg['From'] = 'Footpryx Team <footpryxofficial@gmail.com>'
         msg['To'] = to_email
         msg['Message-ID'] = make_msgid(domain="gmail.com") # 🛡️ Spam मध्ये जाण्यापासून रोखण्यासाठी
 
@@ -125,7 +125,7 @@ def send_login_email(to_email: str, user_name: str):
     try:
         msg = EmailMessage()
         msg['Subject'] = 'Security Alert: New Login 🔐'
-        msg['From'] = 'footpryxofficial@gmail.com'
+        msg['From'] = 'Footpryx Team <footpryxofficial@gmail.com>'
         msg['To'] = to_email
         msg['Message-ID'] = make_msgid(domain="gmail.com") # 🛡️ Spam मध्ये जाण्यापासून रोखण्यासाठी
 
@@ -192,25 +192,26 @@ class GeminiChatRequest(BaseModel):
 # 📝 १. युझर रजिस्ट्रेशन एंडपॉईंट (सहित वेलकम मेल)
 @app.post("/api/auth/register")
 async def register_user(user: RegisterRequest, background_tasks: BackgroundTasks):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    try:
-        cursor.execute(
-            "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-            (user.name, user.email, user.password)
-        )
-        conn.commit()
-
-        # 📧 ईमेल बॅकग्राउंडमध्ये इनबॉक्ससाठी पाठवला जाईल
-        background_tasks.add_task(send_welcome_email, user.email, user.name)
-
-        return {"message": "User registered successfully", "data": {"name": user.name, "email": user.email}}
-    except sqlite3.IntegrityError:
-        raise HTTPException(status_code=400, detail="Email already registered in system node.")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database Error: {str(e)}")
-    finally:
-        conn.close()
+   # ४. डेटाबेसमध्ये युजर सेव्ह करणे
+        conn = sqlite3.connect(DB_NAME)
+        cursor = conn.cursor()
+        try:
+            # जर युजर आधीच असेल तर काहीही करू नको (INSERT OR IGNORE)
+            cursor.execute(
+                "INSERT OR IGNORE INTO users (name, email, password) VALUES (?, ?, ?)",
+                (name, email, "GOOGLE_AUTH_USER")
+            )
+            conn.commit()
+            
+            # 📧 इथे बदल करायचा आहे:
+            # जर नवीन युजर रजिस्टर झाला असेल तर वेलकम मेल आणि लॉगिनवर सिक्युरिटी मेल
+            background_tasks.add_task(send_welcome_email, email, name) # हा वेलकम मेल
+            background_tasks.add_task(send_login_email, email, name)    # हा लॉगिन अलर्ट मेल
+            
+        except Exception as e:
+            print("Google User DB Save Error:", e)
+        finally:
+            conn.close()
 
 # 🔑 २. युझर लॉगिन एंडपॉईंट (सहित सिक्युरिटी मेल)
 @app.post("/api/auth/login")
@@ -272,46 +273,50 @@ async def google_callback(code: str, background_tasks: BackgroundTasks):
     }
     
     async with httpx.AsyncClient() as client:
-        token_res = await client.post(token_url, data=data)
-        token_json = token_res.json()
-        access_token = token_json.get("access_token")
-
-        # 🟢 जर टोकन मिळाला नाही, तर सरळ लॉगिन पेजवर एरर पाठवणे
-        if not access_token:
-            return RedirectResponse("https://footpryx.com/auth/login?error=auth_failed")
-
-        # 🟢 गुगल सर्व्हरवरून युझरची खरी माहिती (Email आणि Name) फेच करणे
-        user_res = await client.get(
-            "https://www.googleapis.com/oauth2/v2/userinfo",
-            headers={"Authorization": f"Bearer {access_token}"}
-        )
-        user_info = user_res.json()
-        
-        email = user_info.get("email")
-        name = user_info.get("name")
-
-        if not email:
-            return RedirectResponse("https://footpryx.com/auth/login?error=auth_failed")
-
-        conn = sqlite3.connect(DB_NAME)
-        cursor = conn.cursor()
         try:
+            token_res = await client.post(token_url, data=data)
+            token_json = token_res.json()
+            
+            # 🔍 जर गुगलने टोकन दिला नाही, तर टर्मिनल/लॉग्समध्ये नेमका एरर प्रिंट करेल
+            if "access_token" not in token_json:
+                print("Google Token Exchange Failed Details:", token_json)
+                return RedirectResponse("https://footpryx.com/auth/login?error=auth_failed")
+
+            access_token = token_json["access_token"]
+
+            # युजरची खरी माहिती ओढणे
+            user_res = await client.get(
+                "https://www.googleapis.com/oauth2/v2/userinfo",
+                headers={"Authorization": f"Bearer {access_token}"}
+            )
+            user_info = user_res.json()
+            
+            email = user_info.get("email")
+            name = user_info.get("name")
+
+            if not email:
+                return RedirectResponse("https://footpryx.com/auth/login?error=auth_failed")
+
+            # डेटाबेसमध्ये सेव्ह करणे
+            conn = sqlite3.connect(DB_NAME)
+            cursor = conn.cursor()
             cursor.execute(
                 "INSERT OR IGNORE INTO users (name, email, password) VALUES (?, ?, ?)",
                 (name, email, "GOOGLE_AUTH_USER")
             )
             conn.commit()
-            
-            # 📧 खऱ्या जिमेलवर वेलकम मेल पाठवणे
-            background_tasks.add_task(send_welcome_email, email, name)
-            
-        except Exception as e:
-            print("Google User DB Save Error:", e)
-        finally:
             conn.close()
 
-        # 🟢 खऱ्या नावा आणि ईमेलसह युजर पॅनलवर रीडायरेक्ट करणे
-        return RedirectResponse(f"https://footpryx.com/user-panel?email={email}&name={name}")
+            # वेलकम मेल पाठवणे
+            background_tasks.add_task(send_welcome_email, email, name)
+
+            # थेट युजर पॅनलवर पाठवणे
+            return RedirectResponse(f"https://footpryx.com/user-panel?email={email}&name={name}")
+            
+        except Exception as e:
+            print("Google Callback Critical Error:", e)
+            return RedirectResponse("https://footpryx.com/auth/login?error=auth_failed")
+
 
 # 🤖 💡 ५. GEMINI AI CHAT ENDPOINT
 @app.post("/api/ai/chat")

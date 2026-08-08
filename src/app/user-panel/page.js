@@ -9,8 +9,12 @@ export default function UserDashboardPage() {
   const [successMsg, setSuccessMsg] = useState("");
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isAllBreachesModalOpen, setIsAllBreachesModalOpen] = useState(false);
+  
+  // 📱 मोबाईल साईडबार आणि प्रोफाईल मेनूसाठी स्टेट्स
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
-  // --- BACKEND API INTEGRATION ADDED HERE (WITHOUT TOUCHING YOUR EXISTING CODE) ---
+  // --- BACKEND API INTEGRATION ---
   const [dashboardStats, setDashboardStats] = useState({
     totalBreaches: "24",
     compromisedEmails: "6",
@@ -33,8 +37,6 @@ export default function UserDashboardPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      
-      // 🌟 गुगल लॉगिन करून आल्यावर URL मधून name आणि email कॅप्चर करून localStorage मध्ये टाकण्यासाठी
       const queryParams = new URLSearchParams(window.location.search);
       const googleName = queryParams.get("name");
       const googleEmail = queryParams.get("email");
@@ -56,7 +58,6 @@ export default function UserDashboardPage() {
           initial: parsed.name ? parsed.name.charAt(0).toUpperCase() : "U"
         });
 
-        // Fetch live data from your Render backend
         fetch(`https://footpryx-backend.onrender.com/api/user/dashboard?email=${encodeURIComponent(userEmail)}`)
           .then(res => res.json())
           .then(data => {
@@ -72,7 +73,27 @@ export default function UserDashboardPage() {
       }
     }
   }, [router]);
-  // -----------------------------------------------------------------------------
+
+  // 🚪 लॉगआउट फंक्शन
+  const handleLogout = () => {
+    localStorage.removeItem("footpryx_user");
+    router.push("/auth/login");
+  };
+
+  // 🗑️ अकाउंट डिलीट फंक्शन
+  const handleDeleteAccount = async () => {
+    if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+      try {
+        await fetch(`https://footpryx-backend.onrender.com/api/user/delete?email=${encodeURIComponent(userData.email)}`, {
+          method: "DELETE",
+        });
+      } catch (err) {
+        console.log("Error deleting account:", err);
+      }
+      localStorage.removeItem("footpryx_user");
+      router.push("/auth/register");
+    }
+  };
 
   const handleImproveScore = () => {
     setSuccessMsg("Security scan initiated! Your score is optimizing...");
@@ -170,7 +191,7 @@ export default function UserDashboardPage() {
         </div>
       )}
 
-      {/* USER SIDEBAR */}
+      {/* DESKTOP SIDEBAR */}
       <aside className="w-64 bg-[#050914] border-r border-gray-800/80 flex flex-col justify-between p-5 select-none hidden lg:flex shrink-0">
         <div className="space-y-6">
           <div className="flex items-center gap-3 px-2 pt-1">
@@ -206,8 +227,8 @@ export default function UserDashboardPage() {
           </nav>
         </div>
 
-        {/* BOTTOM PLAN & USER PROFILE */}
-        <div className="space-y-4">
+        {/* BOTTOM PLAN & USER PROFILE WITH DROPDOWN */}
+        <div className="space-y-4 relative">
           <div className="bg-black/40 border border-gray-800 p-3 rounded-2xl flex items-center justify-between font-mono">
             <div>
               <p className="text-[10px] text-gray-500">Plan</p>
@@ -221,39 +242,161 @@ export default function UserDashboardPage() {
             </button>
           </div>
 
-          <div className="flex items-center gap-3 pt-2 border-t border-gray-800/80">
-            <div className="w-9 h-9 rounded-xl bg-lime-500 text-black font-extrabold flex items-center justify-center text-xs">
-              {userData.initial}
+          {/* 🔽 Profile Box Clickable for Logout & Delete */}
+          <div className="relative">
+            <div 
+              onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+              className="flex items-center gap-3 pt-2 border-t border-gray-800/80 cursor-pointer hover:bg-gray-900/40 p-2 rounded-xl transition"
+            >
+              <div className="w-9 h-9 rounded-xl bg-lime-500 text-black font-extrabold flex items-center justify-center text-xs shrink-0">
+                {userData.initial}
+              </div>
+              <div className="overflow-hidden flex-1">
+                <p className="text-xs font-bold text-white truncate">{userData.name}</p>
+                <p className="text-[10px] text-gray-400 font-mono truncate">{userData.email}</p>
+              </div>
+              <span className="text-gray-400 text-xs">▼</span>
             </div>
-            <div className="overflow-hidden">
-              <p className="text-xs font-bold text-white truncate">{userData.name}</p>
-              <p className="text-[10px] text-gray-400 font-mono truncate">{userData.email}</p>
-            </div>
+
+            {/* Dropdown Menu */}
+            {isProfileMenuOpen && (
+              <div className="absolute bottom-full left-0 mb-2 w-full bg-[#0b0f19] border border-gray-800 rounded-2xl shadow-2xl p-2 z-50 space-y-1 font-mono text-xs">
+                <button 
+                  onClick={handleLogout}
+                  className="w-full text-left px-3 py-2 rounded-xl text-gray-300 hover:bg-gray-800 hover:text-white transition flex items-center gap-2 cursor-pointer"
+                >
+                  <span>🚪</span> Logout
+                </button>
+                <button 
+                  onClick={handleDeleteAccount}
+                  className="w-full text-left px-3 py-2 rounded-xl text-red-400 hover:bg-red-950/40 transition flex items-center gap-2 cursor-pointer"
+                >
+                  <span>🗑️</span> Delete Account
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </aside>
 
+      {/* 📱 MOBILE SIDEBAR DRAWER OVERLAY */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex lg:hidden backdrop-blur-sm">
+          <div className="w-72 bg-[#050914] border-r border-gray-800 p-5 flex flex-col justify-between h-full shadow-2xl">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between px-2 pt-1">
+                <div className="flex items-center gap-3">
+                  <img src="/logo.png" alt="Logo" className="w-9 h-9 rounded-xl object-cover border border-slate-800" />
+                  <div>
+                    <h1 className="text-sm font-extrabold tracking-wider text-white uppercase">footpryx</h1>
+                    <p className="text-[9px] text-gray-400 font-mono tracking-widest">CYBER INTELLIGENCE</p>
+                  </div>
+                </div>
+                <button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-400 hover:text-white text-lg">✕</button>
+              </div>
+
+              <nav className="space-y-1 text-xs font-medium">
+                <Link href="/user-panel" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-lime-500/10 text-lime-400 border border-lime-500/20 font-bold">
+                  <span>📊</span> Dashboard
+                </Link>
+                <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-900">
+                  <span>🔍</span> OSINT Search Workspace
+                </Link>
+                <Link href="/user-panel/scan" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-900">
+                  <span>🛡️</span> Data Breach Scan
+                </Link>
+                <Link href="/user-panel/reports" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-900">
+                  <span>📄</span> Breach Reports
+                </Link>
+                <Link href="/user-panel/darkweb" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-900">
+                  <span>🌐</span> Dark Web Monitor
+                </Link>
+                <Link href="/user-panel/domains" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-900">
+                  <span>🌐</span> Domain Monitoring
+                </Link>
+                <Link href="/user-panel/emails" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-gray-900">
+                  <span>✉️</span> Email Monitoring
+                </Link>
+              </nav>
+            </div>
+
+            <div className="space-y-4 pt-4 border-t border-gray-800">
+              <div className="flex items-center gap-3 p-2 bg-black/40 rounded-xl">
+                <div className="w-9 h-9 rounded-xl bg-lime-500 text-black font-extrabold flex items-center justify-center text-xs">
+                  {userData.initial}
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-xs font-bold text-white truncate">{userData.name}</p>
+                  <p className="text-[10px] text-gray-400 font-mono truncate">{userData.email}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={handleLogout} className="bg-gray-900 text-gray-300 py-2 rounded-xl text-xs font-bold">Logout</button>
+                <button onClick={handleDeleteAccount} className="bg-red-950/60 text-red-400 border border-red-500/30 py-2 rounded-xl text-xs font-bold">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* USER MAIN CONTENT */}
       <main className="flex-1 flex flex-col min-h-screen overflow-y-auto">
-        <header className="h-20 border-b border-gray-800/80 px-8 flex items-center justify-between bg-[#040812]/80 backdrop-blur-md sticky top-0 z-30">
-          <div>
-            <h2 className="text-xl font-black text-white tracking-tight flex items-center gap-2">
-              Welcome back, {userData.name}! 👋
-            </h2>
-            <p className="text-xs text-gray-400">Stay ahead of threats. Monitor. Analyze. Protect.</p>
+        <header className="h-20 border-b border-gray-800/80 px-4 md:px-8 flex items-center justify-between bg-[#040812]/80 backdrop-blur-md sticky top-0 z-30">
+          <div className="flex items-center gap-3">
+            {/* ☰ Hamburger Menu Button for Phones */}
+            <button 
+              onClick={() => setIsMobileMenuOpen(true)} 
+              className="lg:hidden w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-300 hover:text-lime-400 transition cursor-pointer"
+            >
+              ☰
+            </button>
+            <div>
+              <h2 className="text-lg md:text-xl font-black text-white tracking-tight flex items-center gap-2">
+                Welcome back, {userData.name}! 👋
+              </h2>
+              <p className="text-[11px] md:text-xs text-gray-400">Stay ahead of threats. Monitor. Analyze. Protect.</p>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
+
+          <div className="flex items-center gap-3 relative">
             <button className="w-10 h-10 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-300 hover:text-lime-400 transition cursor-pointer relative">
               🔔
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-lime-500 animate-ping"></span>
             </button>
-            <div className="w-10 h-10 rounded-xl bg-lime-500 text-black font-extrabold flex items-center justify-center text-sm shadow-lg">
+
+            {/* Profile Initial Clickable for Profile Menu */}
+            <div 
+              onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+              className="w-10 h-10 rounded-xl bg-lime-500 text-black font-extrabold flex items-center justify-center text-sm shadow-lg cursor-pointer"
+            >
               {userData.initial}
             </div>
+
+            {/* Top Bar Profile Dropdown */}
+            {isProfileMenuOpen && (
+              <div className="absolute top-full right-0 mt-2 w-48 bg-[#0b0f19] border border-gray-800 rounded-2xl shadow-2xl p-2 z-50 space-y-1 font-mono text-xs">
+                <div className="px-3 py-2 border-b border-gray-800 text-gray-400 truncate">
+                  <p className="text-white font-bold">{userData.name}</p>
+                  <p className="text-[10px] truncate">{userData.email}</p>
+                </div>
+                <button 
+                  onClick={handleLogout}
+                  className="w-full text-left px-3 py-2 rounded-xl text-gray-300 hover:bg-gray-800 hover:text-white transition flex items-center gap-2 cursor-pointer"
+                >
+                  <span>🚪</span> Logout
+                </button>
+                <button 
+                  onClick={handleDeleteAccount}
+                  className="w-full text-left px-3 py-2 rounded-xl text-red-400 hover:bg-red-950/40 transition flex items-center gap-2 cursor-pointer"
+                >
+                  <span>🗑️</span> Delete Account
+                </button>
+              </div>
+            )}
           </div>
         </header>
 
-        <div className="p-8 space-y-6 max-w-[1600px] w-full mx-auto">
+        <div className="p-4 md:p-8 space-y-6 max-w-[1600px] w-full mx-auto">
           
           {/* TOP 4 STAT CARDS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
