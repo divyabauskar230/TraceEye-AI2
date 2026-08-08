@@ -250,7 +250,7 @@ async def delete_user(user: DeleteUserRequest):
     finally:
         conn.close()
 
-# 🌐 ४. GOOGLE OAUTH ROUTES (FIXED TO PREVENT auth_failed)
+# 🌐 ४. GOOGLE OAUTH ROUTES (FIXED FOR REAL USER DATA)
 @app.get("/api/auth/google/login")
 def google_login():
     google_auth_url = (
@@ -276,18 +276,22 @@ async def google_callback(code: str, background_tasks: BackgroundTasks):
         token_json = token_res.json()
         access_token = token_json.get("access_token")
 
-        # 🟢 जर टोकन मिळाला नाही, तर एरर न देता थेट युजर पॅनलवर बायपास करून पाठवणे
+        # 🟢 जर टोकन मिळाला नाही, तर सरळ लॉगिन पेजवर एरर पाठवणे
         if not access_token:
-            return RedirectResponse("https://footpryx.com/user-panel?email=googleuser@footpryx.com&name=GoogleUser")
+            return RedirectResponse("https://footpryx.com/auth/login?error=auth_failed")
 
+        # 🟢 गुगल सर्व्हरवरून युझरची खरी माहिती (Email आणि Name) फेच करणे
         user_res = await client.get(
             "https://www.googleapis.com/oauth2/v2/userinfo",
             headers={"Authorization": f"Bearer {access_token}"}
         )
         user_info = user_res.json()
         
-        email = user_info.get("email", "googleuser@footpryx.com")
-        name = user_info.get("name", "Google User")
+        email = user_info.get("email")
+        name = user_info.get("name")
+
+        if not email:
+            return RedirectResponse("https://footpryx.com/auth/login?error=auth_failed")
 
         conn = sqlite3.connect(DB_NAME)
         cursor = conn.cursor()
@@ -297,12 +301,16 @@ async def google_callback(code: str, background_tasks: BackgroundTasks):
                 (name, email, "GOOGLE_AUTH_USER")
             )
             conn.commit()
+            
+            # 📧 खऱ्या जिमेलवर वेलकम मेल पाठवणे
             background_tasks.add_task(send_welcome_email, email, name)
+            
         except Exception as e:
             print("Google User DB Save Error:", e)
         finally:
             conn.close()
 
+        # 🟢 खऱ्या नावा आणि ईमेलसह युजर पॅनलवर रीडायरेक्ट करणे
         return RedirectResponse(f"https://footpryx.com/user-panel?email={email}&name={name}")
 
 # 🤖 💡 ५. GEMINI AI CHAT ENDPOINT
