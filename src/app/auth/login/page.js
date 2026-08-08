@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import emailjs from '@emailjs/browser'; // 🌟 EmailJS इम्पोर्ट केला आहे
 
@@ -13,6 +13,11 @@ export default function Login() {
   // 🟢 Render सर्व्हर लोडिंग स्क्रीन दाखवण्यासाठी
   const [isWakingUp, setIsWakingUp] = useState(false);
 
+  // 🌟 Google login करून परत आल्यावर जर URL मध्ये डेटा असेल तर मेल पाठवणे किंवा हँडल करणे
+  useEffect(() => {
+    // समजा युजर Google Login वरून यशस्वी परत आला, तर localStorage तपासून EmailJS ट्रिगर करू शकतो
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -20,8 +25,8 @@ export default function Login() {
     setIsWakingUp(true); // लोडिंग पॉपअप ऑन करा
 
     try {
-      // 🟢 इथे लोकल किंवा लाईव्ह युआरएल टाकू शकतोस (सध्या लोकलसाठी सेट केले आहे)
-      const response = await fetch("http://127.0.0.1:8000/api/auth/login", {
+      // 🟢 लाईव्ह सर्व्हरसाठी relative API path वापरला आहे जेणेकरून 127.0.0.1 चा एरर येणार नाही
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -69,7 +74,15 @@ export default function Login() {
 
   const handleGoogleLogin = () => {
     setIsWakingUp(true); // Google लॉगिन करताना लोडिंग पॉपअप ऑन करा
-    window.location.href = "http://127.0.0.1:8000/api/auth/google/login";
+    
+    // 🟢 लक्षात घ्या: जर बॅकएंड लाईव्ह सर्व्हरवर (उदा. Render किंवा MilesWeb) असेल, 
+    // तर खालील 127.0.0.1 ऐवजी तुमच्या लाईव्ह बॅकएंडची URL यायला हवी. 
+    // सध्या लोकल एरर जाऊ नये म्हणून relative किंवा live domain path सेट केलाय:
+    const backendUrl = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+      ? "http://127.0.0.1:8000/api/auth/google/login" 
+      : "https://api.footpryx.com/api/auth/google/login"; // तुमची लाईव्ह बॅकएंड लिंक इथे आपोआप काम करेल
+
+    window.location.href = backendUrl;
   };
 
   return (
