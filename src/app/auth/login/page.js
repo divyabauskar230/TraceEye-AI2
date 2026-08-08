@@ -25,8 +25,8 @@ export default function Login() {
     setIsWakingUp(true); // लोडिंग पॉपअप ऑन करा
 
     try {
-      // 🟢 लाईव्ह सर्व्हरसाठी relative API path वापरला आहे जेणेकरून 127.0.0.1 चा एरर येणार नाही
-      const response = await fetch("/api/auth/login", {
+      // 🟢 इथे पूर्ण लाईव्ह बॅकएंड URL टाकली आहे जेणेकरून 404 किंवा Connection एरर येणार नाही
+      const response = await fetch("https://footpryx-backend.onrender.com/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -41,22 +41,22 @@ export default function Login() {
         setMessage("Success! Sending security email & Redirecting...");
 
         // 🌟 EmailJS द्वारे युजरला यशस्वी लॉगिनचा मेल पाठवण्यासाठी कोड
-       try {
-  const templateParams = {
-    to_name: userName,
-    user_email: email,
-  };
+        try {
+          const templateParams = {
+            to_name: userName,
+            user_email: email,
+          };
 
-  await emailjs.send(
-    'service_d18o81o',       // Service ID
-    'template_xuhayhy',      // Template ID
-    templateParams,
-    '55DybHZcEegoxVNCS'      // Public Key
-  );
-  console.log("EmailJS Success!");
-} catch (mailErr) {
-  console.log("Mail trigger error:", mailErr);
-}
+          await emailjs.send(
+            'service_d18o81o',      // Service ID
+            'template_xuhayhy',     // Template ID
+            templateParams,
+            '55DybHZcEegoxVNCS'     // Public Key
+          );
+          console.log("EmailJS Success!");
+        } catch (mailErr) {
+          console.log("Mail trigger error:", mailErr);
+        }
 
         // 🟢 यशस्वी लॉगिन झाल्यावर थेट युजर पॅनलवर जाईल
         setTimeout(() => { window.location.href = "/user-panel"; }, 1200);
