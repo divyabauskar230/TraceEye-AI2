@@ -223,6 +223,7 @@ export default function Home() {
           <span className="text-[9px] font-mono text-red-400 bg-red-950/60 px-2 py-0.5 rounded border border-red-500/30 flex items-center gap-1">
             CRITICAL WATCH
           </span>
+
         </div>
 
         <div className="space-y-2 font-mono text-[11px]">
@@ -500,6 +501,7 @@ export default function Home() {
             <span className={`text-xs font-bold ${isYearly ? 'text-white' : 'text-gray-500'}`}>
               Yearly <span className="text-lime-400 text-[10px] bg-lime-950 px-2 py-0.5 rounded-full border border-lime-500/30">Save 20%</span>
             </span>
+
           </div>
         </div>
 
@@ -929,6 +931,35 @@ export default function Home() {
         ↑
       </button>
 
+      {/* 🚀 PROJECT FOR SALE POPUP MODAL */}
+      <div id="salePopup" className="flex fixed inset-0 z-[9999] bg-black/60 items-center justify-center p-4">
+        <div className="bg-white text-black p-6 md:p-8 rounded-3xl w-full max-w-md text-center shadow-2xl relative font-sans">
+          <button 
+            onClick={() => document.getElementById('salePopup').style.display='none'} 
+            className="absolute top-4 right-4 text-gray-400 hover:text-black text-xl font-bold cursor-pointer"
+          >
+            &times;
+          </button>
+          
+          <h2 className="text-xl md:text-2xl font-black mb-3 text-gray-900">Project For Sale</h2>
+          <p className="text-gray-600 text-xs md:text-sm leading-relaxed mb-6">
+            This project <b>Footpryx</b> is available for sale. If you are interested, please contact us at:
+          </p>
+          
+          <div className="bg-gray-50 border border-gray-200 p-4 rounded-2xl mb-6 text-left space-y-2">
+            <p className="text-xs text-gray-700">📧 <strong className="text-black">Email:</strong> <a href="mailto:footpryxofficial@gmail.com" className="text-blue-600 hover:underline">footpryxofficial@gmail.com</a></p>
+            <p className="text-xs text-gray-700">📞 <strong className="text-black">Phone:</strong> <a href="tel:+917651897110" className="text-emerald-600 hover:underline">+91 7651 897 110</a></p>
+          </div>
+
+          <button 
+            onClick={() => document.getElementById('salePopup').style.display='none'} 
+            className="w-full bg-black hover:bg-lime-400 hover:text-black text-white font-extrabold py-3 rounded-xl text-xs transition cursor-pointer"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+
     </div>
   );
 }
@@ -1143,8 +1174,7 @@ export function GlobalThreatRadarComponent() {
             </div>
           ))}
         </div>
-
-      </div>
+        </div>
     </section>
   );
 }
