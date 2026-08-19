@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 
 export default function BlogListingPage() {
-  // 📚 सर्व १४ ब्लॉग आर्टिकल्सची लिस्ट
+  // 📚 सर्व १८ ब्लॉग आर्टिकल्सची लिस्ट (१४ जुने + ४ नवीन ॲड केलेले)
   const articles = [
     {
       id: 1,
@@ -130,6 +130,42 @@ export default function BlogListingPage() {
       slug: "/blog/comparison",
       date: "Feb 2026",
       readTime: "14 min read"
+    },
+    {
+      id: 15,
+      category: "OSINT INVESTIGATION",
+      title: "Advanced Digital Footprinting: Uncovering Hidden Identities",
+      desc: "Learn how professional investigators use username correlation and public records to trace digital footprints.",
+      slug: "/blog/digital-footprint",
+      date: "Aug 2026",
+      readTime: "10 min read"
+    },
+    {
+      id: 16,
+      category: "CYBER SECURITY",
+      title: "OSINT in Threat Intelligence: Anticipating Cyber Attacks",
+      desc: "Discover how security teams leverage open-source intelligence to monitor dark web chatter and preemptively block threats.",
+      slug: "/blog/threat-intelligence",
+      date: "Aug 2026",
+      readTime: "12 min read"
+    },
+    {
+      id: 17,
+      category: "DATA BREACH",
+      title: "The Anatomy of Credential Dumps: Protecting Corporate Assets",
+      desc: "A deep dive into how leaked passwords and database dumps circulate, and how continuous breach monitoring stops takeovers.",
+      slug: "/blog/credential-dumps",
+      date: "Aug 2026",
+      readTime: "9 min read"
+    },
+    {
+      id: 18,
+      category: "SOCMINT",
+      title: "Social Media Intelligence: Cross-Referencing Profiles Safely",
+      desc: "Master the art of tracking digital handles and cross-referencing public profiles across multiple online platforms.",
+      slug: "/blog/social-media-analysis",
+      date: "Aug 2026",
+      readTime: "11 min read"
     }
   ];
 
